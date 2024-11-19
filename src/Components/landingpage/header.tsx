@@ -6,8 +6,6 @@ import Link from 'next/link';
 
 
 const Header = () => {
-    
-
   return (
     <header className="flex items-center justify-between px-8 pt-4 text-black">
       <div className="flex items-center space-x-2">
@@ -16,7 +14,7 @@ const Header = () => {
       </div>
 
       <div className="flex justify-center flex-grow ml-auto"> 
-        <nav className="space-x-16 flex text-lg font-semibold">
+        <nav className="space-x-24 flex text-lg font-semibold">
           <Link href="/about" className="hover:text-green-800">About</Link>
           <Link href="/resources" className="hover:text-green-800">Resources</Link>
           <Link href="/more" className="hover:text-green-800">More</Link>
@@ -25,9 +23,8 @@ const Header = () => {
      
 
       <div className='pr-8'>
-        <button
-          
-          className="border-2 bg-gray-100 hover:bg-green-50 border-black text-black py-2 px-4 rounded"
+        <button        
+          className="border-2 bg-gray-100 hover:bg-green-50 border-black text-black py-2 px-4 rounded text-lg font-semibold"
         >
           Login
         </button>
