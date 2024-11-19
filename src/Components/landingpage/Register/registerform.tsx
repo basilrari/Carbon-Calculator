@@ -8,10 +8,11 @@ import { toast } from 'sonner'
 import { myInstance } from '@/utils/Axios/axios'
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-const Loginform = () => {
+const Registerform = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [isVisible, setIsVisible] = useState(false);
 
@@ -19,14 +20,23 @@ const Loginform = () => {
 
     const toggleVisibility = () => setIsVisible(!isVisible)
 
-    const handleRegister = () => {
-        router.push('/register');
+    const handleBack = () => {
+        router.push('/login');
       };
     
 
-    const handleLogin = async () => {      
+    const handleRegister = async () => {      
 
         setIsLoading(true);
+
+        if(!(password === confirmPassword)){
+            setIsLoading(false);
+            console.log("Password doesn't match");
+            toast.error("Passwords don't match");
+            return;
+        }
+
+
 
         let response;
         if(!emailValidator(email)){
@@ -43,15 +53,10 @@ const Loginform = () => {
             });
             if (!response){
                 setIsLoading(false);
-                toast.error("Invalid credentials")
+                toast.error("Unable to register. Try Later.")
             }else{
-                const { token } = response.data
-
-                if (token){
-                    localStorage.setItem("authtoken",token);
-                    setIsLoading(false);
-                    router.push('/dashboard');
-                }              
+                setIsLoading(false);
+                router.push('/login');
             }
         } catch (error) {
             setIsLoading(false);
@@ -65,7 +70,7 @@ const Loginform = () => {
     
     <div className="flex justify-center items-center h-screen overflow-hidden">
     <form
-    onSubmit={handleLogin}
+    onSubmit={handleRegister}
     className="border bg-white bg-opacity-70 p-6 rounded-lg shadow-md w-80"
     >
     <h2 className="text-2xl font-bold text-gray-800 mb-7 mt-5 text-center">
@@ -80,22 +85,47 @@ const Loginform = () => {
         type="text"
         id="username"
         className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F4F4F]"
-        value={email}
         onChange={(e) => setEmail(e.target.value)}
-       
-      />
+       />
+      
     </div>
 
-    <div className="mb-4">
+    <div className= "mb-4" >
     <label htmlFor="password" className="block text-gray-700">
-    Password
+     Password
+    </label>
+      <div className="relative mt-2">
+       <input
+        id="password"
+        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F4F4F] pr-10"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        type={isVisible ? "text" : "password"}
+       />
+       <button
+       className="absolute inset-y-0 right-3 flex items-center"
+       type="button"
+       onClick={toggleVisibility}
+       aria-label="toggle password visibility"
+        >
+       {isVisible ? (
+         <IoMdEye className="text-xl text-gray-400" />
+       ) : (
+        <IoMdEyeOff className="text-xl text-gray-400" />
+       )}
+       </button>
+    </div>
+ </div>
+ <div className="mb-4">
+    <label htmlFor="password" className="block text-gray-700">
+    Confirm Password
     </label>
     <div className="relative mt-2">
       <input
       id="password"
       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F4F4F] pr-10"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
+      value={confirmPassword}
+      onChange={(e) => setConfirmPassword(e.target.value)}
       type={isVisible ? "text" : "password"}
       />
      <button
@@ -118,24 +148,24 @@ const Loginform = () => {
       type="submit"
       className="w-full bg-[#2F4F4F] font-medium text-white p-2 mt-6 rounded-md hover:bg-cyan-700 transition"
     >
-      {isLoading ? "Logging in..." : "Login"}
+      {isLoading ? "Registering..." : "Register"}
     </button>
 
     <hr className="my-4 " />
 
     <button
       type="button"
-      onClick={handleRegister}
+      onClick={handleBack}
       className="w-full bg-[#2F4F4F] font-medium text-white p-2 mt-1.5 rounded-md hover:bg-cyan-700 transition"
     >
-      Register
+      Back
     </button>
   </form>
 </div>
 
 
  
-  )
-}
+  );
+};
 
-export default Loginform;
+export default Registerform;

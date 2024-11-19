@@ -24,7 +24,7 @@ const Header = () => {
 
       <div className='pr-8'>
         <button        
-          className="border-2 bg-gray-100 hover:bg-green-50 border-black text-black py-2 px-4 rounded text-lg font-semibold"
+          className="border-2 bg-green-50 hover:bg-gray-50 border-black text-black py-2 px-4 rounded text-lg font-semibold"
         >
           Login
         </button>
