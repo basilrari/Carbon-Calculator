@@ -31,10 +31,10 @@ const Footer = () => {
 
       
         <div className="flex space-x-4 text-xl">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-600">
             <FaFacebook />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-700">
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-700">
             <FaLinkedin />
           </a>
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500">
