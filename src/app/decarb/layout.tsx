@@ -1,4 +1,4 @@
-import MyNavbar from "@/Components/Dashboard/navbar";
+import MyNavbar from "@/components/dashboard/navbar";
 import { NextUIProvider } from "@nextui-org/react";
 
 

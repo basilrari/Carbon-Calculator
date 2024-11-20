@@ -1,6 +1,6 @@
-import Header from "@/Components/landingpage/header";
-import Loginform from "@/Components/landingpage/Login/loginform";
-import MyNavbar from "@/Components/Dashboard/navbar";
+import Header from "@/components/landingpage/header";
+import Loginform from "@/components/landingpage/login/loginform";
+import MyNavbar from "@/components/dashboard/navbar";
 
 import React from 'react'
 

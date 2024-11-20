@@ -1,5 +1,5 @@
-import Header from "@/Components/landingpage/header";
-import Registerform from "@/Components/landingpage/Register/registerform";
+import Header from "@/components/landingpage/header";
+import Registerform from "@/components/landingpage/register/registerform";
 
 import React from 'react'
 
