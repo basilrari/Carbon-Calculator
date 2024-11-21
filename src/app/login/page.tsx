@@ -2,11 +2,12 @@ import Header from "@/Components/landingpage/header";
 import Loginform from "@/Components/landingpage/Login/loginform";
 
 
+
 import React from 'react'
 
 const loginpage = () => {
   return (
-    <div className="flex flex-col bg-cover bg-center h-screen" style={{ backgroundImage: "url('/background.jpg')" }}>
+    <div className="flex flex-col bg-cover bg-center h-screen" style={{ backgroundImage: "url('/images/background.jpg')" }}>
         <Header/>
         <Loginform/>       
     </div>
@@ -14,14 +15,5 @@ const loginpage = () => {
   )
 }
 
-export const Loginpage = () => {
-  return (
-    <div className="flex flex-col bg-cover bg-center h-screen" style={{ backgroundImage: "url('/background.jpg')" }}>
-        <Header/>
-        <Loginform/>       
-    </div>
-   
-  )
-}
 
 export default loginpage

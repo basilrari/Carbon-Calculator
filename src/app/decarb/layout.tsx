@@ -1,16 +1,16 @@
-import MyNavbar from "@/components/dashboard/navbar";
-import { NextUIProvider } from "@nextui-org/react";
+import Sidebar from "@/Components/Dashboard/navbar";
 
-
-export default function OrganizationLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <NextUIProvider>
-          <MyNavbar />
-          {children}
-        </NextUIProvider>
+    <main> 
+      <Sidebar />
+      {children}
+      </main>
+      
+   
   );
 }
