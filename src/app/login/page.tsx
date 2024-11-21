@@ -1,10 +1,20 @@
-import Header from "@/components/landingpage/header";
-import Loginform from "@/components/landingpage/login/loginform";
-import MyNavbar from "@/components/dashboard/navbar";
+import Header from "@/Components/landingpage/header";
+import Loginform from "@/Components/landingpage/Login/loginform";
+
 
 import React from 'react'
 
 const loginpage = () => {
+  return (
+    <div className="flex flex-col bg-cover bg-center h-screen" style={{ backgroundImage: "url('/background.jpg')" }}>
+        <Header/>
+        <Loginform/>       
+    </div>
+   
+  )
+}
+
+export const Loginpage = () => {
   return (
     <div className="flex flex-col bg-cover bg-center h-screen" style={{ backgroundImage: "url('/background.jpg')" }}>
         <Header/>
