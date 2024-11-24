@@ -18,7 +18,7 @@ const Sidebar = () => {
           isCollapsed ? 'w-32' : 'w-64'
         }`}
       >
-        {/* Logo and Sidebar Toggle */}
+        
         <div className="flex  items-center justify-between mb-10">
           <div className="flex items-center">
             <img
@@ -32,13 +32,13 @@ const Sidebar = () => {
           </div>
           <button
             className="text-[#2F4F4F] bg-white rounded-lg  p-1.5 border-b border-black -mr-4 "
-            onClick={toggleSidebar}
+            onClick={toggleSidebar} 
           >
             {isCollapsed ? <MdOutlineKeyboardArrowRight /> : <MdOutlineKeyboardArrowLeft />}
           </button>
         </div>
     
-        {/* Navigation */}
+        
         <nav>
   <ul className="space-y-8">
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
@@ -84,7 +84,7 @@ const Sidebar = () => {
   </ul>
 </nav>
 
-{/* Settings Link */}
+
 <div className="absolute bottom-8 left-4 flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF]">
   <img src="/images/overview.svg" alt="settings" className="h-8 w-8" />
   <span

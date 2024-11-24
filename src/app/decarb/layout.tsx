@@ -10,7 +10,6 @@ export default function MainLayout({
       <Sidebar />
       {children}
       </main>
-      
-   
+        
   );
 }
