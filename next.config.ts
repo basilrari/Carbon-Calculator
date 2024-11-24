@@ -1,7 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/login',
+        permanent: true,
+      },
+    ]
+  },
+async rewrites () {
+    return [
+        {
+            source: '/api/:path*',
+            destination: `http://localhost:3000/:path*`,
+        },
+    ];
+},
 };
 
 export default nextConfig;
