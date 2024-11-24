@@ -1,19 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ['/dashboard/:path*'];
-const authRoutes = ['/login','/register'];
-
 export async function middleware ( request : NextRequest ){
 
     const path = request.nextUrl.pathname;
     const token = request.cookies.get("authToken");
 
-    if( protectedRoutes.includes(path) && !token ){
-        NextResponse.redirect( new URL ('/login', request.url ));
+    if( path.startsWith('/decarb') && !token ){
+        return NextResponse.redirect( new URL ('/login', request.url ));
     }
 
-    if( authRoutes && token ){
-        NextResponse.redirect( new URL ('/dashboard', request.url));
+    if( (path == '/login' || path == '/register') && token ){
+        return NextResponse.redirect( new URL ('/decarb/dashboard', request.url));
     }
 
     return NextResponse.next();
@@ -21,5 +18,8 @@ export async function middleware ( request : NextRequest ){
 }
 
 export const config = {
-    matcher : [protectedRoutes,...authRoutes]
+    matcher : ['/decarb/:path*',
+               '/login',
+               '/register'
+            ]
 }
