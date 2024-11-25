@@ -36,8 +36,6 @@ const Registerform = () => {
             return;
         }
 
-
-
         let response;
         if(!emailValidator(email)){
             console.log("Email is invalid")
@@ -47,10 +45,13 @@ const Registerform = () => {
         }
 
         try{
-                response = await myInstance.post('/login',{
+                response = await myInstance.post('/auth/register',{
                 email: email,
                 password: password,
-            });
+            },
+          {
+            withCredentials : true
+          });
             if (!response){
                 setIsLoading(false);
                 toast.error("Unable to register. Try Later.")

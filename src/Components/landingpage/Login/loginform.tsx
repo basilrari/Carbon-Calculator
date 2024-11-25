@@ -9,7 +9,6 @@ import { myInstance } from '@/utils/Axios/axios'
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Loginform = () => {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false)
@@ -17,50 +16,51 @@ const Loginform = () => {
 
     const router = useRouter();
 
-    const toggleVisibility = () => setIsVisible(!isVisible)
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const handleRegister = () => {
         router.push('/register');
-      };
-    
+    };
 
-    const handleLogin = async () => {      
-
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault(); 
+        
         setIsLoading(true);
 
-        let response;
         if(!emailValidator(email)){
-            console.log("Email is invalid")
             toast.error("Invalid email");
             setIsLoading(false);
             return;
         }
 
-        try{
-                response = await myInstance.post('/login',{
-                email: email,
-                password: password,
+        try {
+            const response = await myInstance.post('/auth/login', {
+                email,
+                password,
+            }, {
+                withCredentials: true 
             });
-            if (!response){
-                setIsLoading(false);
-                toast.error("Invalid credentials")
-            }else{
-                const { token } = response.data
-
-                if (token){
-                    localStorage.setItem("authtoken",token);
-                    setIsLoading(false);
-                    router.push('/dashboard');
-                }              
+            if (response.status === 200) {
+                toast.success("Login successful!");
+                router.push('/dashboard');
             }
-        } catch (error) {
+        } catch (error: any) {
             setIsLoading(false);
-            toast.error("There was an error");
-            console.log("error");
+            if (error.response) {
+                toast.error(error.response.data.message || "Invalid credentials");
+            } else if (error.request) {
+                toast.error("No response from server");
+            } else {
+                toast.error("An unexpected error occurred");
+            }
+            console.error("Login error:", error);
+        } finally {
+            setIsLoading(false);
         }
+    }
 
              
-    }
+    
   return (
     
     <div className="flex justify-center items-center h-screen overflow-hidden">
@@ -136,6 +136,6 @@ const Loginform = () => {
 
  
   )
-}
+};
 
 export default Loginform;
