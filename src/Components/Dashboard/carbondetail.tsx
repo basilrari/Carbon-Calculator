@@ -16,7 +16,7 @@ const StatItem: React.FC<StatItemProps> = ({ value, label,}) => {
 
 const StatsCard = () => {
   return (
-    <div className="flex justify-between items-center bg-white shadow-md pr-10 pl-10  rounded-md border border-gray-200">
+    <div className="flex justify-between items-center bg-white shadow-sm pr-10 pl-10  rounded-md border border-gray-200">
       <StatItem value="132" label="Total Carbon Locked" />
       <div className="h-10 w-px bg-gray-500 mx-4"></div>
       <StatItem value="$16000" label="Total Liquidity" />
