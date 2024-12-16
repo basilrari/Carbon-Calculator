@@ -3,7 +3,7 @@ import MyButton from '@/Components/Dashboard/MyButton'
 
 const page = () => {
   return (
-    <div></div>
+    <div><MyButton variant="red" text='back'>back</MyButton></div>
   )
 }
 
