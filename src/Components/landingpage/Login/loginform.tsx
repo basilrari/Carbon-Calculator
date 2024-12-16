@@ -3,14 +3,30 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import emailValidator from '@/utils/Validator/emailvalidator';
 import { toast } from 'sonner'
 import { myInstance } from '@/utils/Axios/axios'
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { z } from 'zod';
+
+const loginSchema = z.object(
+  {
+    email : z.string().email(),
+    password : z
+    .string()
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter") 
+    .regex(/[0-9]/, "Password must contain at least one number") 
+    
+  }
+)
+
 
 const Loginform = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState(
+      {
+        email : "",
+        password : "",
+      }
+    );
     const [isLoading, setIsLoading] = useState(false)
     const [isVisible, setIsVisible] = useState(false);
 
@@ -26,18 +42,17 @@ const Loginform = () => {
         e.preventDefault(); 
         
         setIsLoading(true);
+        const loginDetails = loginSchema.safeParse(formData);
 
-        if(!emailValidator(email)){
-            toast.error("Invalid email");
-            setIsLoading(false);
-            return;
+        if(!loginDetails.success){
+          setIsLoading(false);
+          toast.error(loginDetails.error.errors.map((e) => e.message).join(", "));
+          return
         }
-
+        
+         
         try {
-            const response = await myInstance.post('/auth/login', {
-                email,
-                password,
-            }, {
+            const response = await myInstance.post('/auth/login', loginDetails.data , {
                 withCredentials: true 
             });
             if (response.status === 200) {
@@ -45,8 +60,10 @@ const Loginform = () => {
                 router.push('/dashboard');
             }
         } catch (error: any) {
-            setIsLoading(false);
-            if (error.response) {
+            if (error instanceof z.ZodError){
+              toast.error(error.errors.map((e) => e.message).join(" ' "));
+              console.error("Validation Errors:", error.errors);
+            } else if (error.response) {
                 toast.error(error.response.data.message || "Invalid credentials");
             } else if (error.request) {
                 toast.error("No response from server");
@@ -59,7 +76,13 @@ const Loginform = () => {
         }
     }
 
-             
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id] : e.target.value
+    }
+    )   
+  }          
     
   return (
     
@@ -77,11 +100,11 @@ const Loginform = () => {
         Email
       </label>
       <input
-        type="text"
-        id="username"
+        type="email"
+        id="email"
         className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F4F4F]"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={ formData.email }
+        onChange={ handleChange }
        
       />
     </div>
@@ -94,8 +117,8 @@ const Loginform = () => {
       <input
       id="password"
       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F4F4F] pr-10"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
+      value={ formData.password }
+      onChange={ handleChange }
       type={isVisible ? "text" : "password"}
       />
      <button
