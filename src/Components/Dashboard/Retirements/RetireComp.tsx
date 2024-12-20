@@ -3,7 +3,7 @@ import React from 'react';
 import MyButton from '../MyButton';
 import { useRouter } from 'next/navigation';
 
-const Retirement = () => {
+const RetirementComp = () => {
 
   const router = useRouter();
 
@@ -38,4 +38,4 @@ const Retirement = () => {
   );
 };
 
-export default Retirement;
+export default RetirementComp;
