@@ -1,7 +1,7 @@
 import React from 'react'
 
 type carbonassetprops = ({
-    date : `${number} ${string} ${number}`,
+    date : Date,
     quantity : number,
     project : string,
     price : number,
@@ -9,10 +9,13 @@ type carbonassetprops = ({
 });
 
 const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, price, status}) => {
+
+  const formattedDate = date.toLocaleDateString(); 
+
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
     
-    <div className="text-sm font-medium text-gray-800">{date}</div>
+    <div className="text-sm font-medium text-gray-800">{formattedDate}</div>
     
     <div className="text-sm font-medium text-gray-800">{quantity.toFixed(3)}</div>
     
