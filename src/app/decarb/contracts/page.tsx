@@ -1,5 +1,6 @@
 import React from 'react'
 import BuyorSell from '@/Components/Dashboard/Contracts/BuyorSellComp'
+import Carbonasset from '@/Components/Dashboard/Contracts/carbasset'
 
 const page = () => {
   return (
@@ -11,6 +12,8 @@ const page = () => {
       <div className='w-full mb-6 mt-5' >
         <BuyorSell/>
       </div>
+
+      <div><Carbonasset date='24 January 2024' price={754} quantity={343} project='zfzf' status={true}/></div>
    </div>
   
 
