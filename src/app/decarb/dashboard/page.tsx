@@ -1,6 +1,6 @@
 import React from 'react'
-import StatsCard from '@/Components/Dashboard/overview/carbondetail'
-import LearnCardsContainer from '@/Components/Dashboard/overview/learncontainer';
+import StatsCard from '@/Components/Dashboard/Overview/carbondetail';
+import LearnCardsContainer from '@/Components/Dashboard/Overview/learncontainer';
 import  MyButton  from '@/Components/Dashboard/MyButton'; 
 
 const page = () => {

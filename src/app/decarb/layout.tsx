@@ -12,7 +12,7 @@ export default function MainLayout({
         <Sidebar />
       </div>
       
-      <div className="flex-1 bg-white">
+      <div className="flex w-full bg-white">
         {children}
       </div>
     </main>
