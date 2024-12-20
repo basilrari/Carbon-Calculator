@@ -1,4 +1,3 @@
-// WalletConnect.js
 import Image from "next/image";
 import React from "react";
 
@@ -11,7 +10,6 @@ const WalletConnect = () => {
         </h1>
 
         <div className="space-y-4">
-          {/* MetaMask */}
           <button className="flex items-center space-x-4 w-full p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
             <Image
               src="/images/metamask.png"
@@ -33,7 +31,6 @@ const WalletConnect = () => {
             <span className="text-gray-700 font-medium">Coinbase Wallet</span>
           </button>
 
-          {/* Rainbow Wallet */}
           <button className="flex items-center space-x-4 w-full p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
             <Image
               src="/images/rainbow.png"

@@ -1,21 +1,22 @@
 import React from 'react'
 
-type carbonassetprops = ({
-    date : Date,
+ type carbonassetprops = {
+    date : string,
     quantity : number,
     project : string,
     price : number,
-    status : boolean | 'processing' ,
-});
+    status : 'current' | 'sold' ,
+};
+
+export type carbonAssetArray = carbonassetprops[];
 
 const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, price, status}) => {
-
-  const formattedDate = date.toLocaleDateString(); 
+ 
 
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
     
-    <div className="text-sm font-medium text-gray-800">{formattedDate}</div>
+    <div className="text-sm font-medium text-gray-800">{date}</div>
     
     <div className="text-sm font-medium text-gray-800">{quantity.toFixed(3)}</div>
     
@@ -24,7 +25,7 @@ const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, pric
     <div className="text-sm font-medium text-gray-800">{price.toFixed(3)}</div>
     
     <div className="flex items-center">
-      {status === true && (
+      {status === 'current' && (
         <div className="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +41,7 @@ const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, pric
           </svg>
         </div>
       )}
-      {status === false && (
+      {status === 'sold' && (
         <div className="w-6 h-6 rounded-full bg-red-200 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,24 +57,7 @@ const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, pric
           </svg>
         </div>
       )}
-      {status === 'processing' && (
-        <div className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center animate-spin">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v3m0 9v3m4.364-10.864l-2.121 2.121M7.757 16.243l-2.121-2.121M4.5 12H7.5m9 0h3m-10.864 4.364l2.121-2.121M16.243 7.757l2.121 2.121"
-            />
-          </svg>
-        </div>
-      )}
+      
     </div>
   </div>
   );
