@@ -16,7 +16,6 @@ const BuyorSell = () => {
 
   return (
     <div className="flex items-center justify-between p-6 border rounded-lg shadow-md bg-white w-full mx-auto">
-      {/* Left Section */}
       <div className="flex items-center space-x-4">
         <img
           src="/images/decarbtoken.png"
@@ -31,7 +30,6 @@ const BuyorSell = () => {
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="flex space-x-4">
         <MyButton
           variant="green"
