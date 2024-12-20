@@ -5,7 +5,6 @@ export const myInstance = axios.create({
     withCredentials: true,
 })
 
-
 export const myInstanceNext= axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_devbackendurl}`,
     withCredentials: true,

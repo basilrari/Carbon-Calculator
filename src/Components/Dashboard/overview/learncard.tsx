@@ -1,10 +1,9 @@
 import React from "react";
 
-// Define the types for the LearnCard props
 type LearnCardProps = {
-  title: string; // The title of the card
-  svgPath: string; // The SVG component
-};
+  title: string; 
+  svgPath: string; 
+}
 
 const LearnCard: React.FC<LearnCardProps> = ({ title, svgPath }) => {
   return (

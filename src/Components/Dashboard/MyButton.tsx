@@ -10,12 +10,12 @@ type ButtonProps = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const MyButton: React.FC<ButtonProps> = ({ variant, text, onClick, ...props }) => {
-  const baseStyles = `px-8 min-w-28 h-10 font-semibold rounded focus:outline-none transition duration-200 ease-in-out`;
+  const baseStyles = `px-12 min-w-28 h-8 text-sm font-semibold rounded focus:outline-none transition duration-200 ease-in-out`;
 
   const variantStyles: Record<typeof ButtonVariantSchema['_def']['values'][number], string> = {
-    green: 'bg-green-500 text-white hover:bg-green-600',
-    red: 'bg-red-500 text-white hover:bg-red-600',
-    yellow: 'bg-yellow-400 text-black hover:bg-yellow-500',
+    green: 'bg-[#2F4F4F] text-white hover:bg-green-600',
+    red: 'bg-[#E04848] text-white hover:bg-red-600',
+    yellow: 'bg-[#FFE2AD] text-black hover:bg-yellow-500',
   };
 
   

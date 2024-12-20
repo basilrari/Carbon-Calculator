@@ -1,7 +1,7 @@
 import React from "react";
 
 type StatItemProps = {
-    value: string | number; 
+    value: number | string; 
     label: string;          
   };
 
