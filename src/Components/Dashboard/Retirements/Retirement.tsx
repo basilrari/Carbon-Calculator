@@ -24,10 +24,10 @@ const Retirement : React.FC<carbonassetprops> = ({date, quantity, project, price
     
     <div className="flex items-center">
       
-    <div className="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center">
+    <div className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center">
        <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 text-green-600"
+          className="h-4 w-4 text-blue-600"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

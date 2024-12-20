@@ -38,7 +38,7 @@ const MyRetirements = async () => {
  
  
     return (
-        <div className="bg-purple-100 rounded-lg p-6 space-y-4">
+        <div className="bg-blue-100 rounded-lg p-6 space-y-4">
          
          <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
             <div>Date</div>
@@ -61,7 +61,7 @@ const MyRetirements = async () => {
                 />
               ))
             ) : (
-              <div className="text-gray-500">You have no retirements</div>
+              <div className="text-gray-300">You have no retirements</div>
             )}
           </div>
         </div>
