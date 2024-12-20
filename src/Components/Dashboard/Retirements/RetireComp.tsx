@@ -31,8 +31,7 @@ const Retirement = () => {
         <MyButton
           variant="green"
           text="RETIRE"
-          onClick={handleRetire}
-          
+          onClick={handleRetire}       
         />     
       </div>
     </div>
