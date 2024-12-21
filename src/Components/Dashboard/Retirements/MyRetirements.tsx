@@ -36,9 +36,7 @@ const MyRetirements = async () => {
     const retirements = await fetchRetirements();
   
  
- 
     return (
-
         <div>
           <div className='p-2'>
             <h1 className='text-lg font-bold text-gray-800'>My Retirements</h1>

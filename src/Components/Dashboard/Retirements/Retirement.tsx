@@ -1,13 +1,14 @@
 import React from 'react'
 
-type carbonassetprops = ({
+type retirementprops = ({
     date : Date,
     quantity : number,
     project : string,
-    price : number,  
+    price : number,
+    status : 'success' | 'failed'  
 });
 
-const Retirement : React.FC<carbonassetprops> = ({date, quantity, project, price, }) => {
+const Retirement : React.FC<retirementprops> = ({date, quantity, project, price, status }) => {
 
   const formattedDate = date.toLocaleDateString(); 
 

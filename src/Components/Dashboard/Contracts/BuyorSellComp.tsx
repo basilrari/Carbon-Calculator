@@ -7,7 +7,7 @@ const BuyorSell = () => {
   const router = useRouter();
 
   const handleBuy = () => {
-    router.push('/buy');
+    router.push('/decarb/contracts/buyassets');
   };
 
   const handleSell = () => {

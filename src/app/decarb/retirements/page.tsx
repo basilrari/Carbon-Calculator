@@ -17,8 +17,6 @@ const page = () => {
         <MyRetirements/>
       </div>
    </div>
-  
-
   )
 }
 
