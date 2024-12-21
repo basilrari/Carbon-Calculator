@@ -1,5 +1,6 @@
 import React from 'react'
 import BuyCharComponent from '@/Components/Dashboard/Contracts/BuyAssets/buyAsset'
+import MyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets'
 
 const page = () => {
   return (
@@ -12,9 +13,9 @@ const page = () => {
         <BuyCharComponent/>
       </div>
 
-      {/* <div>
-        <MyCarbonAssets/>
-      </div> */}
+      <div>
+        <MyAssets/>
+      </div>
    </div>
   
 

@@ -17,7 +17,7 @@ interface BuyCharComponentState {
 }
 
 const quantitySchema = z.number().min(1);
-const walletSchema = z.number().min(0);
+
 
 const BuyCharComponent = () => {
   const [state, setState] = useState<BuyCharComponentState>({
@@ -100,27 +100,33 @@ const BuyCharComponent = () => {
   return (
     <div className="bg-blue-50 rounded-lg p-6 w-auto  mx-auto shadow-md font-sans">
     <div className='flex justify-between'>
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+        <h2 className="text-sm font-semibold text-gray-700 mb-2">
             Choose the quantity you would like to buy
         </h2>
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+        <h2 className="text-sm font-semibold text-gray-700 mb-2">
             DeCarb BioChar Carbon Pool (CHAR)
          </h2>
     </div>
 
-  <div className="flex items-center justify-between ">
-    <div >
-        <label htmlFor="quantity" className="text-sm font-medium text-gray-600 pr-2">
+  <div className="flex items-center justify-between mb-4 ">
+    <div className='flex items-center ' >
+        <p className="text-sm font-medium text-gray-600 pr-2">
           Quantity:
-        </label>
+        </p>
         <input
           id="quantity"
           type="text"
           value={state.quantity}
           onChange={handleQuantityChange}
-          className="p-2 text-xl border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className=" text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
           disabled={state.loading}
         />
+       <p className="pl-4 text-sm text-gray-600">
+      Price:{" "}
+      <span className="text-lg font-semibold text-gray-800 ">
+        ${state.price.toFixed(2)}
+      </span>
+    </p> 
     </div>
 
      <div className='flex justify-end'>
@@ -132,15 +138,6 @@ const BuyCharComponent = () => {
               className="w-12 h-12"
           />
      </div>
-  </div>
-
-  <div className="flex space-x-2 mb-4 mt-2">
-    <p className="text-sm text-gray-600">
-      Price:{" "}
-      <span className="text-lg font-semibold text-gray-800 ">
-        ${state.price.toFixed(2)}
-      </span>
-    </p>
   </div>
 
   <div className='flex justify-between'>
