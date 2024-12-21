@@ -42,12 +42,12 @@ const MyAssets = async () => {
         <div className="bg-purple-100 rounded-lg p-6 space-y-4">
          
          <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
-    <div>Date</div>
-    <div >Quantity</div>
-    <div >Project Name</div>
-    <div >Price</div>
-    <div   >Status</div>
-  </div>
+            <div>Date</div>
+            <div >Quantity</div>
+            <div >Project Name</div>
+            <div >Price</div>
+            <div >Status</div>
+         </div>
     
           <div className="space-y-4">
             {carbonAssets.length > 0 ? (
