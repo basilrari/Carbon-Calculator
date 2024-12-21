@@ -17,15 +17,7 @@ const carbonAssetArraySchema = z.array(carbonAssetSchema);
 
 const MyCarbonAssets = () => {
   const [isCurrent, setIsCurrent] = useState(true); 
-  const [carbonAssets, setCarbonAssets] = useState<carbonAssetArray>([
-    {
-      date: "",
-      quantity: 0,
-      project: "",
-      price: 0,
-      status: 'current',
-    }
-  ]); 
+  const [carbonAssets, setCarbonAssets] = useState<carbonAssetArray>([]); 
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -63,7 +55,7 @@ const MyCarbonAssets = () => {
               <button
                 onClick={() => setIsCurrent(true)}
                 className={`px-4 py-2 rounded-full ${
-                  isCurrent ? ' text-green-800' : 'text-gray-700' 
+                  isCurrent ? ' text-green-800 font-bold' : 'text-gray-700' 
                 }`}
               >
                 Current
@@ -72,7 +64,7 @@ const MyCarbonAssets = () => {
               <button
                 onClick={() => setIsCurrent(false)}
                 className={`px-4 py-2 rounded-full ${
-                  !isCurrent ? 'text-green-800' : 'text-gray-700'
+                  !isCurrent ? 'text-green-800 font-bold' : 'text-gray-700'
                 }`}
               >
                 Sold
@@ -105,7 +97,7 @@ const MyCarbonAssets = () => {
             />
           ))
         ) : (
-          <div className="text-gray-500">
+          <div className="text-gray-500 ">
             You have no {isCurrent ? 'current' : 'sold'} assets
           </div>
         )}
