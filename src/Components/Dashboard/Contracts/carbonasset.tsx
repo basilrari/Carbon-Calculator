@@ -1,6 +1,6 @@
 import React from 'react'
 
- type carbonassetprops = {
+type carbonassetprops = {
     date : string,
     quantity : number,
     project : string,

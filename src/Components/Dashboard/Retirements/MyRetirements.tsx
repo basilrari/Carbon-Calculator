@@ -8,7 +8,7 @@ const retirementSchema = z.object({
     quantity : z.number(),
     project : z.string(),
     price : z.number(),
-    status : z.union([z.boolean(),z.literal('processing')]),
+    status : z.union([z.literal('success'),z.literal('failed')]),
 })
 
 const retirementArraySchema = z.array(retirementSchema)
@@ -38,7 +38,12 @@ const MyRetirements = async () => {
  
  
     return (
-        <div className="bg-blue-100 rounded-lg p-6 space-y-4">
+
+        <div>
+          <div className='p-2'>
+            <h1 className='text-lg font-bold text-gray-800'>My Retirements</h1>
+          </div>
+          <div className="bg-blue-100 rounded-lg p-6 space-y-4">
          
          <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
             <div>Date</div>
@@ -57,7 +62,7 @@ const MyRetirements = async () => {
                   quantity={asset.quantity}
                   project={asset.project}
                   price={asset.price}
-                 
+                  status={asset.status}
                 />
               ))
             ) : (
@@ -65,6 +70,8 @@ const MyRetirements = async () => {
             )}
           </div>
         </div>
+        </div>
+        
       );
 }
 

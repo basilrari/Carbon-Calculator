@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Carbonasset from './carbonasset';
 import { z } from 'zod';
-import { myInstanceNext } from '@/utils/Axios/axios';
+import { myInstance } from '@/utils/Axios/axios';
 import { carbonAssetArray } from './carbonasset';
 
 const carbonAssetSchema = z.object({
@@ -27,10 +27,11 @@ const MyCarbonAssets = () => {
     }
   ]); 
   const [loading, setLoading] = useState(true); 
+
   useEffect(() => {
     const fetchCarbonAssets = async () => {
       try {
-        const res = await myInstanceNext.get('/getassets');
+        const res = await myInstance.get('/api');
         const parsedResponse = carbonAssetArraySchema.safeParse(res.data);
 
         if (parsedResponse.success) {
@@ -54,31 +55,32 @@ const MyCarbonAssets = () => {
   );
 
   return (
-    <div className="bg-purple-100 rounded-lg p-6 space-y-6">
-     
-      <h1 className="text-lg font-bold text-gray-800">My Carbon Assets (DCO2)</h1>
+    <div>
+       <div className='flex items-center justify-between p-2'>
+       <h1 className="text-lg font-bold text-gray-800">My Carbon Assets (DCO2)</h1>
+   
+            <div className="flex justify-end">
+              <button
+                onClick={() => setIsCurrent(true)}
+                className={`px-4 py-2 rounded-full ${
+                  isCurrent ? ' text-green-800' : 'text-gray-700' 
+                }`}
+              >
+                Current
+              </button>
+              
+              <button
+                onClick={() => setIsCurrent(false)}
+                className={`px-4 py-2 rounded-full ${
+                  !isCurrent ? 'text-green-800' : 'text-gray-700'
+                }`}
+              >
+                Sold
+              </button>
+            </div>
+       </div>
 
-      
-      <div className="flex space-x-4">
-        <button
-          onClick={() => setIsCurrent(true)}
-          className={`px-4 py-2 rounded-full ${
-            isCurrent ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Current
-        </button>
-        <button
-          onClick={() => setIsCurrent(false)}
-          className={`px-4 py-2 rounded-full ${
-            !isCurrent ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Sold
-        </button>
-      </div>
-
-      
+    <div className="bg-purple-100 rounded-lg p-6 space-y-6">  
       <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
         <div>Date</div>
         <div>Quantity</div>
@@ -109,6 +111,8 @@ const MyCarbonAssets = () => {
         )}
       </div>
     </div>
+    </div>
+    
   );
 };
 
