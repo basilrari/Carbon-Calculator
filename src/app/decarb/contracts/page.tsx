@@ -4,8 +4,6 @@ import MyCarbonAssets from '@/Components/Dashboard/Contracts/mycarbasset'
 
 const page = () => {
   return (
-    
-
       <div>
         <div className='w-full mb-6 mt-5' >
           <BuyorSell/>
