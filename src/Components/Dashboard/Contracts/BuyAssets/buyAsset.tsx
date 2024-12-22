@@ -85,6 +85,7 @@ const BuyCharComponent = () => {
           ...prev,
           walletAmount: data.amount || 0,
         }));
+        router.push("/decarb/contracts")
       } else {
         alert(`Purchase failed: ${response.data.message}`);
       }
