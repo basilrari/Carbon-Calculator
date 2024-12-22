@@ -38,7 +38,7 @@ const BuyCharComponent = () => {
       } catch (error) {
         const err = error as Error
         console.error('Error fetching wallet amount:', err.message);
-        alert('Failed to fetch wallet amount');
+        // alert('Failed to fetch wallet amount');
       } finally {
         setState((prev) => ({ ...prev, loading: false }));
       }
