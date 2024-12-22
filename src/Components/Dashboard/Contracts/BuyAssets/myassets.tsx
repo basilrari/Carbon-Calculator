@@ -21,8 +21,7 @@ const MyAssets = async () => {
             const parsedResponse = carbonAssetArraySchema.safeParse(res.data);
         
             if (parsedResponse.success){
-                const carbonAssets = parsedResponse.data;
-                return carbonAssets;
+                return parsedResponse.data;
             }
             else{
                 console.error("Invalid Data Format", parsedResponse.error)
@@ -35,8 +34,6 @@ const MyAssets = async () => {
         }
  
     const carbonAssets = await fetchCarbonAssets();
-  
- 
  
     return (
         <div>

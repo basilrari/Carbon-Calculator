@@ -83,9 +83,7 @@ const MyCarbonAssets = () => {
 
       
       <div className="space-y-4">
-        {loading ? (
-          <div className="text-gray-500">Loading...</div>
-        ) : filteredAssets.length > 0 ? (
+        { filteredAssets.length > 0 ? (
           filteredAssets.map((asset, index) => (
             <Carbonasset
               key={index}
