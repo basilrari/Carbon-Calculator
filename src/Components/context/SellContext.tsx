@@ -31,7 +31,7 @@ export const sellContextProvider : React.FC<ContextProviderProps> = ({children})
 
 export const useSellContext = () => {
       const  data = useContext(sellContext)
-       if (data === undefined){
+       if (!data){
         console.log("provider not wrapped")
        }
 
