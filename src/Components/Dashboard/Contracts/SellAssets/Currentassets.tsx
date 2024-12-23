@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react'
-import Individualasset, { NewIndividualassetprops } from './Individualasset'
+import Individualasset from './Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
 import { MyAssetArray,Individualassetprops } from './Individualasset'
+import { useSellContext } from '@/Components/context/SellContext'
+
+// Note : Moving the logic for aggregated data fromm the useEffect to the  event handler handleSelectionChange 
+// might be a better approach for improving speed and responsiveness
 
 const carbonAssetSchema = z.object({
     id: z.number(),
@@ -13,14 +17,12 @@ const carbonAssetSchema = z.object({
     price : z.number(),
     status : z.literal('current'),
 })
-
-interface onAggregatedData {
-   onAggregatedData : (data: {totalQuantity : number, totalPrice : number, selectedCount : number} ) => void
-} 
+ 
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
-const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
+const CurrentAssets= () => {
+    const { setCurrentAsset } = useSellContext()
 
     const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
@@ -71,7 +73,7 @@ const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
         setTotalPrice(price);
         setSelectedCount(selectedItems.length);
         
-        onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
+        setCurrentAsset({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
 
       }, [selectedItems]);
     
