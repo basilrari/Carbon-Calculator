@@ -18,7 +18,7 @@ interface AssetContextType {
 
 const sellContext = createContext<AssetContextType | undefined>(undefined)
 
-export const sellContextProvider : React.FC<ContextProviderProps> = ({children}) => {
+export const SellContextProvider : React.FC<ContextProviderProps> = ({children}) => {
       const [currentAsset, setCurrentAsset] = useState<AggregatedData | null>(null);
 
       return (
@@ -28,11 +28,10 @@ export const sellContextProvider : React.FC<ContextProviderProps> = ({children})
       );
 };
 
-
 export const useSellContext = () => {
       const  data = useContext(sellContext)
        if (!data){
-        console.log("provider not wrapped")
+         throw new Error("useSellContext must be used within a sellContextProvider");
        }
 
        return data;
