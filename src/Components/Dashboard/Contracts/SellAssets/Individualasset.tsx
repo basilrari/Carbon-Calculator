@@ -20,7 +20,6 @@ const Individualasset : React.FC<NewIndividualassetprops> = ({id, date, quantity
 
  const [isSelected, setIsSelected] = useState(false)
  
-    
  const handleChange = () => {
     setIsSelected(!isSelected)
     { isSelected ? (onSelectionChange({id, date, quantity, project, price})

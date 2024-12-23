@@ -78,7 +78,7 @@ const CurrentAssets= () => {
 
       }, [selectedItems]);
     
-    
+
     return (
         <div>
             <div>
