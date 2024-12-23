@@ -5,7 +5,6 @@ import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
 import { MyAssetArray,Individualassetprops } from './Individualasset'
 
-
 const carbonAssetSchema = z.object({
     date : z.string(),
     quantity : z.number(),
@@ -14,13 +13,21 @@ const carbonAssetSchema = z.object({
     status : z.literal('current'),
 })
 
+interface onAggregatedData {
+   onAggregatedData : (data: {totalQuantity : number, totalPrice : number, selectedCount : number} ) => void
+} 
+
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
-const CurrentAssets = () => {
+const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
 
-    const[selectedItems, setSelectedItems] = useState<MyAssetArray>()
+    const[selectedItems, setSelectedItems] = useState<MyAssetArray>([])
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
     
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [selectedCount, setSelectedCount] = useState(0);
+        
     useEffect(() => {
         const fetchCarbonAssets = async () => {
           try {
@@ -42,6 +49,21 @@ const CurrentAssets = () => {
     const handleSelectionChange = (item: Individualassetprops | undefined) => {
          setSelectedItems((prev) => [...(prev || []) , ...(item ? [item] : []) ] )
     }
+
+    useEffect(() => {
+        const quantity = selectedItems.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        const price = selectedItems.reduce((total, item) => total + item.price, 0);
+        setTotalQuantity(quantity);
+        setTotalPrice(price);
+        setSelectedCount(selectedItems.length);
+    
+        
+        onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
+      }, [selectedItems]);
+    
     
 
     return (

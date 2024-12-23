@@ -2,7 +2,7 @@ import React from 'react'
 import { Checkbox } from "@nextui-org/react";
 import { useState } from 'react';
 
-type Individualassetprops = {
+export type Individualassetprops = {
     date : string,
     quantity : number,
     project : string,
@@ -11,7 +11,7 @@ type Individualassetprops = {
 
 export type MyAssetArray = Individualassetprops[];
 
-type NewIndividualassetprops = Individualassetprops & {
+export type NewIndividualassetprops = Individualassetprops & {
     onSelectionChange : (data : Individualassetprops | undefined) => void;
 }
 
@@ -19,7 +19,7 @@ const Individualasset : React.FC<NewIndividualassetprops> = ({date, quantity, pr
 
  const [isSelected, setIsSelected] = useState(false)
  
- 
+    
  const handleChange = () => {
     setIsSelected(!isSelected)
     { isSelected ? (onSelectionChange({date, quantity, project, price})
