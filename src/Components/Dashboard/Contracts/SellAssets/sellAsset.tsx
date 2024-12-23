@@ -83,9 +83,9 @@ const SellAsset = () => {
       onClick={handleBack}
     />
     <MyButton
-      text="BUY CHAR"
+      text="SELL CHAR"
       onClick={handleSell}
-      variant="green"
+      variant="yellow"
     />
   </div>
   </div>
