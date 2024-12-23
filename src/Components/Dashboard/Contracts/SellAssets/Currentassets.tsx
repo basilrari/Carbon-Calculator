@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { MyAssetArray,Individualassetprops } from './Individualasset'
 
 const carbonAssetSchema = z.object({
+    id: z.number(),
     date : z.string(),
     quantity : z.number(),
     project : z.string(),
@@ -21,13 +22,13 @@ const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
 const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
 
-    const[selectedItems, setSelectedItems] = useState<MyAssetArray>([])
+    const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
     
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedCount, setSelectedCount] = useState(0);
-        
+
     useEffect(() => {
         const fetchCarbonAssets = async () => {
           try {
@@ -45,27 +46,36 @@ const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
         }
         fetchCarbonAssets();
     },[]);
-    
-    const handleSelectionChange = (item: Individualassetprops | undefined) => {
-         setSelectedItems((prev) => [...(prev || []) , ...(item ? [item] : []) ] )
-    }
+
+    const handleSelectionChange = (item: Individualassetprops | number) => {
+        setSelectedItems((prev) => {
+            if (typeof item === "object") {
+                return [...prev, item];
+            } else {
+                return prev.filter((selectedItem) => {
+                    if (typeof selectedItem === "object" && "id" in selectedItem) {
+                        return selectedItem.id !== item;
+                    }
+                    return true;
+                });
+            }
+        });
+    };
 
     useEffect(() => {
-        const quantity = selectedItems.reduce(
-          (total, item) => total + item.quantity,
-          0
-        );
+        
+        const quantity = selectedItems.reduce((total, item) => total + item.quantity, 0);
         const price = selectedItems.reduce((total, item) => total + item.price, 0);
+         
         setTotalQuantity(quantity);
         setTotalPrice(price);
         setSelectedCount(selectedItems.length);
-    
         
         onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
+
       }, [selectedItems]);
     
     
-
     return (
         <div>
             <div>
@@ -85,6 +95,7 @@ const CurrentAssets= ({onAggregatedData} : onAggregatedData) => {
                   carbonAssets.map((asset, index) => (
                     <Individualasset
                       key={index}
+                      id={asset.id}
                       date={asset.date}
                       quantity={asset.quantity}
                       project={asset.project}

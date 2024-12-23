@@ -3,6 +3,7 @@ import { Checkbox } from "@nextui-org/react";
 import { useState } from 'react';
 
 export type Individualassetprops = {
+    id:number,
     date : string,
     quantity : number,
     project : string,
@@ -12,19 +13,19 @@ export type Individualassetprops = {
 export type MyAssetArray = Individualassetprops[];
 
 export type NewIndividualassetprops = Individualassetprops & {
-    onSelectionChange : (data : Individualassetprops | undefined) => void;
+    onSelectionChange : (data : Individualassetprops | number) => void;
 }
 
-const Individualasset : React.FC<NewIndividualassetprops> = ({date, quantity, project, price, onSelectionChange}) => {
+const Individualasset : React.FC<NewIndividualassetprops> = ({id, date, quantity, project, price, onSelectionChange}) => {
 
  const [isSelected, setIsSelected] = useState(false)
  
     
  const handleChange = () => {
     setIsSelected(!isSelected)
-    { isSelected ? (onSelectionChange({date, quantity, project, price})
+    { isSelected ? (onSelectionChange({id, date, quantity, project, price})
        ) : (
-          onSelectionChange(undefined)
+          onSelectionChange(id)
        )   
     }
  }
