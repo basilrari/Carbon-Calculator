@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect } from 'react'
 import Individualasset from './Individualasset'
 import { z } from 'zod'

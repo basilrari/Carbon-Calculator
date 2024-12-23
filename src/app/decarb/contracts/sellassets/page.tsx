@@ -7,7 +7,9 @@ const page = () => {
   return (
     <div>
         <SellContextProvider>
-        <SellAsset/>
+        <div className='w-full mb-6 mt-5'>
+            <SellAsset/>
+        </div>
         <CurrentAssets/>
         </SellContextProvider>
     </div>
