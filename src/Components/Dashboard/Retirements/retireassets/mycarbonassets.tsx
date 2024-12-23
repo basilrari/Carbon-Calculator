@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
-import Individualasset from '../../Contracts/SellAssets/Individualasset'
+import Individualasset from './IndividAsset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
@@ -14,9 +14,16 @@ const carbonAssetSchema = z.object({
     price : z.number(),
     status : z.literal('current'),
 })
+
+export interface AggregatedDataProps{
+    totalQuantity: number| undefined, 
+    totalPrice : number | undefined,
+     selectedCount : number | undefined
+    }
+
  
 export interface onAggregatedDataProps{
-    onAggregatedData : (data :{totalQuantity: number, totalPrice : number, selectedCount : number}) => void
+    onAggregatedData : (data :AggregatedDataProps) => void
 } 
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)

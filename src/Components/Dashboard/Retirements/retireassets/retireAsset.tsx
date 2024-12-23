@@ -3,22 +3,20 @@ import React from 'react'
 import MyButton from '../../MyButton'
 import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
-import { count } from 'console';
-import { useSellContext } from '@/Components/context/SellContext';
+import { AggregateDataProps } from './mycarbonassets';
 
-const SellAsset = () => {
-    const {currentAsset} = useSellContext()
-
+const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, selectedCount}) => {
+    
     const payload = {
-        quantity: currentAsset?.totalQuantity,
-        price: currentAsset?.totalPrice,
-        selectedCount: currentAsset?.selectedCount,
+        quantity: totalQuantity,
+        price: totalPrice,
+        selectedCount: selectedCount,
       };
 
     const router = useRouter();
 
     const handleBack = () =>{
-        router.push('/decarb/contracts')
+        router.push('/decarb/retirements')
     }
 
     const handleRetire = async () =>{
@@ -36,10 +34,10 @@ const SellAsset = () => {
     }
 
   return (
-    <div className="bg-blue-50 rounded-lg p-6 w-auto  mx-auto shadow-md font-sans">
+    <div className="bg-[#f0dfbe] rounded-lg p-6 w-auto  mx-auto shadow-md font-sans">
     <div className='flex justify-between'>
         <h2 className="text-lg font-bold text-gray-700 mb-2">
-            {currentAsset?.selectedCount} Carbon Assets Selected
+            {selectedCount} Carbon Assets Selected
         </h2>
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
             DeCarb BioChar Carbon Pool (CHAR)
@@ -51,14 +49,14 @@ const SellAsset = () => {
         <p className="text-md font-medium text-gray-600 pr-2">
           Quantity:{" "}
           <span className="text-lg font-bold text-gray-800 ">
-            ${currentAsset?.totalQuantity}
+            ${totalQuantity}
          </span>
         </p>
         
        <p className=" text-md text-gray-600">
             Price:{" "}
             <span className="text-lg font-bold text-gray-800 ">
-                ${currentAsset?.totalPrice}
+                ${totalPrice}
             </span>
         </p> 
     </div>
@@ -94,4 +92,4 @@ const SellAsset = () => {
   )
 }
 
-export default SellAsset
+export default RetireAsset

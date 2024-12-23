@@ -8,7 +8,7 @@ const RetirementComp = () => {
   const router = useRouter();
 
   const handleRetire = () => {
-    router.push('/retire');
+    router.push('/decarb/retirements/retireassets');
   };
 
   return (
