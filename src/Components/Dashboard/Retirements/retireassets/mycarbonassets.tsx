@@ -15,7 +15,7 @@ const carbonAssetSchema = z.object({
     status : z.literal('current'),
 })
 
-export interface AggregatedDataProps{
+export interface AggregateDataProps{
     totalQuantity: number| undefined, 
     totalPrice : number | undefined,
      selectedCount : number | undefined
@@ -23,7 +23,7 @@ export interface AggregatedDataProps{
 
  
 export interface onAggregatedDataProps{
-    onAggregatedData : (data :AggregatedDataProps) => void
+    onAggregatedData : (data :AggregateDataProps) => void
 } 
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
