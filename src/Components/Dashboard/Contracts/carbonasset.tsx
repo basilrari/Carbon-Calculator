@@ -1,18 +1,9 @@
 import React from 'react'
+import { carbonassetprops } from '@/types/global.types';
 
-type carbonassetprops = {
-    date : string,
-    quantity : number,
-    project : string,
-    price : number,
-    status : 'current' | 'sold' ,
-};
-
-export type carbonAssetArray = carbonassetprops[];
 
 const Carbonasset : React.FC<carbonassetprops> = ({date, quantity, project, price, status}) => {
  
-
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
     

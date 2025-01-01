@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Carbonasset from './carbonasset';
 import { z } from 'zod';
 import { myInstance } from '@/utils/Axios/axios';
-import { carbonAssetArray } from './carbonasset';
+import { carbonAssetArray } from '@/types/global.types';
 
 const carbonAssetSchema = z.object({
   date: z.string(), 
@@ -18,7 +18,6 @@ const carbonAssetArraySchema = z.array(carbonAssetSchema);
 const MyCarbonAssets = () => {
   const [isCurrent, setIsCurrent] = useState(true); 
   const [carbonAssets, setCarbonAssets] = useState<carbonAssetArray>([]); 
-  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchCarbonAssets = async () => {
@@ -33,9 +32,7 @@ const MyCarbonAssets = () => {
         }
       } catch (error) {
         console.error('Error fetching carbon assets', error);
-      } finally {
-        setLoading(false); 
-      }
+      } 
     };
 
     fetchCarbonAssets();

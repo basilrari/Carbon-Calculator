@@ -1,20 +1,8 @@
 import React from 'react'
 import { Checkbox } from "@nextui-org/react";
 import { useState } from 'react';
+import { NewIndividualassetprops } from '@/types/global.types';
 
-export type Individualassetprops = {
-    id:number,
-    date : string,
-    quantity : number,
-    project : string,
-    price : number,
-};
-
-export type MyAssetArray = Individualassetprops[];
-
-export type NewIndividualassetprops = Individualassetprops & {
-    onSelectionChange : (data : Individualassetprops | number) => void;
-}
 
 const Individualasset : React.FC<NewIndividualassetprops> = ({id, date, quantity, project, price, onSelectionChange}) => {
 

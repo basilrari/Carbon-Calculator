@@ -2,7 +2,7 @@
 import React from 'react'
 import MyCarbAssets from './mycarbonassets'
 import { useState } from 'react'
-import { AggregateDataProps } from './mycarbonassets'
+import { AggregateDataProps } from '@/types/global.types'
 import RetireAsset from './retireAsset'
 
 const MainRetireComponent = () => {

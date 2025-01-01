@@ -3,7 +3,7 @@ import React from 'react'
 import MyButton from '../../MyButton'
 import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
-import { AggregateDataProps } from './mycarbonassets';
+import { AggregateDataProps } from '@/types/global.types';
 import Image from 'next/image';
 import Link from 'next/link';
 

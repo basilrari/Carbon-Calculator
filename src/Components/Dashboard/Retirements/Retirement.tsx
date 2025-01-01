@@ -1,14 +1,8 @@
 import React from 'react'
+import { retirementprops } from '@/types/global.types';
 
-type retirementprops = ({
-    date : Date,
-    quantity : number,
-    project : string,
-    price : number,
-    status : 'success' | 'failed'  
-});
 
-const Retirement : React.FC<retirementprops> = ({date, quantity, project, price, status }) => {
+const Retirement : React.FC<retirementprops> = ({date, quantity, project, price }) => {
 
   const formattedDate = date.toLocaleDateString(); 
 
@@ -41,8 +35,7 @@ const Retirement : React.FC<retirementprops> = ({date, quantity, project, price,
         />
        </svg>
     </div>
-
-     
+ 
     </div>
   </div>
   );

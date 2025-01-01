@@ -8,7 +8,7 @@ const retirementSchema = z.object({
     quantity : z.number(),
     project : z.string(),
     price : z.number(),
-    status : z.union([z.literal('success'),z.literal('failed')]),
+
 })
 
 const retirementArraySchema = z.array(retirementSchema)
@@ -60,7 +60,6 @@ const MyRetirements = async () => {
                   quantity={asset.quantity}
                   project={asset.project}
                   price={asset.price}
-                  status={asset.status}
                 />
               ))
             ) : (

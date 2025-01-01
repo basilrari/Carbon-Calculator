@@ -4,8 +4,7 @@ import Individualasset from './Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
-import { MyAssetArray, Individualassetprops } from './Individualasset'
-import { onAggregatedDataProps } from '../../Retirements/retireassets/mycarbonassets'
+import { MyAssetArray, Individualassetprops, onAggregatedDataProps } from '@/types/global.types'
 
 // Note : Moving the logic for aggregated data fromm the useEffect to the  event handler handleSelectionChange 
 // might be a better approach for improving speed and responsiveness

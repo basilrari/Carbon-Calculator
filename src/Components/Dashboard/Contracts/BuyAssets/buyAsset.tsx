@@ -6,17 +6,9 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import Image from 'next/image';
 import Link from 'next/link';
+import { WalletResponse } from '@/types/global.types';
+import { BuyCharComponentState } from '@/types/global.types';
 
-interface WalletResponse {
-  amount: number;
-}
-
-interface BuyCharComponentState {
-  quantity: number;
-  price: number;
-  walletAmount: number;
-  loading: boolean;
-}
 
 const quantitySchema = z.number().min(1);
 

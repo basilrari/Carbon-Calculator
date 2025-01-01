@@ -4,7 +4,7 @@ import Individualasset from '../../Contracts/SellAssets/Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
-import { MyAssetArray, Individualassetprops } from '../../Contracts/SellAssets/Individualasset'
+import { MyAssetArray, Individualassetprops, onAggregatedDataProps } from '@/types/global.types'
 
 const carbonAssetSchema = z.object({
     id: z.number(),
@@ -15,16 +15,6 @@ const carbonAssetSchema = z.object({
     status : z.literal('current'),
 })
 
-export interface AggregateDataProps{
-    totalQuantity: number| undefined, 
-    totalPrice : number | undefined,
-     selectedCount : number | undefined
-   }
-
- 
-export interface onAggregatedDataProps{
-    onAggregatedData : (data :AggregateDataProps) => void
-} 
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AggregateDataProps } from '../../Retirements/retireassets/mycarbonassets';
+import { AggregateDataProps } from '@/types/global.types';
 
 const SellAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, selectedCount}) => {
 
