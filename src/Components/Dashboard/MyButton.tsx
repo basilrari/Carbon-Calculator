@@ -6,10 +6,10 @@ const ButtonVariantSchema = z.enum(['green', 'red', 'yellow']);
 type ButtonProps = {
   variant: z.infer<typeof ButtonVariantSchema>;
   text : string;
-  onClick?: () => void;
+  
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const MyButton: React.FC<ButtonProps> = ({ variant, text, onClick, ...props }) => {
+const MyButton: React.FC<ButtonProps> = ({ variant, text, ...props }) => {
   const baseStyles = `px-12 min-w-28 h-8 text-sm font-semibold rounded focus:outline-none transition duration-200 ease-in-out`;
 
   const variantStyles: Record<typeof ButtonVariantSchema['_def']['values'][number], string> = {
@@ -24,7 +24,6 @@ const MyButton: React.FC<ButtonProps> = ({ variant, text, onClick, ...props }) =
   return (
     <button
       className={`${baseStyles} ${variantStyles[variant]}`}
-      onClick={onClick}
       {...props}
     >
       {text} 
