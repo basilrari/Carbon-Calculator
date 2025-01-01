@@ -34,10 +34,6 @@ const MyCarbAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData}) => {
     const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
     
-    const [totalQuantity, setTotalQuantity] = useState(0);
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedCount, setSelectedCount] = useState(0);
-
     useEffect(() => {
         const fetchCarbonAssets = async () => {
           try {
@@ -76,9 +72,6 @@ const MyCarbAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData}) => {
         const quantity = selectedItems.reduce((total, item) => total + item.quantity, 0);
         const price = selectedItems.reduce((total, item) => total + item.price, 0);
          
-        setTotalQuantity(quantity);
-        setTotalPrice(price);
-        setSelectedCount(selectedItems.length);
         
         onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
 

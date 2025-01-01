@@ -9,7 +9,6 @@ const MainRetireComponent = () => {
 
   const [ aggregatedData, setAggregatedData ] = useState<AggregateDataProps>()
   
-
   return (
     <div>
         <div className='text-2xl font-semibold pl-3 pt-2'>
