@@ -5,6 +5,7 @@ import MyButton from '../../MyButton';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface WalletResponse {
   amount: number;
@@ -64,9 +65,7 @@ const BuyCharComponent = () => {
             }
        };
 
-  const handleBack = () => {
-    router.push('/decarb/contracts');
-  };
+  
 
   const handleBuy = async () => {
     if (state.price > state.walletAmount) {
@@ -152,18 +151,17 @@ const BuyCharComponent = () => {
     </p>
 
     <div className="flex justify-end space-x-4 ">
-    <MyButton
-      text="BACK"
-      variant="red"
-      onClick={handleBack}
-  
-    />
+    <Link href='/decarb/contracts'>
+      <MyButton
+        text="BACK"
+        variant="red"
+      />
+    </Link>
     <MyButton
       text="BUY CHAR"
       onClick={handleBuy}
       variant="green"
-      disabled={state.loading || state.quantity === 0}
-      
+      disabled={state.loading || state.quantity === 0}  
     />
   </div>
   </div>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
 import { useSellContext } from '@/Components/context/SellContext';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const SellAsset = () => {
     const {currentAsset} = useSellContext()
@@ -17,9 +18,6 @@ const SellAsset = () => {
 
     const router = useRouter();
 
-    const handleBack = () =>{
-        router.push('/decarb/contracts')
-    }
 
     const handleSell = async () =>{
         try{
@@ -78,11 +76,12 @@ const SellAsset = () => {
   <div className='flex justify-end'>
 
     <div className="flex  space-x-4 ">
-    <MyButton
-      text="BACK"
-      variant="red"
-      onClick={handleBack}
-    />
+    <Link href='/decarb/contracts'>
+      <MyButton
+        text="BACK"
+        variant="red"
+      />
+    </Link>
     <MyButton
       text="SELL CHAR"
       onClick={handleSell}

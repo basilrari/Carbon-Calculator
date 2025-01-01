@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "decarb",
+  title: "DeCarb",
   description: "Sustainability",
 };
 

@@ -1,29 +1,19 @@
-"use client"
 import React from 'react';
 import MyButton from '../MyButton';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const BuyorSell = () => {
-  const router = useRouter();
-
-  const handleBuy = () => {
-    router.push('/decarb/contracts/buyassets');
-  };
-
-  const handleSell = () => {
-    router.push('/decarb/contracts/sellassets');
-  };
+const BuyorSell = () => {  
 
   return (
     <div className="flex items-center justify-between p-6 border rounded-lg shadow-md bg-white w-full mx-auto">
       <div className="flex items-center space-x-4">
-        {/* <Image
+        <Image
           src="/images/decarbtoken.png"
           alt="Token"
           width={48}
           height={48}
-        /> */}
+        />
         <div>
           <h5 className="text-sm font-medium text-gray-600">
             DeCarb BioChar Carbon Pool (CHAR)
@@ -33,18 +23,18 @@ const BuyorSell = () => {
       </div>
 
       <div className="flex space-x-4">
-        <MyButton
-          variant="green"
-          text="BUY CHAR"
-          onClick={handleBuy}
-          
-        />
-        <MyButton
-          variant="yellow"
-          text="SELL CHAR"
-          onClick={handleSell}
-          
-        />
+        <Link href='/decarb/contracts/buyassets'>
+          <MyButton
+            variant="green"
+            text="BUY CHAR"
+          />
+        </Link>
+        <Link href='/decarb/contracts/sellassets'>
+          <MyButton
+            variant="yellow"
+            text="SELL CHAR"
+          />
+        </Link>
       </div>
     </div>
   );
