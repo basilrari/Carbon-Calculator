@@ -3,21 +3,19 @@ import React from 'react'
 import MyButton from '../../MyButton'
 import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
-import { useSellContext } from '@/Components/context/SellContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AggregateDataProps } from '../../Retirements/retireassets/mycarbonassets';
 
-const SellAsset = () => {
-    const {currentAsset} = useSellContext()
+const SellAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, selectedCount}) => {
 
     const payload = {
-        quantity: currentAsset?.totalQuantity,
-        price: currentAsset?.totalPrice,
-        selectedCount: currentAsset?.selectedCount,
+        quantity: totalQuantity,
+        price: totalPrice,
+        selectedCount: selectedCount,
       };
 
     const router = useRouter();
-
 
     const handleSell = async () =>{
         try{
@@ -37,7 +35,7 @@ const SellAsset = () => {
     <div className="bg-blue-50 rounded-lg p-6 w-auto  mx-auto shadow-md font-sans">
     <div className='flex justify-between'>
         <h2 className="text-lg font-bold text-gray-700 mb-2">
-            {currentAsset?.selectedCount} Carbon Assets Selected
+            {selectedCount} Carbon Assets Selected
         </h2>
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
             DeCarb BioChar Carbon Pool (CHAR)
@@ -49,14 +47,14 @@ const SellAsset = () => {
         <p className="text-md font-medium text-gray-600 pr-2">
           Quantity:{" "}
           <span className="text-lg font-bold text-gray-800 ">
-            ${currentAsset?.totalQuantity}
+            ${totalQuantity}
          </span>
         </p>
         
        <p className=" text-md text-gray-600">
             Price:{" "}
             <span className="text-lg font-bold text-gray-800 ">
-                ${currentAsset?.totalPrice}
+                ${totalPrice}
             </span>
         </p> 
     </div>

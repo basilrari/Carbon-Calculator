@@ -1,10 +1,10 @@
 "use client"
 import React, { useEffect } from 'react'
-import Individualasset from './IndividAsset'
+import Individualasset from '../../Contracts/SellAssets/Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
-import { MyAssetArray,Individualassetprops } from '../../Contracts/SellAssets/Individualasset'
+import { MyAssetArray, Individualassetprops } from '../../Contracts/SellAssets/Individualasset'
 
 const carbonAssetSchema = z.object({
     id: z.number(),
@@ -19,7 +19,7 @@ export interface AggregateDataProps{
     totalQuantity: number| undefined, 
     totalPrice : number | undefined,
      selectedCount : number | undefined
-    }
+   }
 
  
 export interface onAggregatedDataProps{
@@ -30,7 +30,6 @@ const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
 const MyCarbAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData}) => {
     
-
     const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
     
@@ -71,8 +70,7 @@ const MyCarbAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData}) => {
         
         const quantity = selectedItems.reduce((total, item) => total + item.quantity, 0);
         const price = selectedItems.reduce((total, item) => total + item.price, 0);
-         
-        
+                
         onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
 
       }, [selectedItems]);

@@ -17,7 +17,6 @@ const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, s
 
     const router = useRouter();
 
-
     const handleRetire = async () =>{
         try{
             const res = await myInstance.post("/api/sellassets",payload)

@@ -4,8 +4,8 @@ import Individualasset from './Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
 import { useState } from 'react'
-import { MyAssetArray,Individualassetprops } from './Individualasset'
-import { useSellContext } from '@/Components/context/SellContext'
+import { MyAssetArray, Individualassetprops } from './Individualasset'
+import { onAggregatedDataProps } from '../../Retirements/retireassets/mycarbonassets'
 
 // Note : Moving the logic for aggregated data fromm the useEffect to the  event handler handleSelectionChange 
 // might be a better approach for improving speed and responsiveness
@@ -22,16 +22,13 @@ const carbonAssetSchema = z.object({
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
-const CurrentAssets= () => {
-    const { setCurrentAsset } = useSellContext()
+const CurrentAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData = () => {} }) =>{
+
+  console.log(typeof onAggregatedData)
 
     const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
     
-    const [totalQuantity, setTotalQuantity] = useState(0);
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedCount, setSelectedCount] = useState(0);
-
     useEffect(() => {
         const fetchCarbonAssets = async () => {
           try {
@@ -68,13 +65,9 @@ const CurrentAssets= () => {
     useEffect(() => {
         
         const quantity = selectedItems.reduce((total, item) => total + item.quantity, 0);
-        const price = selectedItems.reduce((total, item) => total + item.price, 0);
-         
-        setTotalQuantity(quantity);
-        setTotalPrice(price);
-        setSelectedCount(selectedItems.length);
+        const price = selectedItems.reduce((total, item) => total + item.price, 0); 
         
-        setCurrentAsset({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
+        onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
 
       }, [selectedItems]);
     
