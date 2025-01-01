@@ -74,7 +74,7 @@ const Sidebar = () => {
       <nav>
         <ul className="space-y-8">
           {navItems.map((item) => {
-            const isActive = pathname === item.href; 
+            const isActive = pathname === item.href || pathname.startsWith(item.href); 
             return (
               <li key={item.href}>
                 <Link
@@ -122,7 +122,7 @@ const Sidebar = () => {
             </span>
           </Link>          
         </div>
-        
+
       </nav>
     </div>
   );
