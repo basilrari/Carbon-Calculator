@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
 import { AggregateDataProps } from './mycarbonassets';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, selectedCount}) => {
     
@@ -16,9 +17,6 @@ const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, s
 
     const router = useRouter();
 
-    const handleBack = () =>{
-        router.push('/decarb/retirements')
-    }
 
     const handleRetire = async () =>{
         try{
@@ -77,11 +75,13 @@ const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, s
   <div className='flex justify-end'>
 
     <div className="flex  space-x-4 ">
-    <MyButton
-      text="BACK"
-      variant="red"
-      onClick={handleBack}
-    />
+    <Link href='/decarb/retirements' >
+      <MyButton
+        text="BACK"
+        variant="red"
+      
+      />
+    </Link>
     <MyButton
       text="RETIRE"
       onClick={handleRetire}

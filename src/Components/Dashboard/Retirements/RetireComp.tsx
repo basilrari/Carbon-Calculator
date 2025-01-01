@@ -1,16 +1,11 @@
-"use client"
+
 import React from 'react';
 import MyButton from '../MyButton';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 
 const RetirementComp = () => {
-
-  const router = useRouter();
-
-  const handleRetire = () => {
-    router.push('/decarb/retirements/retireassets');
-  };
+   
 
   return (
     <div className="flex items-center justify-between p-6 border rounded-lg shadow-md bg-white w-full mx-auto">
@@ -30,11 +25,12 @@ const RetirementComp = () => {
       </div>
 
       <div className="flex space-x-4">
-        <MyButton
-          variant="green"
-          text="RETIRE"
-          onClick={handleRetire}       
-        />     
+        <Link href='/decarb/retirements/retireassets' >
+          <MyButton
+            variant="green"
+            text="RETIRE"
+          />
+        </Link>   
       </div>
     </div>
   );
