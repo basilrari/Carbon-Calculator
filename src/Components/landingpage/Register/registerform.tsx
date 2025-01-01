@@ -87,7 +87,7 @@ const Registerform = () => {
         } catch (error) {
             setIsLoading(false);
             toast.error("There was an error");
-            console.log("error");
+            console.log(error);
         }
       }
              

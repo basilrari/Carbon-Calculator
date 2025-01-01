@@ -1,14 +1,12 @@
 import React from 'react'
-import SellAsset from '@/Components/Dashboard/Contracts/SellAssets/sellAsset'
-import CurrentAssets from '@/Components/Dashboard/Contracts/SellAssets/Currentassets'
+import MainSellComponent from '@/Components/Dashboard/Contracts/SellAssets/MainComp'
 
 const page = () => {
   return (
     <div>
         <div className='w-full mb-6 mt-5'>
-            <SellAsset/>
-        </div>
-        <CurrentAssets/>
+            <MainSellComponent/>
+          </div>
     </div>
   )
 }

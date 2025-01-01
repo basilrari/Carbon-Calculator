@@ -63,7 +63,7 @@ const MyCarbAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData}) => {
                 
         onAggregatedData({ totalQuantity: quantity, totalPrice: price, selectedCount: (selectedItems || []).length });
 
-      }, [selectedItems]);
+      }, [onAggregatedData, selectedItems]);
     
 
     return (

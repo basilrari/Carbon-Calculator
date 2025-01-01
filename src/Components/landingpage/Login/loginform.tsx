@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { myInstance } from '@/utils/Axios/axios'
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { z } from 'zod';
+import axios from 'axios';
 
 const loginSchema = z.object(
   {
@@ -59,20 +60,41 @@ const Loginform = () => {
                 toast.success("Login successful!");
                 router.push('/dashboard');
             }
-        } catch (error: any) {
-            if (error instanceof z.ZodError){
-              toast.error(error.errors.map((e) => e.message).join(" ' "));
-              console.error("Validation Errors:", error.errors);
-            } else if (error.response) {
-                toast.error(error.response.data.message || "Invalid credentials");
+        } catch (error: unknown) {
+          // 1. Check if it’s a ZodError
+          if (error instanceof z.ZodError) {
+            const messages = error.errors.map((e) => e.message).join(", ");
+            toast.error(messages);
+            console.error("Validation Errors:", error.errors);
+        
+            return;
+          }
+        
+          // 2. Check if it’s an AxiosError
+          if (axios.isAxiosError(error)) {
+            // Here TypeScript will narrow `error` to `AxiosError`
+            if (error.response) {
+              // The server responded with a status code outside the 2xx range
+              // Safely access the message in response data
+              const serverMessage = (error.response.data as { message?: string })?.message;
+              toast.error(serverMessage || "Invalid credentials");
             } else if (error.request) {
-                toast.error("No response from server");
+              // The request was made but no response was received
+              toast.error("No response from server");
             } else {
-                toast.error("An unexpected error occurred");
+              // Something else happened while setting up the request
+              toast.error("An unexpected error occurred");
             }
-            console.error("Login error:", error);
+        
+            console.error("Axios error:", error);
+            return;
+          }
+        
+          // 3. Otherwise, it’s some other (non-Axios, non-Zod) error
+          toast.error("An unexpected error occurred");
+          console.error("Unknown error:", error);
         } finally {
-            setIsLoading(false);
+          setIsLoading(false);
         }
     }
 
