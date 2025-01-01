@@ -18,11 +18,12 @@ const BuyorSell = () => {
   return (
     <div className="flex items-center justify-between p-6 border rounded-lg shadow-md bg-white w-full mx-auto">
       <div className="flex items-center space-x-4">
-        <Image
+        {/* <Image
           src="/images/decarbtoken.png"
           alt="Token"
-          className="w-12 h-12"
-        />
+          width={48}
+          height={48}
+        /> */}
         <div>
           <h5 className="text-sm font-medium text-gray-600">
             DeCarb BioChar Carbon Pool (CHAR)

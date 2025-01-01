@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between px-8 pt-4 text-black">
       <div className="flex items-center space-x-2">
-        <Image src="/images/decarblogo.png" alt="Decarb Logo" className="h-16 w-16" /> 
+        <Image src="/images/decarblogo.png" alt="Decarb Logo" width={64} height={64} /> 
         <h1 className="text-3xl font-bold">Decarb</h1>
       </div>
 

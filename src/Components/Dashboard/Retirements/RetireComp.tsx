@@ -18,7 +18,8 @@ const RetirementComp = () => {
         <Image
           src="/images/decarbtoken.png"
           alt="Token"
-          className="w-12 h-12"
+          width={48}
+          height={48}
         />
         <div>
           <h5 className="text-sm font-medium text-gray-600">

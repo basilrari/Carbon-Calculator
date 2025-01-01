@@ -68,7 +68,8 @@ const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, s
          <Image
               src="/images/decarbtoken.png"
               alt="Token"
-              className="w-12 h-12"
+              width={48}
+              height={48}
           />
      </div>
   </div>

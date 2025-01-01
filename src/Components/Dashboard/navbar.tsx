@@ -23,7 +23,8 @@ const Sidebar = () => {
             <Image
               src="/images/decarblogo.png"
               alt="Logo"
-              className="w-16 h-16"
+              width={64}
+              height={64}
             />
             
               <h1 className={`text-3xl font-bold text-white  ${isCollapsed ? 'hidden' : ''}`}>Decarb</h1>
@@ -41,7 +42,7 @@ const Sidebar = () => {
         <nav>
   <ul className="space-y-8">
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
-      <Image src="/images/overview.svg" alt="overview" className="h-8 w-8" />
+      <Image src="/images/overview.svg" alt="overview" height={32} width={32} />
       <span
         className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
       >
@@ -49,7 +50,7 @@ const Sidebar = () => {
       </span>
     </li>
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
-      <Image src="/images/contracts.svg" alt="contracts" className="h-8 w-8" />
+      <Image src="/images/contracts.svg" alt="contracts" height={32} width={32} />
       <span
         className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
       >
@@ -57,7 +58,7 @@ const Sidebar = () => {
       </span>
     </li>
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
-      <Image src="/images/retirements.svg" alt="retirements" className="h-8 w-8" />
+      <Image src="/images/retirements.svg" alt="retirements" height={32} width={32} />
       <span
         className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
       >
@@ -65,7 +66,7 @@ const Sidebar = () => {
       </span>
     </li>
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
-      <Image src="/images/wallet.svg" alt="wallet" className="h-8 w-8" />
+      <Image src="/images/wallet.svg" alt="wallet" width={32} height={32} />
       <span
         className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
       >
@@ -73,7 +74,7 @@ const Sidebar = () => {
       </span>
     </li>
     <li className="group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF] active:bg-green-200">
-      <Image src="/images/learnmore.svg" alt="learn more" className="h-8 w-8" />
+      <Image src="/images/learnmore.svg" alt="learn more" width={32} height={32} />
       <span
         className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
       >
@@ -85,7 +86,7 @@ const Sidebar = () => {
 
 
 <div className="absolute bottom-8 left-4 flex items-center text-black cursor-pointer rounded-md p-2 pl-5 hover:bg-[#9BC3BF]">
-  <img src="/images/overview.svg" alt="settings" className="h-8 w-8" />
+  <Image src="/images/overview.svg" alt="settings" width={32} height={32} />
   <span
     className={`pl-4 font-medium text-white text-lg ml-4 ${isCollapsed ? 'hidden' : ''}`}
   >

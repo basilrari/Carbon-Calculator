@@ -7,8 +7,10 @@ const CeloComp = () => {
       <div className='flex items-center '>
         <Image
         src='/images/celocomp.png'
-        className='w-10 h-6 pl-2' 
+        className='pl-2' 
         alt='celocomposition'
+        width={40}
+        height={24}
         />
 
         <h1 className='font-semibold text-md pr-2'>Celo Alfajores</h1>
