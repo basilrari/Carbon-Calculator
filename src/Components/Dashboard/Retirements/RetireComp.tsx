@@ -2,6 +2,7 @@
 import React from 'react';
 import MyButton from '../MyButton';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const RetirementComp = () => {
 
@@ -14,7 +15,7 @@ const RetirementComp = () => {
   return (
     <div className="flex items-center justify-between p-6 border rounded-lg shadow-md bg-white w-full mx-auto">
       <div className="flex items-center space-x-4">
-        <img
+        <Image
           src="/images/decarbtoken.png"
           alt="Token"
           className="w-12 h-12"

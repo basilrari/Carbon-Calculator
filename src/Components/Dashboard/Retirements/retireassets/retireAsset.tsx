@@ -4,6 +4,7 @@ import MyButton from '../../MyButton'
 import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
 import { AggregateDataProps } from './mycarbonassets';
+import Image from 'next/image';
 
 const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, selectedCount}) => {
     
@@ -64,7 +65,7 @@ const RetireAsset: React.FC<AggregateDataProps> = ({totalQuantity, totalPrice, s
      <div className='flex justify-end'>
         
          <h1 className='text-3xl p-2 font-semibold'>DCO2</h1>
-         <img
+         <Image
               src="/images/decarbtoken.png"
               alt="Token"
               className="w-12 h-12"

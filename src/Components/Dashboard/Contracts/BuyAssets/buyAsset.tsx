@@ -4,6 +4,7 @@ import { myInstance } from '@/utils/Axios/axios';
 import MyButton from '../../MyButton';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
+import Image from 'next/image';
 
 interface WalletResponse {
   amount: number;
@@ -133,7 +134,7 @@ const BuyCharComponent = () => {
      <div className='flex justify-end'>
         
          <h1 className='text-3xl p-2 font-semibold'>DCO2</h1>
-         <img
+         <Image
               src="/images/decarbtoken.png"
               alt="Token"
               className="w-12 h-12"

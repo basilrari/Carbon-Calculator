@@ -3,8 +3,8 @@ import React from 'react'
 import MyButton from '../../MyButton'
 import { useRouter } from 'next/navigation'
 import { myInstance } from '@/utils/Axios/axios';
-import { count } from 'console';
 import { useSellContext } from '@/Components/context/SellContext';
+import Image from 'next/image';
 
 const SellAsset = () => {
     const {currentAsset} = useSellContext()
@@ -66,7 +66,7 @@ const SellAsset = () => {
      <div className='flex justify-end'>
         
          <h1 className='text-3xl p-2 font-semibold'>DCO2</h1>
-         <img
+         <Image
               src="/images/decarbtoken.png"
               alt="Token"
               className="w-12 h-12"

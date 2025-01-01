@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 type LearnCardProps = {
   title: string; 
@@ -10,7 +11,7 @@ const LearnCard: React.FC<LearnCardProps> = ({ title, svgPath }) => {
     <div className="flex justify-between bg-[#FBF8FF] shadow-sm rounded-md border border-gray-200 w-64 h-32 p-4 relative">
       <div className="text-lg font-bold text-gray-800">{title}</div>
       <div className="w-30 h-30 absolute bottom-0 right-0">
-      <img src={svgPath} alt={title} className="w-full h-full " />
+      <Image src={svgPath} alt={title} className="w-full h-full " />
       </div>
     </div>
   );

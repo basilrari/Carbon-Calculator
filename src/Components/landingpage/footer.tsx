@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link';
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
       <div className="flex justify-between items-center border-b border-gray-300 pb-6 mb-6">
         
         <div className="flex items-center space-x-4">
-          <img src="/decarblogo.png" alt="Decarb Logo" className="h-16 w-16" />
+          <Image src="/decarblogo.png" alt="Decarb Logo" className="h-16 w-16" />
           <h1 className="text-2xl font-bold">Decarb</h1>
         </div>
 
