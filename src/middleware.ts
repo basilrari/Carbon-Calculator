@@ -1,6 +1,6 @@
-// import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// export async function middleware ( request : NextRequest ){
+export async function middleware ( request : NextRequest ){
 
 //     const path = request.nextUrl.pathname;
 //     const token = request.cookies.get("authToken");
@@ -13,9 +13,9 @@
 //         return NextResponse.redirect( new URL ('/decarb/dashboard', request.url));
 //     }
 
-//     return NextResponse.next();
+    return NextResponse.next();
 
-// }
+}
 
 // export const config = {
 //     matcher : ['/decarb/:path*',
