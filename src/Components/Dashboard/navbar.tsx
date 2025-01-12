@@ -28,7 +28,7 @@ const navItems = [
   },
   {
     label: "Discover",
-    href: "/decarb/discover",
+    href: "/decarb/learnmore",
     icon: "/images/learnmore.svg",
   },
 ];
