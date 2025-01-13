@@ -1,10 +1,8 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Individualasset from './Individualasset'
 import { z } from 'zod'
 import { myInstance } from '@/utils/Axios/axios'
-import { useState } from 'react'
-import { MyAssetArray, Individualassetprops, onAggregatedDataProps } from '@/types/global.types'
 
 // Note : Moving the logic for aggregated data fromm the useEffect to the  event handler handleSelectionChange 
 // might be a better approach for improving speed and responsiveness
@@ -21,13 +19,14 @@ const carbonAssetSchema = z.object({
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema)
 
-const CurrentAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData = () => {} }) =>{
-
-  console.log(typeof onAggregatedData)
-
-    const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
+const CurrentAssets :React.FC<onAggregatedDataProps> = ({onAggregatedData: rawOnAggregatedData = () => {} }) =>{
+  
+  const [selectedItems, setSelectedItems] = useState<MyAssetArray>([]);
     const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]); 
-    
+
+    // Memoize onAggregatedData to avoid recreating it on every render
+    const onAggregatedData = useCallback(rawOnAggregatedData, []);
+
     useEffect(() => {
         const fetchCarbonAssets = async () => {
           try {
