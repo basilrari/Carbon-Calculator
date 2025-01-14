@@ -52,7 +52,7 @@ const Sidebar = () => {
 
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center">
-          <div className="h-14 w-14 flex items-center justify-center rounded-full bg-white">
+          <div className="h-14 w-14 flex items-center justify-center ">
             <Image src="/images/decarblogo.png" alt="Logo" width={64} height={64} />
           </div>
           <h1
