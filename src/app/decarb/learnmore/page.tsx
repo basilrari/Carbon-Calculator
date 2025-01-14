@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Discover = () => {
   const cards = [
@@ -53,7 +53,7 @@ const Discover = () => {
       {/* Card Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Large Feature Card */}
-        <div className="lg:col-span-8 row-span-1">
+        <div className="lg:col-span-7 row-span-1">
           <div className="relative w-full pt-[60%]">
             <a
               href={cards[0].link}
@@ -80,9 +80,9 @@ const Discover = () => {
         </div>
 
         {/* Two Side Cards */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
+        <div className="lg:col-span-5 flex flex-col gap-6">
           {cards.slice(1, 3).map((card, index) => (
-            <div key={index} className="relative w-full pt-[60%]">
+            <div key={index} className="relative w-full pt-[40%]">
               <a
                 href={card.link}
                 className="absolute inset-0 rounded-xl overflow-hidden group"
