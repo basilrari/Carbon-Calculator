@@ -45,7 +45,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`h-screen bg-[#2F4F4F] border-r overflow-hidden border-gray-200 p-4 transition-all duration-300 ${
+      className={`h-screen bg-[#F1F6F5] border-r overflow-hidden border-gray-200 p-4 transition-all duration-300 ${
         isCollapsed ? "w-32" : "w-64"
       }`}
     >
@@ -56,7 +56,7 @@ const Sidebar = () => {
             <Image src="/images/decarblogo.png" alt="Logo" width={64} height={64} />
           </div>
           <h1
-            className={`text-3xl font-bold text-white ml-2 ${
+            className={`text-3xl font-bold text-[#2F4F4F] ml-2 ${
               isCollapsed ? "hidden" : ""
             }`}
           >
@@ -80,7 +80,7 @@ const Sidebar = () => {
                 <Link
                   href={item.href}
                   className={`group flex items-center text-black cursor-pointer rounded-md p-2 pl-5 
-                              hover:bg-[#27605a] active:bg-green-200
+                              hover:bg-[#9BC3BF] active:bg-green-200
                               ${
                                 isActive
                                   ? "bg-[#9BC3BF]" 
@@ -89,7 +89,7 @@ const Sidebar = () => {
                 >
                   <Image src={item.icon} alt={item.label} width={32} height={32} />
                   <span
-                    className={`font-medium text-white text-lg ml-4 ${
+                    className={`font-medium text-[#2F4F4F] text-lg ml-4 ${
                       isCollapsed ? "hidden" : ""
                     }`}
                   >
@@ -114,7 +114,7 @@ const Sidebar = () => {
           >
             <Image src="/images/overview.svg" alt="settings" width={32} height={32} />
             <span
-              className={`pl-4 font-medium text-white text-lg ml-4 ${
+              className={`pl-4 font-medium text-black text-lg ml-4 ${
                 isCollapsed ? "hidden" : ""
               }`}
             >
