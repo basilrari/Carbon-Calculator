@@ -89,7 +89,7 @@ const Sidebar = () => {
                 >
                   <Image src={item.icon} alt={item.label} width={32} height={32} />
                   <span
-                    className={`font-medium text-[#2F4F4F] text-lg ml-4 ${
+                    className={`font-semibold text-[#2F4F4F] text-lg ml-4 ${
                       isCollapsed ? "hidden" : ""
                     }`}
                   >
