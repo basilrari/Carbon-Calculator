@@ -1,35 +1,12 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { myInstance } from '@/utils/Axios/axios';
-import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { z } from 'zod';
-import axios from 'axios';
 import { Web3Auth } from '@web3auth/modal';
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from '@web3auth/base';
+import { IProvider, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-});
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x13882", // Polygon Amoy Testnet Chain ID
-  rpcTarget: "https://rpc.ankr.com/polygon_amoy",
-  displayName: "Polygon Amoy Testnet",
-  blockExplorerUrl: "https://www.oklink.com/amoy",
-  ticker: "MATIC",
-  tickerName: "Polygon",
-  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-};
+import { chainConfig } from '@/utils/Config/chainConfig';
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
@@ -42,12 +19,6 @@ const web3auth = new Web3Auth({
 });
 
 const Loginform = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -60,6 +31,12 @@ const Loginform = () => {
         if (web3auth.connected) {
           setLoggedIn(true);
           setProvider(web3auth.provider);
+          const accounts = await web3auth.provider?.request({ method: "eth_accounts" });
+          if (accounts && accounts.length > 0) {
+            console.log("Wallet Address:", accounts[0]);
+            // Store wallet address in local storage
+            window.localStorage.setItem('walletAddress', accounts[0]);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -68,19 +45,21 @@ const Loginform = () => {
     init();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
-  };
-
   const handleWeb3AuthLogin = async () => {
     try {
       const web3authProvider = await web3auth.connect();
       setProvider(web3authProvider);
       setLoggedIn(true);
       toast.success("Web3Auth login successful!");
+
+      // Fetch wallet address
+      const accounts = await web3authProvider?.request({ method: "eth_accounts" });
+      if (accounts && accounts.length > 0) {
+        console.log("Wallet Address:", accounts[0]);
+        // Store wallet address in local storage
+        window.localStorage.setItem('walletAddress', accounts[0]);
+      }
+
       router.push('/decarb/dashboard'); // Redirect or perform other actions
     } catch (error) {
       console.error("Failed to connect Web3Auth:", error);
