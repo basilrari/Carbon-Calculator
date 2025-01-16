@@ -1,14 +1,24 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from 'react';
 import StatsCard from "@/Components/Dashboard/Overview/carbondetail";
 import LearnCardsContainer from "@/Components/Dashboard/Overview/learncontainer";
 
 const page = () => {
-  // Dummy data for StatsCard
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const statsData = [
     { value: "135", label: "Total Carbon Locked" },
     { value: "$16000", label: "Total Liquidity" },
     { value: "42", label: "Total Carbon Retired" },
   ];
+
+  useEffect(() => {
+    // Check if the wallet address is stored in local storage
+    const storedWalletAddress = window.localStorage.getItem('walletAddress');
+    if (storedWalletAddress) {
+      setWalletAddress(storedWalletAddress);
+      console.log("Wallet Address Fetched : ", storedWalletAddress);
+    }
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col p-6 w-full">
@@ -23,4 +33,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default page;
