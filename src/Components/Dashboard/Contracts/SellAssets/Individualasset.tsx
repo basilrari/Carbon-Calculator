@@ -1,37 +1,28 @@
-import React from 'react'
-import { Checkbox } from "@nextui-org/react";
-import { useState } from 'react';
-import { NewIndividualassetprops } from '@/types/global.types';
+"use client";
+import React from 'react';
 
-
-const Individualasset : React.FC<NewIndividualassetprops> = ({id, date, quantity, project, price, onSelectionChange}) => {
-
- const [isSelected, setIsSelected] = useState(false)
- 
- const handleChange = () => {
-    setIsSelected((prev) => !prev);
-    if (!isSelected) {
-         onSelectionChange({ id, date, quantity, project, price });
-        } else {
-          onSelectionChange(id);
-        }
- }
-
+const Individualasset = ({
+  id,
+  date,
+  quantity,
+  project,
+  price,
+  status,
+  onSelectionChange,
+}) => {
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
-    
-    <div className="text-sm font-medium text-gray-800">{date}</div>
-    
-    <div className="text-sm font-medium text-gray-800">{quantity.toFixed(3)}</div>
-    
-    <div className="text-sm font-medium text-gray-800">{project}</div>
-    
-    <div className="text-sm font-medium text-gray-800">{price.toFixed(3)}</div>
-    
-    <div className="flex items-center">
-      <Checkbox isSelected = {isSelected} onChange={handleChange}/>
+    <div
+      className="flex justify-between text-gray-700 text-sm items-center"
+      onClick={() => onSelectionChange(id)}
+    >
+      <div>{date}</div>
+      <div>{quantity}</div>
+      <div>{project}</div>
+      <div>${price}</div>
+      <div className={status === 'Available' ? 'text-green-500' : 'text-red-500'}>
+        {status}
+      </div>
     </div>
-  </div>
   );
 };
 
