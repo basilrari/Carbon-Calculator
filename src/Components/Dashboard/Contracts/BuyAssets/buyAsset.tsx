@@ -47,7 +47,9 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       );
     }
   };
-
+  const resetForm = () => {
+    setState((prev) => ({ ...prev, loading: false }));
+  };
   const handleBuy = async () => {
     setBuyAttempted(true);
     
@@ -85,6 +87,12 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
             setBuyAttempted(false);
             setValidationMessage(null);
           },
+          modal: {
+            ondismiss: function() {
+              console.log("Payment window closed");
+              resetForm();
+            }
+          }
         };
 
         const razorpayInstance = new (window as any).Razorpay(options);
@@ -94,7 +102,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       document.body.appendChild(script);
     } catch (error) {
       console.error("Error initiating payment:", error);
-      setState((prev) => ({ ...prev, loading: false }));
+      resetForm();
     }
   };
 
