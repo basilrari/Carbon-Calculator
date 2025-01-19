@@ -17,6 +17,7 @@ const RetireAsset: React.FC<AggregateDataProps> = ({ totalQuantity, totalPrice, 
 
     const handleRetire = async () => {
         try {
+            console.log('Retiring the following assets:', payload);
             console.log('Payload sent to API:', payload);
             console.log('Simulated success response');
             router.push('/decarb/retirements'); // Simulate navigation
@@ -24,6 +25,7 @@ const RetireAsset: React.FC<AggregateDataProps> = ({ totalQuantity, totalPrice, 
             console.error('Error in sending data', error);
         }
     };
+    
 
     return (
         <div className="bg-[#f0dfbe] rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
