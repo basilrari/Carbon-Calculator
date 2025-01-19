@@ -34,7 +34,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
-        price: parsedValue * 17.67,
+        price: parsedValue * 25,
       }));
       setValidationMessage(null); // Clear validation message
     } else {
