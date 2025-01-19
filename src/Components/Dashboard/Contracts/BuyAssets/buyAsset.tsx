@@ -1,51 +1,53 @@
-'use client';
-import { useState } from 'react';
-import MyButton from '../../MyButton';
-import { z } from 'zod';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import { useState } from "react";
+import MyButton from "../../MyButton";
+import { z } from "zod";
+import Image from "next/image";
+import Link from "next/link";
 
-const quantitySchema = z.number().min(1);
+const quantitySchema = z.number().min(1).max(10);
 
-type BuyCharComponentProps = {
-  walletAmount: number;
-};
+type BuyCharComponentProps = {};
 
-const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount }) => {
+const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
   const [state, setState] = useState({
     quantity: 0,
     price: 0,
     loading: false,
   });
 
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const parsedValue = parseFloat(value);
+
     if (!value || isNaN(parsedValue)) {
       setState((prev) => ({ ...prev, quantity: 0, price: 0 }));
+      setValidationMessage("Please enter a valid number.");
       return;
     }
 
     const quantityValidation = quantitySchema.safeParse(parsedValue);
+
     if (quantityValidation.success) {
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
         price: parsedValue * 17.67,
       }));
+      setValidationMessage(null); // Clear validation message
     } else {
-      console.error(quantityValidation.error.errors[0].message);
+      setValidationMessage(
+        parsedValue > 10
+          ? "You can only purchase up to 10 units."
+          : "Quantity must be at least 1."
+      );
     }
   };
 
   const handleBuy = async () => {
-    if (state.price > walletAmount) {
-      alert('Insufficient funds in your wallet.');
-      return;
-    }
-
-    // Simulate buy logic (you can replace this with an API call)
-    alert('Purchase successful!');
+    alert("Purchase successful!");
     setState((prev) => ({ ...prev, quantity: 0, price: 0 }));
   };
 
@@ -53,7 +55,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount }) => 
     <div className="bg-blue-50 rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
       <div className="flex justify-between">
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
-          Choose the quantity you would like to buy
+          Choose the quantity you would like to buy (Max: 10)
         </h2>
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
           DeCarb BioChar Carbon Pool (CHAR)
@@ -61,20 +63,30 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount }) => 
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <p className="text-sm font-medium text-gray-600 pr-2">Quantity:</p>
-          <input
-            id="quantity"
-            type="text"
-            value={state.quantity}
-            onChange={handleQuantityChange}
-            className="text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-            disabled={state.loading}
-          />
-          <p className="pl-4 text-sm text-gray-600">
-            Price:{' '}
-            <span className="text-lg font-semibold text-gray-800">${state.price.toFixed(2)}</span>
-          </p>
+        <div className="flex flex-col">
+          <div className="flex items-center">
+            <p className="text-sm font-medium text-gray-600 pt-4 pr-2">Quantity:</p>
+            <input
+              id="quantity"
+              type="text"
+              value={state.quantity}
+              onChange={handleQuantityChange}
+              className="text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              disabled={state.loading}
+            />
+            <p className="pl-4 text-sm text-gray-600">
+              Price:{" "}
+              <span className="text-lg font-semibold text-gray-800">
+                ${state.price.toFixed(2)}
+              </span>
+            </p>
+          </div>
+          {/* Reserve space for the validation message */}
+          <div style={{ minHeight: "24px" }}>
+            {validationMessage && (
+              <p className="text-sm text-red-500 mt-2">{validationMessage}</p>
+            )}
+          </div>
         </div>
 
         <div className="flex justify-end">
@@ -88,23 +100,16 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount }) => 
         </div>
       </div>
 
-      <div className="flex justify-between">
-        <p className="text-sm text-gray-600">
-          Amount in Wallet:{' '}
-          <span className="text-lg font-semibold text-indigo-600">${walletAmount.toFixed(2)}</span>
-        </p>
-
-        <div className="flex justify-end space-x-4">
-          <Link href="/decarb/contracts">
-            <MyButton text="BACK" variant="red" />
-          </Link>
-          <MyButton
-            text="BUY CHAR"
-            onClick={handleBuy}
-            variant="green"
-            disabled={state.loading || state.quantity === 0}
-          />
-        </div>
+      <div className="flex justify-end space-x-4">
+        <Link href="/decarb/contracts">
+          <MyButton text="BACK" variant="red" />
+        </Link>
+        <MyButton
+          text="BUY CHAR"
+          onClick={handleBuy}
+          variant="green"
+          disabled={state.loading || state.quantity === 0}
+        />
       </div>
     </div>
   );
