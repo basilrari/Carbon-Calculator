@@ -4,7 +4,7 @@ import MyButton from "../../MyButton";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "/images/decarbtoken.png";
+
 const quantitySchema = z.number().min(1).max(10);
 
 type BuyCharComponentProps = {};
@@ -17,8 +17,10 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
   });
 
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const [buyAttempted, setBuyAttempted] = useState(false);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBuyAttempted(false);
     const value = e.target.value;
     const parsedValue = parseFloat(value);
 
@@ -34,9 +36,9 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
-        price: parsedValue * 25, // Assuming each unit costs $25
+        price: parsedValue * 25, // Assuming each unit costs ₹25
       }));
-      setValidationMessage(null); // Clear validation message
+      setValidationMessage(null);
     } else {
       setValidationMessage(
         parsedValue > 10
@@ -47,17 +49,19 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
   };
 
   const handleBuy = async () => {
-    console.log("Buying");
+    setBuyAttempted(true);
+    
+    if (state.quantity === 0) {
+      setValidationMessage("Please enter a quantity before making a purchase.");
+      return;
+    }
+
     setState((prev) => ({ ...prev, loading: true }));
 
     try {
-      const amount = state.price; // Assuming 'price' is in state
-      const label = "Event"; // Or whatever label you want to use
-
-      // Directly using the API key instead of fetching it
+      const amount = state.price;
       const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
 
-      // Create Razorpay script
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
@@ -66,22 +70,23 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
         console.log("Razorpay script loaded");
         const options = {
           key: apiKey,
-          amount: amount * 100, // Convert to cents (since Razorpay expects amount in smallest currency unit for USD)
+          amount: amount * 100,
           currency: "INR",
           name: "DeCarb",
           description: `TCO2 Carbon Credits`,
-          image: "/images/decarbtoken.png", // Ensure this path is correct relative to your public folder in Next.js
+          image: "/images/decarbtoken.png",
           theme: {
-            color: "#2F4F4F" // A shade of green, adjust this to your preferred shade
+            color: "#2F4F4F",
           },
           handler: function (response: any) {
             console.log("Payment response:", response);
             alert("Purchase successful!");
             setState((prev) => ({ ...prev, quantity: 0, price: 0, loading: false }));
+            setBuyAttempted(false);
+            setValidationMessage(null);
           },
         };
 
-        // Open Razorpay checkout
         const razorpayInstance = new (window as any).Razorpay(options);
         razorpayInstance.open();
       };
@@ -111,15 +116,23 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
             <input
               id="quantity"
               type="text"
-              value={state.quantity}
+              value={state.quantity === 0 ? "" : state.quantity}
+              onFocus={() => {
+                if (!buyAttempted) {
+                  setState((prev) => ({ ...prev, quantity: 0 }));
+                  setValidationMessage(null);
+                }
+              }}
               onChange={handleQuantityChange}
-              className="text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className={`text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                buyAttempted && state.quantity === 0 ? 'border-red-500' : ''
+              }`}
               disabled={state.loading}
             />
             <p className="pl-4 text-sm text-gray-600">
               Price:{" "}
               <span className="text-lg font-semibold text-gray-800">
-                ${state.price.toFixed(2)}
+                ₹{state.price.toFixed(2)}
               </span>
             </p>
           </div>
@@ -150,7 +163,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
           text="BUY CHAR"
           onClick={handleBuy}
           variant="green"
-          disabled={state.loading || state.quantity === 0}
+          disabled={state.loading}
         />
       </div>
     </div>
