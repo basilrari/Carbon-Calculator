@@ -4,7 +4,7 @@ import MyButton from "../../MyButton";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
-
+import Logo from "/images/decarbtoken.png";
 const quantitySchema = z.number().min(1).max(10);
 
 type BuyCharComponentProps = {};
@@ -34,7 +34,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
-        price: parsedValue * 25,
+        price: parsedValue * 25, // Assuming each unit costs $25
       }));
       setValidationMessage(null); // Clear validation message
     } else {
@@ -47,8 +47,50 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
   };
 
   const handleBuy = async () => {
-    alert("Purchase successful!");
-    setState((prev) => ({ ...prev, quantity: 0, price: 0 }));
+    console.log("Buying");
+    setState((prev) => ({ ...prev, loading: true }));
+
+    try {
+      const amount = state.price; // Assuming 'price' is in state
+      const label = "Event"; // Or whatever label you want to use
+
+      // Directly using the API key instead of fetching it
+      const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
+
+      // Create Razorpay script
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+
+      script.onload = () => {
+        console.log("Razorpay script loaded");
+        const options = {
+          key: apiKey,
+          amount: amount * 100, // Convert to cents (since Razorpay expects amount in smallest currency unit for USD)
+          currency: "INR",
+          name: "DeCarb",
+          description: `TCO2 Carbon Credits`,
+          image: "/images/decarbtoken.png", // Ensure this path is correct relative to your public folder in Next.js
+          theme: {
+            color: "#2F4F4F" // A shade of green, adjust this to your preferred shade
+          },
+          handler: function (response: any) {
+            console.log("Payment response:", response);
+            alert("Purchase successful!");
+            setState((prev) => ({ ...prev, quantity: 0, price: 0, loading: false }));
+          },
+        };
+
+        // Open Razorpay checkout
+        const razorpayInstance = new (window as any).Razorpay(options);
+        razorpayInstance.open();
+      };
+
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      setState((prev) => ({ ...prev, loading: false }));
+    }
   };
 
   return (
