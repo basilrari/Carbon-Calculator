@@ -31,7 +31,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount }) => 
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
-        price: parsedValue * 17.67,
+        price: parsedValue * 25,
       }));
     } else {
       console.error(quantityValidation.error.errors[0].message);
