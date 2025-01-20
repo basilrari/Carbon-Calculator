@@ -1,60 +1,46 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
-import Individualasset from "./Individualasset";
+import React, { useState, useCallback } from 'react';
+import Individualasset from './Individualasset';
 
 const dummyAssets = [
   {
     id: 1,
-    date: "2025-01-01",
+    date: '2025-01-01',
     quantity: 10,
-    project: "Project A",
+    project: 'Project A',
     price: 100,
-    status: "Available",
+    status: 'Current', // Dummy status
   },
   {
     id: 2,
-    date: "2025-01-02",
+    date: '2025-01-02',
     quantity: 20,
-    project: "Project B",
+    project: 'Project B',
     price: 200,
-    status: "Available",
+    status: 'Current', // Dummy status
   },
   {
     id: 3,
-    date: "2025-01-03",
+    date: '2025-01-03',
     quantity: 30,
-    project: "Project C",
+    project: 'Project C',
     price: 300,
-    status: "Available",
+    status: 'Current', // Dummy status
   },
-];
+]; // Dummy data
 
-const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
-  const [selectedItems, setSelectedItems] = useState({});
+const CurrentAssets: React.FC<any> = ({ onAggregatedData = () => {} }) => {
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleSelectionChange = useCallback((id, quantity) => {
+  const handleSelectionChange = useCallback((item) => {
     setSelectedItems((prev) => {
-      const updated = { ...prev, [id]: quantity };
-      if (quantity === 0) delete updated[id]; // Remove items with 0 quantity
-      return updated;
+      if (!prev.includes(item)) {
+        return [...prev, item];
+      } else {
+        return prev.filter((i) => i !== item);
+      }
     });
   }, []);
-
-  useEffect(() => {
-    const totalQuantity = Object.values(selectedItems).reduce(
-      (sum, qty) => sum + qty,
-      0
-    );
-    const totalPrice = Object.entries(selectedItems).reduce(
-      (sum, [id, qty]) => sum + qty * dummyAssets.find((a) => a.id === +id)?.price,
-      0
-    );
-    onAggregatedData({
-      totalQuantity,
-      totalPrice,
-      selectedCount: Object.keys(selectedItems).length,
-    });
-  }, [selectedItems, onAggregatedData]);
 
   return (
     <div>
@@ -67,8 +53,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
           <div>Quantity</div>
           <div>Project Name</div>
           <div>Price</div>
-          <div>Status</div>
-          <div>Selected Qty</div>
+          <div>Sell</div>
         </div>
         <div className="space-y-4">
           {dummyAssets.map((asset) => (
