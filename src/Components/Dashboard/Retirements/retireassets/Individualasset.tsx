@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
 interface IndividualassetProps {
   id: number;
@@ -8,7 +8,7 @@ interface IndividualassetProps {
   project: string;
   price: number;
   status: string;
-  onSelectionChange: (data: { id: number; selectedQuantity: number; price: number } | number) => void;
+  onSelectionChange: (data: { id: number; selectedQuantity: number; price: number }) => void;
 }
 
 const Individualasset: React.FC<IndividualassetProps> = ({
@@ -16,21 +16,22 @@ const Individualasset: React.FC<IndividualassetProps> = ({
   date,
   quantity,
   project,
-  price,
-  status,
+  price, // Total price for the quantity
   onSelectionChange,
 }) => {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
 
+  const pricePerUnit = price / quantity; // Calculate price per unit
+
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), quantity); // Limit the selection to available quantity
+    const value = Math.min(Number(e.target.value), quantity); // Limit to available quantity
     setSelectedQuantity(value);
 
-    if (value > 0) {
-      onSelectionChange({ id, selectedQuantity: value, price: (price / quantity) * value });
-    } else {
-      onSelectionChange(id); // Deselect if quantity is 0
-    }
+    onSelectionChange({
+      id,
+      selectedQuantity: value,
+      price: value * pricePerUnit, // Calculate total price for the selected quantity
+    });
   };
 
   return (
@@ -38,8 +39,7 @@ const Individualasset: React.FC<IndividualassetProps> = ({
       <div>{date}</div>
       <div>{quantity}</div>
       <div>{project}</div>
-      <div>{price}</div>
-      <div>{status}</div>
+      <div>${price}</div>
       <div>
         <input
           type="number"
