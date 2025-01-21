@@ -80,7 +80,7 @@ const MyCarbAssets: React.FC<onAggregatedDataProps> = ({ onAggregatedData }) => 
           <div>Quantity</div>
           <div>Project Name</div>
           <div>Price</div>
-          <div>Status</div>
+          
           <div>Retire</div>
         </div>
         <div className="space-y-4">

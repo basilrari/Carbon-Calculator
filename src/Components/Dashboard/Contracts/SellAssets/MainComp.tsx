@@ -1,29 +1,29 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react'
 import CurrentAssets from './Currentassets';
+import { AggregateDataProps } from '@/types/global.types'
 import SellAsset from './sellAsset';
 
 const MainSellComponent = () => {
-  const [aggregatedData, setAggregatedData] = useState({
-    totalQuantity: 100, // Dummy data
-    totalPrice: 5000,   // Dummy data
-    selectedCount: 5,   // Dummy data
-  });
+   const [aggregatedData, setAggregatedData] = useState<AggregateDataProps>();
+  
+    // Memoize the callback to avoid re-creating it on every render
+    const handleAggregatedData = useCallback((data: AggregateDataProps) => {
+      setAggregatedData(data);
+    }, []);
 
   return (
     <div>
-      <div className="text-2xl font-semibold pl-3 pt-2">
-        <h1>Retirements</h1>
-      </div>
+      
       <div className="w-full mb-6 mt-5">
         <SellAsset
-          totalQuantity={aggregatedData.totalQuantity}
-          totalPrice={aggregatedData.totalPrice}
-          selectedCount={aggregatedData.selectedCount}
+          totalQuantity={aggregatedData?.totalQuantity}
+          totalPrice={aggregatedData?.totalPrice}
+          selectedCount={aggregatedData?.selectedCount}
         />
       </div>
       <div>
-        <CurrentAssets onAggregatedData={(data) => setAggregatedData(data)} />
+        <CurrentAssets onAggregatedData={handleAggregatedData} />
       </div>
     </div>
   );
