@@ -3,8 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';  
-  
-
 
 const Header = () => {
   return (
@@ -21,14 +19,14 @@ const Header = () => {
           <Link href="/more" className="hover:text-green-800">More</Link>
         </nav>
       </div>
-     
-
       <div className='pr-8'>
-        <button        
-          className="border-2 bg-green-50 hover:bg-gray-50 border-black text-black py-2 px-4 rounded text-lg font-semibold"
-        >
-          Login
-        </button>
+        <Link href="/login">
+          <button        
+            className="border-2 bg-green-50 hover:bg-gray-50 border-black text-black py-2 px-4 rounded text-lg font-semibold"
+          >
+            Login
+          </button>
+        </Link>
       </div>
     </header>
   );
