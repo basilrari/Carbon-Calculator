@@ -39,7 +39,7 @@ const Individualasset: React.FC<IndividualassetProps> = ({
       <div>{date}</div>
       <div>{quantity}</div>
       <div>{project}</div>
-      <div>${price}</div>
+      <div>₹{price}</div>
       <div>
         <input
           type="number"

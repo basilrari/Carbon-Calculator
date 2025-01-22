@@ -26,7 +26,7 @@ const page = () => {
   const [carbonCredits, setCarbonCredits] = useState<{ nct: string, tco2: string }>({ nct: '0', tco2: '0' });
   const statsData = [
     { value: "135", label: "Total Carbon Locked" },
-    { value: "$16000", label: "Total Liquidity" },
+    { value: "₹16000", label: "Total Liquidity" },
     { value: "42", label: "Total Carbon Retired" },
   ];
 
