@@ -46,7 +46,7 @@ const RetireAsset: React.FC<AggregateDataProps> = ({ totalQuantity, totalPrice, 
                     </p>
                     <p className="text-md text-gray-600">
                         Price:{' '}
-                        <span className="text-lg font-bold text-gray-800">{totalPrice}</span>
+                        <span className="text-lg font-bold text-gray-800">₹{totalPrice}</span>
                     </p>
                 </div>
 

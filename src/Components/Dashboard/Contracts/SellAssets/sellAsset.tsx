@@ -35,7 +35,7 @@ const SellAsset: React.FC<{
 <p className="text-md text-gray-600">
   Price:{" "}
   <span className="text-lg font-bold text-gray-800">
-    {totalPrice ? `$${totalPrice.toFixed(2)}` : "$0.00"}
+    {totalPrice ? `₹${totalPrice.toFixed(2)}` : "₹0.00"}
   </span>
 </p>
 

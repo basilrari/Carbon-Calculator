@@ -21,7 +21,7 @@ const BuyorSell: React.FC<BuyorSellProps> = ({ price }) => {
           <h5 className="text-sm font-medium text-gray-600">
             DeCarb BioChar Carbon Pool (CHAR)
           </h5>
-          <h2 className="text-2xl font-bold text-gray-900">${price.toFixed(2)}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">₹{price.toFixed(2)}</h2>
         </div>
       </div>
 
