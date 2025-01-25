@@ -22,8 +22,8 @@ const navItems = [
     icon: "/images/retirements.svg",
   },
   {
-    label: "Wallet",
-    href: "/decarb/wallet",
+    label: "Calculator",
+    href: "/decarb/calculator",
     icon: "/images/wallet.svg",
   },
   {
