@@ -10,7 +10,8 @@ const CalculatorPage = () => {
     HYBRID: 1.5, // kg CO2/L (estimated for hybrid vehicles)
     LPG: 2.983, // kg CO2/kg
     WASTE: 2.86, // kg CO2/kg
-    SHOPPING: 0.0083, // kg CO2 per INR spent
+    SHOPPING: 0.0083,
+    PUBLIC_TRANSPORT: 0.1516, // kg CO2 per INR spent
   };
 
   const [transports, setTransports] = useState([
