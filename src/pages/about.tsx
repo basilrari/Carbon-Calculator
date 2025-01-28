@@ -5,7 +5,7 @@ import logo from "../../public/images/decarblogo.png";
 const About = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center relative">
-      <div className="relative w-11/12 md:w-2/3 lg:w-1/2 z-10">
+      <div className="relative w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 z-10">
         <div className="bg-gradient-to-b from-[#FEEDCC] to-[#3E8E86] rounded-lg shadow-lg p-6 flex flex-col justify-center items-center">
           <h2 className="text-[#2F4F4F] text-4xl font-bold mb-4 text-center">
             About Us
