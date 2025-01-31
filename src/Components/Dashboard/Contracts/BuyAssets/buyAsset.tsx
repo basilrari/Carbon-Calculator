@@ -4,8 +4,9 @@ import MyButton from "../../MyButton";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
+import myServer from "@/utils/Axios/axios";
 
-const quantitySchema = z.number().min(1).max(10);
+const quantitySchema = z.number().min(1).max(100);
 
 type BuyCharComponentProps = {};
 
@@ -36,23 +37,26 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       setState((prev) => ({
         ...prev,
         quantity: parsedValue,
-        price: parsedValue * 25, // Assuming each unit costs ₹25
+        price: parsedValue * 1275, // Assuming each unit costs ₹25
       }));
       setValidationMessage(null);
     } else {
       setValidationMessage(
-        parsedValue > 10
-          ? "You can only purchase up to 10 units."
+        parsedValue > 100
+          ? "You can only purchase up to 100 units."
           : "Quantity must be at least 1."
       );
     }
   };
+
   const resetForm = () => {
     setState((prev) => ({ ...prev, loading: false }));
+    setBuyAttempted(false);
   };
+
   const handleBuy = async () => {
     setBuyAttempted(true);
-    
+
     if (state.quantity === 0) {
       setValidationMessage("Please enter a quantity before making a purchase.");
       return;
@@ -68,7 +72,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
 
-      script.onload = () => {
+      script.onload = async () => {
         console.log("Razorpay script loaded");
         const options = {
           key: apiKey,
@@ -80,15 +84,35 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
           theme: {
             color: "#2F4F4F",
           },
-          handler: function (response: any) {
+          handler: async function (response: any) {
             console.log("Payment response:", response);
-            alert("Purchase successful!");
-            setState((prev) => ({ ...prev, quantity: 0, price: 0, loading: false }));
-            setBuyAttempted(false);
-            setValidationMessage(null);
+            try {
+              // Send request to backend to confirm purchase after payment success
+              const backendResponse = await myServer.get('/buy/buyTest', {
+                amount: amount,
+                quantity: state.quantity,
+                paymentId: response.razorpay_payment_id
+              });
+              console.log("Backend response status:", backendResponse.status);
+              console.log("Backend response data:", backendResponse.data);
+
+              if (backendResponse.status === 200) {
+                alert("Purchase successful!");
+                setState((prev) => ({ ...prev, quantity: 0, price: 0, loading: false }));
+                setBuyAttempted(false);
+                setValidationMessage(null);
+              } else {
+                alert("Payment was successful but there was an issue with the purchase. Please try again.");
+                resetForm();
+              }
+            } catch (error) {
+              console.error("Error processing purchase:", error);
+              alert("Payment was successful but there was an error processing your order. Please try again.");
+              resetForm();
+            }
           },
           modal: {
-            ondismiss: function() {
+            ondismiss: function () {
               console.log("Payment window closed");
               resetForm();
             }
@@ -110,7 +134,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
     <div className="bg-blue-50 rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
       <div className="flex justify-between">
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
-          Choose the quantity you would like to buy (Max: 10)
+          Choose the quantity you would like to buy (Max: 100)
         </h2>
         <h2 className="text-sm font-semibold text-gray-700 mb-2">
           DeCarb BioChar Carbon Pool (CHAR)
@@ -132,9 +156,8 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = () => {
                 }
               }}
               onChange={handleQuantityChange}
-              className={`text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 ${
-                buyAttempted && state.quantity === 0 ? 'border-red-500' : ''
-              }`}
+              className={`text-xl border pl-2 border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 ${buyAttempted && state.quantity === 0 ? 'border-red-500' : ''
+                }`}
               disabled={state.loading}
             />
             <p className="pl-4 text-sm text-gray-600">

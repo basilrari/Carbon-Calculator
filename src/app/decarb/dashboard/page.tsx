@@ -18,7 +18,7 @@ const erc20ABI = [
 
 // Example contract addresses - Replace these with actual addresses from Celo Testnet
 const nctAddress = '0xfb60a08855389F3c0A66b29aB9eFa911ed5cbCB5'; // NCT token address
-const tco2ExampleAddress = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; // Example TCO2 token address, you might check for multiple
+const tco2Address = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; // Example TCO2 token address, you might check for multiple
 
 const page = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -49,7 +49,7 @@ const page = () => {
 
           // Check for Carbon Credits (NCT and TCO2)
           const nctContract = new web3.eth.Contract(erc20ABI, nctAddress);
-          const tco2Contract = new web3.eth.Contract(erc20ABI, tco2ExampleAddress); // Here you might want to check multiple TCO2 contracts
+          const tco2Contract = new web3.eth.Contract(erc20ABI, tco2Address); // Here you might want to check multiple TCO2 contracts
 
           const nctBalance = await nctContract.methods.balanceOf(storedWalletAddress).call();
           const tco2Balance = await tco2Contract.methods.balanceOf(storedWalletAddress).call();

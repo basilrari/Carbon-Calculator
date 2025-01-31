@@ -32,8 +32,12 @@ const Loginform = () => {
           setLoggedIn(true);
           setProvider(web3auth.provider);
           const accounts = await web3auth.provider?.request({ method: "eth_accounts" });
+          const privateKey = await web3auth.provider?.request({
+            method: "eth_private_key"
+          });
           if (accounts && accounts.length > 0) {
-            console.log("Wallet Address:", accounts[0]);
+            console.log("Wallet Address Login:", accounts[0]);
+            console.log("Private Key:", privateKey);
             // Store wallet address in local storage
             window.localStorage.setItem('walletAddress', accounts[0]);
           }
