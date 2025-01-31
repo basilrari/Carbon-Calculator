@@ -1,12 +1,10 @@
-import axios from "axios";
+// myInstance.js
+import axios from 'axios';
 
-export const myInstance = axios.create({
-    baseURL: "/api",
-    withCredentials: true,
-})
+const backendUrl = 'http://localhost:4000/api/v1'; // Replace 'your-backend-url-here' with your actual backend URL
 
-export const myInstanceNext= axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_devbackendurl}`,
-    withCredentials: true,
-})
+const myServer = axios.create({
+    baseURL: backendUrl
+});
 
+export default myServer;

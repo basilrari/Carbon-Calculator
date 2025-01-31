@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AggregateDataProps } from '@/types/global.types'
 import Image from 'next/image'
 import Link from 'next/link'
+import myServer from '@/utils/Axios/axios'
 
 const RetireAsset: React.FC<AggregateDataProps> = ({ totalQuantity, totalPrice, selectedCount }) => {
     const payload = {
@@ -19,10 +20,21 @@ const RetireAsset: React.FC<AggregateDataProps> = ({ totalQuantity, totalPrice, 
         try {
             console.log('Retiring the following assets:', payload);
             console.log('Payload sent to API:', payload);
-            console.log('Simulated success response');
-            router.push('/decarb/retirements'); // Simulate navigation
+    
+            const retireResponse = await myServer.get('/retire/retireTest', payload);
+    
+            console.log("Retire response status:", retireResponse.status);
+            console.log("Retire response data:", retireResponse.data);
+    
+            if (retireResponse.status === 200 && retireResponse.data.status === 'success') {
+                alert("Retirement successful!");
+                router.push('/decarb/retirements'); // Navigate after successful retirement
+            } else {
+                alert("There was an issue with the retirement. Please try again.");
+            }
         } catch (error) {
             console.error('Error in sending data', error);
+            alert('An error occurred while processing your retirement. Please try again.');
         }
     };
     
