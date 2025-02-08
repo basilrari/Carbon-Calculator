@@ -1,7 +1,8 @@
-import React from 'react';
-import BuyCharComponent from '@/Components/Dashboard/Contracts/BuyAssets/buyAsset';
-import MyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets';
-import { z } from 'zod';
+"use client";
+import React, { useState } from "react";
+import BuyCharComponent from "@/Components/Dashboard/Contracts/BuyAssets/buyAsset";
+import BuyAssets from "@/Components/Dashboard/Contracts/BuyAssets/myassets";
+import { z } from "zod";
 
 // Define schemas for validation using zod
 const walletSchema = z.object({
@@ -10,10 +11,9 @@ const walletSchema = z.object({
 
 const carbonAssetSchema = z.object({
   date: z.string(),
-  quantity: z.number(),
   project: z.string(),
   price: z.number(),
-  status: z.literal('current'),
+  available: z.number(),
 });
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
@@ -23,16 +23,9 @@ const dummyWalletData = { amount: 100.0 };
 
 // Dummy carbon assets data
 const dummyCarbonAssets = [
-  {
-    date: '2025-01-01',
-    quantity: 100,
-    project: 'Project Forest',
-    price: 16.67,
-    status: 'current',
-  },
-  { date: '2025-01-01', quantity: 10, project: 'Project Alpha', price: 176.7, status: 'current' },
-  { date: '2025-01-05', quantity: 20, project: 'Project Beta', price: 353.4, status: 'current' },
-  { date: '2025-01-10', quantity: 15, project: 'Project Gamma', price: 265.05, status: 'current' },
+  { date: "2025-02-08", project: "TCO2", price: 16.67, available: 10 },
+  { date: "2025-02-08", project: "BCT", price: 176.7, available: 5 },
+  { date: "2025-02-08", project: "NCT", price: 353.4, available: 8 },
 ];
 
 // Validate dummy data
@@ -40,24 +33,36 @@ const validatedWalletData = walletSchema.safeParse(dummyWalletData);
 const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
 
 if (!validatedWalletData.success || !validatedCarbonAssets.success) {
-  console.error('Invalid data:', {
+  console.error("Invalid data:", {
     walletErrors: validatedWalletData.error?.errors,
     assetErrors: validatedCarbonAssets.error?.errors,
   });
 }
 
 const Page = () => {
+  const [selectedAsset, setSelectedAsset] = useState<{ project: string; price: number } | null>(null);
+  const [quantity, setQuantity] = useState<number>(0);
+
+  // Function to handle selection
+  const handleSelectAsset = (asset: { project: string; price: number } | null, qty: number) => {
+    setSelectedAsset(asset);
+    setQuantity(qty);
+  };
+
   return (
     <div>
       <div className="w-full mb-6 mt-5">
         <BuyCharComponent
-          walletAmount={validatedWalletData.success ? validatedWalletData.data.amount : 0}
+          project={selectedAsset?.project}
+          price={selectedAsset ? selectedAsset.price * quantity : 0}
+          quantity={quantity}
         />
       </div>
 
       <div>
-        <MyAssets
+        <BuyAssets
           carbonAssets={validatedCarbonAssets.success ? validatedCarbonAssets.data : []}
+          onSelectAsset={handleSelectAsset} // Pass the handler here
         />
       </div>
     </div>
