@@ -18,7 +18,8 @@ const erc20ABI = [
 
 // Example contract addresses - Replace these with actual addresses from Celo Testnet
 const nctAddress = '0xfb60a08855389F3c0A66b29aB9eFa911ed5cbCB5'; // NCT token address
-const tco2Address = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; // Example TCO2 token address, you might check for multiple
+const tco2Address = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; //  TCO22012 token address
+const NFTaddress = '0xd4DE140b1064A40a00cD756Ab812181e7e14DA04'; // TCO22012 Retirement NFT address
 
 const page = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -40,7 +41,6 @@ const page = () => {
         try {
           // Initialize Web3 with the RPC of your chain
           const web3 = new Web3(new Web3.providers.HttpProvider(chainConfig.rpcTarget));
-
           // Fetch CELO balance
           const balanceWei = await web3.eth.getBalance(storedWalletAddress);
           const balanceCelo = web3.utils.fromWei(balanceWei, 'ether');

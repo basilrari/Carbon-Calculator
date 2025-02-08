@@ -1,8 +1,5 @@
 import Header from "@/Components/landingpage/header";
 import Loginform from "@/Components/landingpage/Login/loginform";
-
-
-
 import React from 'react'
 
 const loginpage = () => {
