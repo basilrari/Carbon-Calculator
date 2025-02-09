@@ -26,11 +26,6 @@ const BuyAssets: React.FC<BuyAssetsProps> = ({ carbonAssets, onSelectAsset }) =>
     }
 
     const numValue = Number(value);
-    if (numValue > 3) {
-      alert("You can only purchase up to 3 units.");
-      return;
-    }
-
     if (numValue >= 1 && numValue <= 3) {
       setQuantity(numValue);
       setSelectedAsset(carbonAssets[index]);
@@ -56,7 +51,7 @@ const BuyAssets: React.FC<BuyAssetsProps> = ({ carbonAssets, onSelectAsset }) =>
               <div key={index} className="flex items-center justify-between px-4 py-3 border-b last:border-b-0">
                 <div className="w-1/3 text-left">{asset.project}</div>
                 <div className="w-1/3 text-center">${asset.price.toFixed(2)}</div>
-                <div className="w-1/3 text-right relative">
+                <div className="w-1/3 text-right">
                   <input
                     type="number"
                     min="1"

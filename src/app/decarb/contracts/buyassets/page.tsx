@@ -23,8 +23,8 @@ const dummyWalletData = { amount: 100.0 };
 
 // Dummy carbon assets data
 const dummyCarbonAssets = [
-  { date: "2025-02-08", project: "North Pikounda REDD+", price: 16.67, available: 10 },
-  { date: "2025-02-08", project: "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India", price: 176.7, available: 5 },
+  { date: "2025-02-08", project: "Rimba Raya Biodiversity Reserve Project", price: 16.67, available: 10 },
+  { date: "2025-02-08", project: "Yingpeng HFC23 Decompostion Project", price: 176.7, available: 5 },
   
 ];
 
