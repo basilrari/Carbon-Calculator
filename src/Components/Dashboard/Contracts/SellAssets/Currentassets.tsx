@@ -7,23 +7,17 @@ const dummyAssets = [
     id: 1,
     date: "2025-01-01",
     quantity: 10,
-    project: "Project A",
+    project: "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India",
     price: 100,
   },
   {
     id: 2,
     date: "2025-01-02",
     quantity: 20,
-    project: "Project B",
+    project: "North Pikundo REDD+",
     price: 200,
   },
-  {
-    id: 3,
-    date: "2025-01-03",
-    quantity: 30,
-    project: "Project C",
-    price: 300,
-  },
+  
 ];
 
 const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {

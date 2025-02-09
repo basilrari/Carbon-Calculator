@@ -1,6 +1,8 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
+
 import BuyCharComponent from '@/Components/Dashboard/Contracts/BuyAssets/buyAsset';
-import MyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets';
+import BuyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets';
 import { z } from 'zod';
 
 // Define schemas for validation using zod
@@ -26,13 +28,12 @@ const dummyCarbonAssets = [
   {
     date: '2025-01-01',
     quantity: 100,
-    project: 'Project Forest',
+    project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
     price: 16.67,
     status: 'current',
   },
-  { date: '2025-01-01', quantity: 10, project: 'Project Alpha', price: 176.7, status: 'current' },
-  { date: '2025-01-05', quantity: 20, project: 'Project Beta', price: 353.4, status: 'current' },
-  { date: '2025-01-10', quantity: 15, project: 'Project Gamma', price: 265.05, status: 'current' },
+  { date: '2025-01-01', quantity: 10, project: 'North Pikounda REDD+', price: 176.7, status: 'current' },
+  
 ];
 
 // Validate dummy data
@@ -47,19 +48,32 @@ if (!validatedWalletData.success || !validatedCarbonAssets.success) {
 }
 
 const Page = () => {
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
+
+  const handleSelectAsset = (asset: any, qty: number) => {
+    setSelectedAsset(asset);
+    setSelectedQuantity(qty);
+  };
+
   return (
     <div>
       <div className="w-full mb-6 mt-5">
         <BuyCharComponent
           walletAmount={validatedWalletData.success ? validatedWalletData.data.amount : 0}
+          selectedAsset={selectedAsset}
+          selectedQuantity={selectedQuantity}
         />
       </div>
 
       <div>
-        <MyAssets
+        <BuyAssets
           carbonAssets={validatedCarbonAssets.success ? validatedCarbonAssets.data : []}
+          onSelectAsset={handleSelectAsset}
         />
       </div>
+      
+      
     </div>
   );
 };

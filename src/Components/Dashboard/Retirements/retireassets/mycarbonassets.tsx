@@ -24,9 +24,8 @@ const MyCarbAssets: React.FC<onAggregatedDataProps> = ({ onAggregatedData }) => 
   useEffect(() => {
     // Dummy data for carbon assets
     const dummyData = [
-      { id: 1, date: '2025-01-01', quantity: 100, project: 'Project A', price: 200, status: 'current' },
-      { id: 2, date: '2025-01-02', quantity: 150, project: 'Project B', price: 300, status: 'current' },
-      { id: 3, date: '2025-01-03', quantity: 200, project: 'Project C', price: 400, status: 'current' },
+      { id: 1, date: '2025-01-01', quantity: 100, project: 'North Pikounda REDD+', price: 200, status: 'current' },
+      { id: 2, date: '2025-01-02', quantity: 150, project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India', price: 300, status: 'current' },
     ];
 
     // Simulate successful data fetching
