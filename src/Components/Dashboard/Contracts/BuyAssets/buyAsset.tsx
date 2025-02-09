@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
 import MyButton from "../../MyButton";
+import { z } from "zod";
+
 import Image from "next/image";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
+
+
 
 type BuyCharComponentProps = {
   price?: number;  // Made optional to prevent runtime errors
@@ -41,7 +45,11 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ price = 0, quantity
           name: "DeCarb",
           description: `Purchase ${quantity} units of ${project}`,
           image: "/images/decarbtoken.png",
+          theme: {
+            color: "#2F4F4F",
+          },
           handler: async function (response: any) {
+            console.log("Payment response:", response);
             try {
               const backendResponse = await myServer.get('/buy/buyTest', {
                 params: { // Ensured correct request format
@@ -51,9 +59,12 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ price = 0, quantity
                   paymentId: response.razorpay_payment_id,
                 },
               });
+              console.log("Backend response status:", backendResponse.status);
+              console.log("Backend response data:", backendResponse.data);
 
               if (backendResponse.status === 200) {
                 alert("Purchase successful!");
+                
               } else {
                 alert("Payment was successful, but order processing failed.");
               }
