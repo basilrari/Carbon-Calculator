@@ -23,9 +23,9 @@ const dummyWalletData = { amount: 100.0 };
 
 // Dummy carbon assets data
 const dummyCarbonAssets = [
-  { date: "2025-02-08", project: "North Pikounda REDD+", price: 16.67, available: 10 },
-  { date: "2025-02-08", project: "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India", price: 176.7, available: 5 },
-  
+  { date: "2025-02-08", project: "TCO2", price: 16.67, available: 10 },
+  { date: "2025-02-08", project: "BCT", price: 176.7, available: 5 },
+  { date: "2025-02-08", project: "NCT", price: 353.4, available: 8 },
 ];
 
 // Validate dummy data
