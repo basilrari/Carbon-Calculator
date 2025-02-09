@@ -23,9 +23,9 @@ const dummyWalletData = { amount: 100.0 };
 
 // Dummy carbon assets data
 const dummyCarbonAssets = [
-  { date: "2025-02-08", project: "Rimba Raya Biodiversity Reserve Project", price: 16.67, available: 10 },
-  { date: "2025-02-08", project: "Yingpeng HFC23 Decompostion Project", price: 176.7, available: 5 },
-  
+  { date: "2025-02-08", project: "TCO2", price: 16.67, available: 10 },
+  { date: "2025-02-08", project: "BCT", price: 176.7, available: 5 },
+  { date: "2025-02-08", project: "NCT", price: 353.4, available: 8 },
 ];
 
 // Validate dummy data
