@@ -24,7 +24,7 @@ const Individualasset: React.FC<IndividualassetProps> = ({
   const pricePerUnit = price / quantity; // Calculate price per unit
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), quantity); // Limit to available quantity
+    const value = Math.min(Number(e.target.value), 3); // Limit to available quantity
     setSelectedQuantity(value);
 
     onSelectionChange({
@@ -45,7 +45,7 @@ const Individualasset: React.FC<IndividualassetProps> = ({
           type="number"
           min="0"
           max={quantity}
-          value={selectedQuantity}
+          value={selectedQuantity || ''}
           onChange={handleQuantityChange}
           className="w-20 border rounded px-2"
         />

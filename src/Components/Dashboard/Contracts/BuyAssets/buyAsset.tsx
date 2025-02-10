@@ -1,111 +1,100 @@
 import React from "react";
 import Link from "next/link";
 import MyButton from "../../MyButton";
+import Image from "next/image";
+import Link from "next/link";
+import myServer from "@/utils/Axios/axios";
 
 type BuyCharComponentProps = {
-  walletAmount: number;
-  selectedAsset: {
-    project: string;
-    price: number;
-  } | null;
-  selectedQuantity: number;
+  price?: number;  // Made optional to prevent runtime errors
+  quantity?: number;
+  project?: string;
 };
 
-const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
-  walletAmount,
-  selectedAsset,
-  selectedQuantity,
-}) => {
-  const totalPrice = selectedAsset ? selectedAsset.price * selectedQuantity : 0;
+const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ price = 0, quantity = 0, project = "N/A" }) => {
+  const [loading, setLoading] = useState(false);
+
+  
 
   const handleBuy = async () => {
-    // Razorpay logic remains unchanged
-    if (!selectedAsset || selectedQuantity === 0) {
-      alert("Please select a carbon asset and enter a valid quantity.");
+    console.log("Selected Project:", project);
+  console.log("Selected Quantity:", quantity);
+  console.log("Total Price:", price);
+    if (!quantity) {
+      alert("Please select a quantity before buying.");
       return;
     }
 
-    // Trigger Razorpay payment based on selected asset
-    const amount = totalPrice;
-    const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
+    setLoading(true);
 
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
+    try {
+      const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
 
-    script.onload = () => {
-      const options = {
-        key: apiKey,
-        amount: Math.round(amount * 100),
-        currency: "INR",
-        name: "DeCarb",
-        description: `Purchase ${selectedQuantity} units of ${selectedAsset}`,
-        image: "/images/decarbtoken.png",
-        theme: {
-          color: "#2F4F4F",
-        },
-        handler: function (response: any) {
-          console.log("Payment response:", response);
-          alert("Purchase successful!");
-          const walletAddress = localStorage.getItem("walletAddress");
+      script.onload = async () => {
+        const options = {
+          key: apiKey,
+          amount: Number(price) * 100,
+          currency: "INR",
+          name: "DeCarb",
+          description: `Purchase ${quantity} units of ${project}`,
+          image: "/images/decarbtoken.png",
+          handler: async function (response: any) {
+            try {
+              const backendResponse = await myServer.get('/buy/buyTest', {
+                params: { // Ensured correct request format
+                  amount: price,
+                  quantity,
+                  project,
+                  paymentId: response.razorpay_payment_id,
+                },
+              });
 
-          if (!walletAddress) {
-            console.error("walletAddress not found in localStorage");
-            alert("Wallet address not found. Please connect your wallet.");
-            return;
-          }
-
-          console.log("Retrieved Wallet Address:", walletAddress);
-
-          console.log("Selected Project:", selectedAsset);
-          console.log("Selected Quantity:", selectedQuantity);
-          console.log("Total Price:", amount);
-          console.log("Contract Address:", (selectedAsset as any).contract);
-        },
-      };
+              if (backendResponse.status === 200) {
+                alert("Purchase successful!");
+              } else {
+                alert("Payment was successful, but order processing failed.");
+              }
+            } catch (error) {
+              console.error("Error processing purchase:", error);
+              alert("Payment successful, but order processing failed.");
+            }
+            setLoading(false);
+          },
+          modal: {
+            ondismiss: function () {
+              setLoading(false);
+            },
+          },
+        };
 
       const razorpayInstance = new (window as any).Razorpay(options);
       razorpayInstance.open();
     };
 
-    document.body.appendChild(script);
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      setLoading(false);
+    }
   };
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
-      <h2 className="text-lg font-semibold">
-        DeCarb BioChar Carbon Pool (CHAR)
-      </h2>
-      {selectedAsset ? (
-        <>
-          <p className="text-sm text-gray-600">
-            Project:{" "}
-            <span className="font-semibold">{selectedAsset.project}</span>
-          </p>
-          <p className="text-sm text-gray-600">
-            Quantity: <span className="font-semibold">{selectedQuantity}</span>
-          </p>
-          <p className="text-sm text-gray-600">
-            Total Price:{" "}
-            <span className="font-semibold">₹{totalPrice.toFixed(2)}</span>
-          </p>
-        </>
-      ) : (
-        <p className="text-sm text-gray-600">
-          Please select a carbon asset to view details.
-        </p>
-      )}
+      <h2 className="text-lg font-semibold">DeCarb BioChar Carbon Pool (CHAR)</h2>
+      <p className="text-sm text-gray-600">Project: <span className="font-semibold">{project}</span></p>
+      <p className="text-sm text-gray-600">Quantity: <span className="font-semibold">{quantity}</span></p>
+      <p className="text-sm text-gray-600">
+        Total Price: <span className="font-semibold">₹{Number(price).toFixed(2)}</span>
+      </p>
 
       <div className="flex justify-end space-x-4 mt-4">
         <Link href="/decarb/contracts">
           <MyButton text="BACK" variant="red" />
         </Link>
-        <MyButton
-          text="BUY CHAR"
-          onClick={handleBuy}
-          variant="green"
-          disabled={!selectedAsset || selectedQuantity === 0}
-        />
+        <MyButton text="BUY CHAR" onClick={handleBuy} variant="green" disabled={loading} />
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import MyButton from "../../MyButton";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import myServer from "@/utils/Axios/axios";
 
 const SellAsset: React.FC<{
   totalQuantity: number;
@@ -14,23 +15,34 @@ const SellAsset: React.FC<{
 
 
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSell = async () => {
-    // Retrieve encrypted private key
-    const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
-
-
+    setLoading(true);
   
-    console.log(" Encrypted Private Key:", encryptedPrivateKey);
-    console.log(" Selected Carbon Credits:");
-    selectedItems.forEach((item) => {
-      console.log(" Name:", item.project);
-      console.log(" Contract Address:", item.id);
-      console.log(" Quantity:", item.quantity);
-      console.log(" Price: ₹", item.price);
-    });
+    try {
+      const sellResponse = await myServer.get('/sell/sellTest', {
+        // Include any necessary data for the sale. Here we're using totalQuantity from props instead.
+        quantity: totalQuantity
+      });
   
-    router.push("/decarb/contracts/sellassets");
+      console.log("Sell response status:", sellResponse.status);
+      console.log("Sell response data:", sellResponse.data);
+  
+      if (sellResponse.status === 200 && sellResponse.data.status === 'success') {
+        alert("Sale successful!");
+        setLoading(false);
+        // Optionally, you might want to redirect or update UI here
+        // router.push('/some-path'); // Example if you want to navigate after sale
+      } else {
+        alert("There was an issue with the sale. Please try again.");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error selling:', error);
+      alert('An error occurred while processing your sale. Please try again.');
+      setLoading(false);
+    }
   };
   
 
@@ -43,19 +55,17 @@ const SellAsset: React.FC<{
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1">
           <p className="text-md font-medium text-gray-600 pr-2">
-  Quantity:{" "}
-  <span className="text-lg font-bold text-gray-800">
-    {totalQuantity || 0}
-  </span>
-</p>
-
-<p className="text-md text-gray-600">
-  Price:{" "}
-  <span className="text-lg font-bold text-gray-800">
-    {totalPrice ? `₹${totalPrice.toFixed(2)}` : "₹0.00"}
-  </span>
-</p>
-
+            Quantity:{" "}
+            <span className="text-lg font-bold text-gray-800">
+              {totalQuantity || 0}
+            </span>
+          </p>
+          <p className="text-md text-gray-600">
+            Price:{" "}
+            <span className="text-lg font-bold text-gray-800">
+              {totalPrice ? `₹${totalPrice.toFixed(2)}` : "₹0.00"}
+            </span>
+          </p>
         </div>
         <div className="flex items-center">
           <h1 className="text-3xl p-2 font-semibold">DCO2</h1>
@@ -66,7 +76,7 @@ const SellAsset: React.FC<{
         <Link href="/decarb/contracts">
           <MyButton text="BACK" variant="red" />
         </Link>
-        <MyButton text="SELL CHAR" onClick={handleSell} variant="yellow" />
+        <MyButton text="SELL CHAR" onClick={handleSell} variant="yellow" disabled={loading} />
       </div>
     </div>
   );

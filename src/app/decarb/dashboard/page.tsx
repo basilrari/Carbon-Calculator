@@ -40,7 +40,6 @@ const page = () => {
         try {
           // Initialize Web3 with the RPC of your chain
           const web3 = new Web3(new Web3.providers.HttpProvider(chainConfig.rpcTarget));
-
           // Fetch CELO balance
           const balanceWei = await web3.eth.getBalance(storedWalletAddress);
           const balanceCelo = web3.utils.fromWei(balanceWei, 'ether');
@@ -49,7 +48,7 @@ const page = () => {
 
           // Check for Carbon Credits (NCT and TCO2)
           const nctContract = new web3.eth.Contract(erc20ABI, nctAddress);
-          const tco2Contract = new web3.eth.Contract(erc20ABI, tco2ExampleAddress); // Here you might want to check multiple TCO2 contracts
+          const tco2Contract = new web3.eth.Contract(erc20ABI, tco2Address); // Here you might want to check multiple TCO2 contracts
 
           const nctBalance = await nctContract.methods.balanceOf(storedWalletAddress).call();
           const tco2Balance = await tco2Contract.methods.balanceOf(storedWalletAddress).call();

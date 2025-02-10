@@ -12,7 +12,6 @@ const walletSchema = z.object({
 
 const carbonAssetSchema = z.object({
   date: z.string(),
-  quantity: z.number(),
   project: z.string(),
   price: z.number(),
   contract: z.string(),
@@ -43,7 +42,7 @@ const validatedWalletData = walletSchema.safeParse(dummyWalletData);
 const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
 
 if (!validatedWalletData.success || !validatedCarbonAssets.success) {
-  console.error('Invalid data:', {
+  console.error("Invalid data:", {
     walletErrors: validatedWalletData.error?.errors,
     assetErrors: validatedCarbonAssets.error?.errors,
   });
@@ -69,6 +68,7 @@ const Page = () => {
       </div>
 
       <div>
+        <BuyAssets
         <BuyAssets
           carbonAssets={validatedCarbonAssets.success ? validatedCarbonAssets.data : []}
           onSelectAsset={handleSelectAsset}
