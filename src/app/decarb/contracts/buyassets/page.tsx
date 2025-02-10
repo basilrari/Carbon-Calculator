@@ -15,6 +15,7 @@ const carbonAssetSchema = z.object({
   quantity: z.number(),
   project: z.string(),
   price: z.number(),
+  contract: z.string(),
   status: z.literal('current'),
 });
 
@@ -30,9 +31,10 @@ const dummyCarbonAssets = [
     quantity: 100,
     project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
     price: 16.67,
+    contract: '0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81',
     status: 'current',
   },
-  { date: '2025-01-01', quantity: 10, project: 'North Pikounda REDD+', price: 176.7, status: 'current' },
+  { date: '2025-01-01', quantity: 10, project: 'North Pikounda REDD+', price: 176.7, contract: '0xB297F730E741a822a426c737eCD0F7877A9a2c22', status: 'current' },
   
 ];
 

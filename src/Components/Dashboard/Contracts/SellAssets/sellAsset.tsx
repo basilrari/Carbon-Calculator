@@ -9,13 +9,30 @@ const SellAsset: React.FC<{
   totalQuantity: number;
   totalPrice: number;
   selectedCount: number;
-}> = ({ totalQuantity = 0, totalPrice = 0, selectedCount = 0 }) => {
+  selectedItems: any[]; // Add this prop
+}> = ({ totalQuantity = 0, totalPrice = 0, selectedCount = 0, selectedItems = [] }) => {
+
+
   const router = useRouter();
 
   const handleSell = async () => {
-    console.log("Selling the following assets:", { totalQuantity, totalPrice, selectedCount });
+    // Retrieve encrypted private key
+    const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
+
+
+  
+    console.log(" Encrypted Private Key:", encryptedPrivateKey);
+    console.log(" Selected Carbon Credits:");
+    selectedItems.forEach((item) => {
+      console.log(" Name:", item.project);
+      console.log(" Contract Address:", item.id);
+      console.log(" Quantity:", item.quantity);
+      console.log(" Price: ₹", item.price);
+    });
+  
     router.push("/decarb/contracts/sellassets");
   };
+  
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 shadow-md font-sans">

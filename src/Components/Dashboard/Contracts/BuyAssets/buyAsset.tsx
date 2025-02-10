@@ -11,7 +11,11 @@ type BuyCharComponentProps = {
   selectedQuantity: number;
 };
 
-const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount, selectedAsset, selectedQuantity }) => {
+const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
+  walletAmount,
+  selectedAsset,
+  selectedQuantity,
+}) => {
   const totalPrice = selectedAsset ? selectedAsset.price * selectedQuantity : 0;
 
   const handleBuy = async () => {
@@ -20,7 +24,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount, selec
       alert("Please select a carbon asset and enter a valid quantity.");
       return;
     }
-    
+
     // Trigger Razorpay payment based on selected asset
     const amount = totalPrice;
     const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
@@ -44,18 +48,19 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount, selec
           console.log("Payment response:", response);
           alert("Purchase successful!");
           const walletAddress = localStorage.getItem("walletAddress");
-  
+
           if (!walletAddress) {
             console.error("walletAddress not found in localStorage");
             alert("Wallet address not found. Please connect your wallet.");
             return;
           }
-        
+
           console.log("Retrieved Wallet Address:", walletAddress);
 
           console.log("Selected Project:", selectedAsset);
-  console.log("Selected Quantity:", selectedQuantity);
-  console.log("Total Price:", amount);
+          console.log("Selected Quantity:", selectedQuantity);
+          console.log("Total Price:", amount);
+          console.log("Contract Address:", (selectedAsset as any).contract);
         },
       };
 
@@ -68,24 +73,39 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({ walletAmount, selec
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
-      <h2 className="text-lg font-semibold">DeCarb BioChar Carbon Pool (CHAR)</h2>
+      <h2 className="text-lg font-semibold">
+        DeCarb BioChar Carbon Pool (CHAR)
+      </h2>
       {selectedAsset ? (
         <>
-          <p className="text-sm text-gray-600">Project: <span className="font-semibold">{selectedAsset.project}</span></p>
-          <p className="text-sm text-gray-600">Quantity: <span className="font-semibold">{selectedQuantity}</span></p>
           <p className="text-sm text-gray-600">
-            Total Price: <span className="font-semibold">₹{totalPrice.toFixed(2)}</span>
+            Project:{" "}
+            <span className="font-semibold">{selectedAsset.project}</span>
+          </p>
+          <p className="text-sm text-gray-600">
+            Quantity: <span className="font-semibold">{selectedQuantity}</span>
+          </p>
+          <p className="text-sm text-gray-600">
+            Total Price:{" "}
+            <span className="font-semibold">₹{totalPrice.toFixed(2)}</span>
           </p>
         </>
       ) : (
-        <p className="text-sm text-gray-600">Please select a carbon asset to view details.</p>
+        <p className="text-sm text-gray-600">
+          Please select a carbon asset to view details.
+        </p>
       )}
 
       <div className="flex justify-end space-x-4 mt-4">
         <Link href="/decarb/contracts">
           <MyButton text="BACK" variant="red" />
         </Link>
-        <MyButton text="BUY CHAR" onClick={handleBuy} variant="green" disabled={!selectedAsset || selectedQuantity === 0} />
+        <MyButton
+          text="BUY CHAR"
+          onClick={handleBuy}
+          variant="green"
+          disabled={!selectedAsset || selectedQuantity === 0}
+        />
       </div>
     </div>
   );
