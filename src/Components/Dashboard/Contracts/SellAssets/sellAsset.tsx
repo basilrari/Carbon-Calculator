@@ -10,7 +10,10 @@ const SellAsset: React.FC<{
   totalQuantity: number;
   totalPrice: number;
   selectedCount: number;
-}> = ({ totalQuantity = 0, totalPrice = 0, selectedCount = 0 }) => {
+  selectedItems: any[]; // Add this prop
+}> = ({ totalQuantity = 0, totalPrice = 0, selectedCount = 0, selectedItems = [] }) => {
+
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -41,6 +44,7 @@ const SellAsset: React.FC<{
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 shadow-md font-sans">

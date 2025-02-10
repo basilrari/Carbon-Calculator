@@ -1,8 +1,9 @@
-"use client";
-import React, { useState } from "react";
-import BuyCharComponent from "@/Components/Dashboard/Contracts/BuyAssets/buyAsset";
-import BuyAssets from "@/Components/Dashboard/Contracts/BuyAssets/myassets";
-import { z } from "zod";
+"use client"
+import React, { useState } from 'react';
+
+import BuyCharComponent from '@/Components/Dashboard/Contracts/BuyAssets/buyAsset';
+import BuyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets';
+import { z } from 'zod';
 
 // Define schemas for validation using zod
 const walletSchema = z.object({
@@ -13,7 +14,8 @@ const carbonAssetSchema = z.object({
   date: z.string(),
   project: z.string(),
   price: z.number(),
-  available: z.number(),
+  contract: z.string(),
+  status: z.literal('current'),
 });
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
@@ -23,9 +25,16 @@ const dummyWalletData = { amount: 100.0 };
 
 // Dummy carbon assets data
 const dummyCarbonAssets = [
-  { date: "2025-02-08", project: "TCO2", price: 16.67, available: 10 },
-  { date: "2025-02-08", project: "BCT", price: 176.7, available: 5 },
-  { date: "2025-02-08", project: "NCT", price: 353.4, available: 8 },
+  {
+    date: '2025-01-01',
+    quantity: 100,
+    project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
+    price: 16.67,
+    contract: '0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81',
+    status: 'current',
+  },
+  { date: '2025-01-01', quantity: 10, project: 'North Pikounda REDD+', price: 176.7, contract: '0xB297F730E741a822a426c737eCD0F7877A9a2c22', status: 'current' },
+  
 ];
 
 // Validate dummy data
@@ -40,31 +49,33 @@ if (!validatedWalletData.success || !validatedCarbonAssets.success) {
 }
 
 const Page = () => {
-  const [selectedAsset, setSelectedAsset] = useState<{ project: string; price: number } | null>(null);
-  const [quantity, setQuantity] = useState<number>(0);
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
 
-  // Function to handle selection
-  const handleSelectAsset = (asset: { project: string; price: number } | null, qty: number) => {
+  const handleSelectAsset = (asset: any, qty: number) => {
     setSelectedAsset(asset);
-    setQuantity(qty);
+    setSelectedQuantity(qty);
   };
 
   return (
     <div>
       <div className="w-full mb-6 mt-5">
         <BuyCharComponent
-          project={selectedAsset?.project}
-          price={selectedAsset ? selectedAsset.price * quantity : 0}
-          quantity={quantity}
+          walletAmount={validatedWalletData.success ? validatedWalletData.data.amount : 0}
+          selectedAsset={selectedAsset}
+          selectedQuantity={selectedQuantity}
         />
       </div>
 
       <div>
         <BuyAssets
+        <BuyAssets
           carbonAssets={validatedCarbonAssets.success ? validatedCarbonAssets.data : []}
-          onSelectAsset={handleSelectAsset} // Pass the handler here
+          onSelectAsset={handleSelectAsset}
         />
       </div>
+      
+      
     </div>
   );
 };

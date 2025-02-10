@@ -14,19 +14,16 @@ const retirementArraySchema = z.array(retirementSchema);
 
 // Dummy Data
 const dummyRetirements = [
-  {
-    date: new Date('2025-01-01'),
-    quantity: 5,
-    project: 'Project A',
-    price: 100,
+    {
+    date: '2025-01-01',
+    quantity: 100,
+    project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
+    contract: '0xB297F730E741a822a426c737eCD0F7877A9a2c22',
+    price: 16.67,
+    
   },
-  {
-    date: new Date('2025-01-02'),
-    quantity: 10,
-    project: 'Project B',
-    price: 200,
-  },
-];
+  { date: '2025-01-01', quantity: 10, project: 'North Pikounda REDD+',contract: '0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81', price: 176.7,  },
+  ];
 
 // Component Definition
 const MyRetirements = () => {

@@ -43,7 +43,9 @@ const BuyAssets: React.FC<BuyAssetsProps> = ({ carbonAssets, onSelectAsset }) =>
           <div>Price</div>
           <div>Quantity</div>
         </div>
-        <div className="space-y-4">
+
+        {/* Table Rows */}
+        <div className="mt-4">
           {carbonAssets.length > 0 ? (
             carbonAssets.map((asset, index) => (
               <div key={index} className="flex justify-between items-center">

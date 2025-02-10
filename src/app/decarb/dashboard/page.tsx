@@ -17,9 +17,8 @@ const erc20ABI = [
 ];
 
 // Example contract addresses - Replace these with actual addresses from Celo Testnet
-const nctAddress = '0xfb60a08855389F3c0A66b29aB9eFa911ed5cbCB5'; // NCT token address
-const tco2Address = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; //  TCO22012 token address
-const NFTaddress = '0xd4DE140b1064A40a00cD756Ab812181e7e14DA04'; // TCO22012 Retirement NFT address
+const nctAddress = '0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81'; // Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India
+const tco2ExampleAddress = '0xB297F730E741a822a426c737eCD0F7877A9a2c22'; // North Pikounda REDD+
 
 const page = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
