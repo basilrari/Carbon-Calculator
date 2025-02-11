@@ -17,13 +17,13 @@ const dummyRetirements = [
   {
     date: new Date('2025-01-01'),
     quantity: 5,
-    project: 'Project A',
+    project: 'North Pikounda REDD+',
     price: 100,
   },
   {
     date: new Date('2025-01-02'),
     quantity: 10,
-    project: 'Project B',
+    project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
     price: 200,
   },
 ];

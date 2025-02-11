@@ -1,36 +1,45 @@
 "use client";
 import React, { useState } from "react";
 
-interface IndividualassetProps {
+interface IndividualAssetProps {
   id: number;
   date: string;
   quantity: number;
   project: string;
   price: number;
   status: string;
-  onSelectionChange: (data: { id: number; selectedQuantity: number; price: number }) => void;
+  contract: string;
+  onSelectionChange: (data: {
+    id: number;
+    selectedQuantity: number;
+    price: number;
+    contract: string;
+    project: string;
+  }) => void;
 }
 
-const Individualasset: React.FC<IndividualassetProps> = ({
+const Individualasset: React.FC<IndividualAssetProps> = ({
   id,
   date,
   quantity,
   project,
-  price, // Total price for the quantity
+  price,
+  contract,
   onSelectionChange,
 }) => {
-  const [selectedQuantity, setSelectedQuantity] = useState(0);
-
-  const pricePerUnit = price / quantity; // Calculate price per unit
+  const [selectedQuantity, setSelectedQuantity] = useState<number>();
+  const pricePerUnit = price / quantity;
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), quantity); // Limit to available quantity
+    const value = Math.min(Number(e.target.value), Math.min(quantity, 3)); 
     setSelectedQuantity(value);
 
     onSelectionChange({
       id,
       selectedQuantity: value,
-      price: value * pricePerUnit, // Calculate total price for the selected quantity
+      price: value * pricePerUnit,
+      contract,
+      project,
     });
   };
 
@@ -44,7 +53,7 @@ const Individualasset: React.FC<IndividualassetProps> = ({
         <input
           type="number"
           min="0"
-          max={quantity}
+          max={Math.min(quantity, 3)}
           value={selectedQuantity}
           onChange={handleQuantityChange}
           className="w-20 border rounded px-2"
