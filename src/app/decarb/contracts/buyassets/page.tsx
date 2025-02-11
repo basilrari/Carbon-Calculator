@@ -1,7 +1,8 @@
-import React from 'react';
-import BuyCharComponent from '@/Components/Dashboard/Contracts/BuyAssets/buyAsset';
-import MyAssets from '@/Components/Dashboard/Contracts/BuyAssets/myassets';
-import { z } from 'zod';
+"use client";
+import React, { useState } from "react";
+import BuyCharComponent from "@/Components/Dashboard/Contracts/BuyAssets/buyAsset";
+import BuyAssets from "@/Components/Dashboard/Contracts/BuyAssets/myassets";
+import { z } from "zod";
 
 // Define schemas for validation using zod
 const walletSchema = z.object({
@@ -10,10 +11,9 @@ const walletSchema = z.object({
 
 const carbonAssetSchema = z.object({
   date: z.string(),
-  quantity: z.number(),
   project: z.string(),
   price: z.number(),
-  status: z.literal('current'),
+  contract: z.string(),
 });
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
@@ -24,15 +24,18 @@ const dummyWalletData = { amount: 100.0 };
 // Dummy carbon assets data
 const dummyCarbonAssets = [
   {
-    date: '2025-01-01',
-    quantity: 100,
-    project: 'Project Forest',
+    date: "2025-02-08",
+    project: "North Pikounda REDD+",
     price: 16.67,
-    status: 'current',
+    contract: "0xB297F730E741a822a426c737eCD0F7877A9a2c22",
   },
-  { date: '2025-01-01', quantity: 10, project: 'Project Alpha', price: 176.7, status: 'current' },
-  { date: '2025-01-05', quantity: 20, project: 'Project Beta', price: 353.4, status: 'current' },
-  { date: '2025-01-10', quantity: 15, project: 'Project Gamma', price: 265.05, status: 'current' },
+  {
+    date: "2025-02-08",
+    project:
+      "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India",
+    price: 176.7,
+    contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81",
+  },
 ];
 
 // Validate dummy data
@@ -40,24 +43,45 @@ const validatedWalletData = walletSchema.safeParse(dummyWalletData);
 const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
 
 if (!validatedWalletData.success || !validatedCarbonAssets.success) {
-  console.error('Invalid data:', {
+  console.error("Invalid data:", {
     walletErrors: validatedWalletData.error?.errors,
     assetErrors: validatedCarbonAssets.error?.errors,
   });
 }
 
 const Page = () => {
+  // Include `contract` in `selectedAsset`
+  const [selectedAsset, setSelectedAsset] = useState<{
+    project: string;
+    price: number;
+    contract: string;
+  } | null>(null);
+  
+  const [quantity, setQuantity] = useState<number>(); // Default quantity to 1
+
+  const handleSelectAsset = (
+    asset: { project: string; price: number; contract: string } | null,
+    qty: number
+  ) => {
+    setSelectedAsset(asset);
+    setQuantity(qty > 0 ? qty : 1); // Ensure quantity is at least 1
+  };
+
   return (
     <div>
       <div className="w-full mb-6 mt-5">
         <BuyCharComponent
-          walletAmount={validatedWalletData.success ? validatedWalletData.data.amount : 0}
+          project={selectedAsset?.project ?? ""}
+          price={selectedAsset ? selectedAsset.price * quantity : 0}
+          quantity={quantity}
+          contract={selectedAsset?.contract ?? ""}
         />
       </div>
 
       <div>
-        <MyAssets
+        <BuyAssets
           carbonAssets={validatedCarbonAssets.success ? validatedCarbonAssets.data : []}
+          onSelectAsset={handleSelectAsset}
         />
       </div>
     </div>

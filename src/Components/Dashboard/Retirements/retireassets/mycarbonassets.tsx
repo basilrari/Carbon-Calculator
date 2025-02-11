@@ -1,58 +1,34 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import Individualasset from './Individualasset';
-import { z } from 'zod';
-import { MyAssetArray, onAggregatedDataProps } from '@/types/global.types';
+"use client";
+import React, { useEffect, useState } from "react";
+import Individualasset from "./Individualasset";
 
-const carbonAssetSchema = z.object({
-  id: z.number(),
-  date: z.string(),
-  quantity: z.number(),
-  project: z.string(),
-  price: z.number(),
-  status: z.literal('current'),
-});
-
-const carbonAssetArraySchema = z.array(carbonAssetSchema);
-
-const MyCarbAssets: React.FC<onAggregatedDataProps> = ({ onAggregatedData }) => {
+const MyCarbAssets: React.FC<{ onAggregatedData: (data: { totalQuantity: number; totalPrice: number; selectedCount: number }) => void }> = ({ onAggregatedData }) => {
   const [selectedItems, setSelectedItems] = useState<
-    { id: number; selectedQuantity: number; price: number }[]
+    { id: number; selectedQuantity: number; price: number; contract: string; project: string }[]
   >([]);
-  const [carbonAssets, setCarbonAssets] = useState<MyAssetArray>([]);
+  const [carbonAssets, setCarbonAssets] = useState<
+    { id: number; date: string; quantity: number; project: string; price: number; status: string; contract: string }[]
+  >([]);
 
   useEffect(() => {
-    // Dummy data for carbon assets
     const dummyData = [
-      { id: 1, date: '2025-01-01', quantity: 100, project: 'Project A', price: 200, status: 'current' },
-      { id: 2, date: '2025-01-02', quantity: 150, project: 'Project B', price: 300, status: 'current' },
-      { id: 3, date: '2025-01-03', quantity: 200, project: 'Project C', price: 400, status: 'current' },
+      { id: 1, date: "2025-01-01", quantity: 100, project: "North Pikounda REDD+", contract: "0xB297F730E741a822a426c737eCD0F7877A9a2c22", price: 200, status: "current" },
+      { id: 2, date: "2025-01-02", quantity: 150, project: "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India", contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", price: 300, status: "current" },
     ];
 
-    // Simulate successful data fetching
-    const parsedResponse = carbonAssetArraySchema.safeParse(dummyData);
-
-    if (parsedResponse.success) {
-      setCarbonAssets(parsedResponse.data);
-    } else {
-      console.error('Invalid Data Format', parsedResponse.error);
-    }
+    setCarbonAssets(dummyData);
   }, []);
 
-  const handleSelectionChange = (data: { id: number; selectedQuantity: number; price: number } | number) => {
+  const handleSelectionChange = (data: { id: number; selectedQuantity: number; price: number; contract: string; project: string }) => {
     setSelectedItems((prev) => {
-      if (typeof data === 'number') {
-        return prev.filter((item) => item.id !== data); // Remove deselected item
-      } else {
-        const existingItemIndex = prev.findIndex((item) => item.id === data.id);
+      const existingItemIndex = prev.findIndex((item) => item.id === data.id);
 
-        if (existingItemIndex !== -1) {
-          const updatedItems = [...prev];
-          updatedItems[existingItemIndex] = data;
-          return updatedItems;
-        } else {
-          return [...prev, data];
-        }
+      if (existingItemIndex !== -1) {
+        const updatedItems = [...prev];
+        updatedItems[existingItemIndex] = data;
+        return updatedItems;
+      } else {
+        return [...prev, data];
       }
     });
   };
@@ -67,8 +43,7 @@ const MyCarbAssets: React.FC<onAggregatedDataProps> = ({ onAggregatedData }) => 
       selectedCount: selectedItems.length,
     });
 
-    // Print transaction details to the console
-    console.log('Selected Items:', selectedItems);
+    console.log("Selected Items:", selectedItems);
   }, [selectedItems, onAggregatedData]);
 
   return (
@@ -80,22 +55,12 @@ const MyCarbAssets: React.FC<onAggregatedDataProps> = ({ onAggregatedData }) => 
           <div>Quantity</div>
           <div>Project Name</div>
           <div>Price</div>
-          
           <div>Retire</div>
         </div>
         <div className="space-y-4">
           {carbonAssets.length > 0 ? (
             carbonAssets.map((asset) => (
-              <Individualasset
-                key={asset.id}
-                id={asset.id}
-                date={asset.date}
-                quantity={asset.quantity}
-                project={asset.project}
-                price={asset.price}
-                status={asset.status}
-                onSelectionChange={handleSelectionChange}
-              />
+              <Individualasset key={asset.id} {...asset} onSelectionChange={handleSelectionChange} />
             ))
           ) : (
             <div className="text-gray-500">You have no carbon assets</div>
