@@ -4,6 +4,7 @@ import MyButton from "../../MyButton";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import myServer from "@/utils/Axios/axios";
 
 const SellAsset: React.FC<{
   totalQuantity: number;
@@ -18,21 +19,24 @@ const SellAsset: React.FC<{
   const handleSell = async () => {
     // Retrieve encrypted private key
     const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
-    const walletAddress=window.localStorage.getItem("walletAddress");
+    const data = {
+      quantity: selectedItems[0].selectedQuantity,
+      contractAddress: selectedItems[0].id,
+      encryptedPrivateKey: encryptedPrivateKey,
+    };
+    console.log("Data:", data);
+    const response = await myServer.post('/sell/sellTransfer', data);
+    console.log("Response:", response);
 
-    console.log("Wallet Address: ", walletAddress);
-    console.log(" Encrypted Private Key:", encryptedPrivateKey);
-    console.log(" Selected Carbon Credits:");
-    selectedItems.forEach((item) => {
-      console.log(" Name:", item.project);
-      console.log(" Contract Address:", item.id);
-      console.log(" Quantity:", item.quantity);
-      console.log(" Price: ₹", item.price);
-    });
-  
+    if (response.status === 200) {
+      alert('Sell successful Transaction Hash: ' + response.data.transactionHash);
+    } else {
+      console.error('Error:', response);
+    }
+
     router.push("/decarb/contracts/sellassets");
   };
-  
+
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 shadow-md font-sans">
@@ -43,18 +47,18 @@ const SellAsset: React.FC<{
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1">
           <p className="text-md font-medium text-gray-600 pr-2">
-  Quantity:{" "}
-  <span className="text-lg font-bold text-gray-800">
-    {totalQuantity || 0}
-  </span>
-</p>
+            Quantity:{" "}
+            <span className="text-lg font-bold text-gray-800">
+              {totalQuantity || 0}
+            </span>
+          </p>
 
-<p className="text-md text-gray-600">
-  Price:{" "}
-  <span className="text-lg font-bold text-gray-800">
-    {totalPrice ? `₹${totalPrice.toFixed(2)}` : "₹0.00"}
-  </span>
-</p>
+          <p className="text-md text-gray-600">
+            Price:{" "}
+            <span className="text-lg font-bold text-gray-800">
+              {totalPrice ? `₹${totalPrice.toFixed(2)}` : "₹0.00"}
+            </span>
+          </p>
 
         </div>
         <div className="flex items-center">

@@ -20,6 +20,7 @@ const MainSellComponent = () => {
           totalQuantity={aggregatedData?.totalQuantity}
           totalPrice={aggregatedData?.totalPrice}
           selectedCount={aggregatedData?.selectedCount}
+          selectedItems={aggregatedData?.selectedItems || []}
         />
       </div>
       <div>
