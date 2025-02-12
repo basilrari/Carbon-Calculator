@@ -1,9 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { usePathname } from "next/navigation"; 
+import { redirect, usePathname } from "next/navigation"; 
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
+import { chainConfig } from "@/utils/Config/chainConfig";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const navItems = [
   {
@@ -41,6 +45,25 @@ const Sidebar = () => {
 
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
+  };
+
+  const privateKeyProvider = new EthereumPrivateKeyProvider({
+    config: { chainConfig },
+  });
+
+  const handleLogout = async () => {
+    try {
+      const web3auth = new Web3Auth({
+        clientId: "BPI5cUhq659hPghmNobHZT8c52Mpb4mlSrTTGIKWCw_nSUk1Wt5lEeBU6cLfgex0vpE57SfMy_F4vpWihcm7uOw", 
+        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        privateKeyProvider,
+      });
+      await web3auth.logout();
+      console.log("Logged out successfully");
+      redirect("/landing")
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
 
   return (
@@ -101,27 +124,20 @@ const Sidebar = () => {
           })}
         </ul>
 
-        <div className="absolute bottom-8 left-4">
-          <Link
-            href="/decarb/settings"
-            className={`flex items-center text-black cursor-pointer rounded-md p-2 pl-5 
-                        hover:bg-[#27605a]
-                        ${
-                          pathname === "/decarb/settings"
-                            ? "bg-[#9BC3BF]"
-                            : ""
-                        }`}
-          >
-            <Image src="/images/overview.svg" alt="settings" width={32} height={32} />
-            <span
-              className={`pl-4 font-medium text-black text-lg ml-4 ${
-                isCollapsed ? "hidden" : ""
-              }`}
-            >
-              Settings
-            </span>
-          </Link>          
-        </div>
+          <div className="absolute bottom-8 left-4">
+            <button
+              onClick={handleLogout}
+              className={"flex items-center text-black cursor-pointer rounded-md p-2 pl-5 w-5/6 hover:bg-[#9BC3BF]"}>
+              <Image src="/images/overview.svg" alt="settings" width={32} height={32} />
+              <span
+                className={` font-semibold text-[#] text-lg ml-4  ${
+                  isCollapsed ? "hidden" : ""
+                }`}
+              >
+                Logout
+              </span>
+            </button>
+          </div>
 
       </nav>
     </div>
