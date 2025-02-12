@@ -4,6 +4,10 @@ import Web3 from 'web3';
 import { chainConfig } from '@/utils/Config/chainConfig'; // Adjust path as necessary
 import StatsCard from "@/Components/Dashboard/Overview/carbondetail";
 import LearnCardsContainer from "@/Components/Dashboard/Overview/learncontainer";
+import DiscoverComp from '@/Components/Dashboard/overview/DiscoverComp';
+import ImageComponent from '@/Components/Dashboard/overview/ImageComponent';
+import BuyCharComp from '@/Components/Dashboard/overview/BuyCharComp';
+
 
 // ERC-20 ABI for balance checking
 const erc20ABI = [
@@ -76,7 +80,16 @@ const page = () => {
       <div className="w-full mb-6 mt-5">
         <StatsCard stats={statsData} />
       </div>
-      <div className="absolute bottom-6 w-auto">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto ">
+      <div>
+        <DiscoverComp />
+         <ImageComponent />
+      </div>
+      
+      <div ><BuyCharComp /></div>
+    </div>
+      <div className=" w-auto">
         <LearnCardsContainer />
       </div>
     </div>
