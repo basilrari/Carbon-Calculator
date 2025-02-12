@@ -10,7 +10,7 @@ const LearnCardsContainer: React.FC = () => {
   ];
 
   return (
-    <div className="flex justify-between items-center space-x-16 ml-2">
+    <div className="flex justify-between space-x-6">
       {learnCardsData.map((card, index) => (
         <LearnCard key={index} title={card.title} svgPath={card.svgPath} />
       ))}
