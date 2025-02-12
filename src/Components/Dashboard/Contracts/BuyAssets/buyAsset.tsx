@@ -2,7 +2,6 @@
 import { useState } from "react";
 import MyButton from "../../MyButton";
 import { z } from "zod";
-
 import Image from "next/image";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
@@ -18,7 +17,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
   price = 0,
   quantity = 0,
   project = "N/A",
-  contract="NA"
+  contract = "NA"
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -63,14 +62,24 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
               console.log("Backend response data:", backendResponse.data);
 
               if (backendResponse.status === 200) {
-                alert("Purchase successful!");
+                //toast.success("Payment successful!");
+                console.log("Payment successful!");
                 console.log("Selected Project:", project);
                 console.log("Selected Quantity:", quantity);
                 console.log("Total Price:", price);
                 console.log("contract address:", contract);
-                const walletAddress =
-                  window.localStorage.getItem("walletAddress");
+                const walletAddress = window.localStorage.getItem("walletAddress");
                 console.log("Wallet Address:", walletAddress);
+              
+                const data = {
+                  quantity: quantity,
+                  tokenAddress: contract,
+                  toAddress: walletAddress
+                };
+              
+                const response = await myServer.post('/buy/buyTokens', data)
+                console.log("API Response:", response.data);
+                alert("Token Purchase successful! Txn Hash: " + response.data.transactionHash);
               } else {
                 alert("Payment was successful, but order processing failed.");
               }
