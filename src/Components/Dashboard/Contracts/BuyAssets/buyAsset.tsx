@@ -101,6 +101,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
+  const router=useRouter();
 
   const handleBuy = async () => {
     if (!quantity) {
@@ -177,6 +178,9 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
             } catch (error) {
               console.error("Error processing purchase:", error);
               alert("Payment successful, but order processing failed.");
+            }
+            finally{
+              window.location.reload();
             }
             
           },

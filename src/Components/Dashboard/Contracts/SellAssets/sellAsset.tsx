@@ -116,6 +116,7 @@ const SellAsset: React.FC<{
       if (response.status === 200) {
         await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulating processing delay
         alert("Sell successful! Transaction Hash: " + response.data.transactionHash);
+        
       } else {
         console.error("Error:", response);
       }
@@ -125,6 +126,7 @@ const SellAsset: React.FC<{
       setTimeout(() => {
         setLoading(false);
       },5000) // Stop loading after success or failure
+      window.location.reload();
     }
   
     router.push("/decarb/contracts/sellassets");
