@@ -127,10 +127,10 @@ const Sidebar = () => {
           <div className="absolute bottom-8 left-4">
             <button
               onClick={handleLogout}
-              className={"flex items-center text-black cursor-pointer rounded-md p-2 pl-5 w-5/6 hover:bg-[#9BC3BF]"}>
-              <Image src="/images/overview.svg" alt="settings" width={32} height={32} />
+              className={"flex items-center text-black cursor-pointer rounded-md p-2 pl-5 w-full hover:bg-[#9BC3BF]"}>
+              <Image src="/images/logout.svg" alt="settings" width={32} height={32} />
               <span
-                className={` font-semibold text-[#] text-lg ml-4  ${
+                className={` font-semibold  text-lg ml-4 hover:text-[#ed3f3f] ${
                   isCollapsed ? "hidden" : ""
                 }`}
               >
