@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { chainConfig } from '@/utils/Config/chainConfig'; // Adjust path as necessary
-import StatsCard from "@/Components/Dashboard/Overview/carbondetail";
-import LearnCardsContainer from "@/Components/Dashboard/Overview/learncontainer";
-import DiscoverComp from '@/Components/Dashboard/overview/DiscoverComp';
+import StatsCard from '@/Components/Dashboard/overview/carbondetail';
+import LearnCardsContainer from '@/Components/Dashboard/overview/learncontainer';
 import ImageComponent from '@/Components/Dashboard/overview/ImageComponent';
 import BuyCharComp from '@/Components/Dashboard/overview/BuyCharComp';
+import DiscoverComp from '@/Components/Dashboard/overview/DiscoverComp';
+
 
 
 // ERC-20 ABI for balance checking
@@ -83,12 +84,12 @@ const page = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto ">
       <div>
-        <DiscoverComp />
+         <DiscoverComp/>
          <ImageComponent />
       </div>
       
       <div ><BuyCharComp /></div>
-    </div>
+     </div>
       <div className=" w-auto">
         <LearnCardsContainer />
       </div>
