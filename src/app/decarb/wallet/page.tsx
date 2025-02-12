@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletConnect from '@/Components/Dashboard/Wallet/wallet';
+import WalletConnect from '@/Components/Dashboard/Calculator/wallet';
 
 const page = () => {
   return (
