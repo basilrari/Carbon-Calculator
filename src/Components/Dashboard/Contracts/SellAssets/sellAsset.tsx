@@ -9,7 +9,7 @@ import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
 // Separate Loading Overlay Component
 const LoadingOverlay = () => (
-  <div className="fixed inset-0 w-full h-full z-50">
+  <div className="fixed inset-0 z-[9999] w-full h-full ">
     {/* Base background */}
 
     {/* Blurred overlay */}
@@ -131,7 +131,7 @@ const SellAsset: React.FC<{
   };
   
   return (
-    <div className={`relative ${loading ? "blur-sm pointer-events-none" : ""}`}>
+    <div className={`relative ${loading ? " pointer-events-none" : ""}`}>
 
       {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay />}

@@ -11,7 +11,7 @@ import { Loader2 } from "lucide-react";
 
 // Separate Loading Overlay Component
 const LoadingOverlay = () => (
-  <div className="fixed inset-0 w-full h-full z-50">
+  <div className="fixed inset-0 w-full h-full z-[9999]">
     {/* Base background */}
     
 
@@ -159,18 +159,18 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
                   toAddress: walletAddress,
                 };
                 setLoading(true);
-                await new Promise((resolve) => setTimeout(resolve, 5000));
+                await new Promise((resolve) => setTimeout(resolve, 3000));
                 
                 const response = await myServer.post("/buy/buyTokens", data);
                 console.log("API Response:", response.data);
+                setLoading(false);
+                setProcessingPayment(false);
                 alert(
                   "Token Purchase successful! Txn Hash: " +
                     response.data.transactionHash
                 );
-                setTimeout(() => {
-                  setLoading(false);
-                }, 5000);
-                setProcessingPayment(false);
+                
+                
               } else {
                 alert("Payment was successful, but order processing failed.");
               }
@@ -178,7 +178,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
               console.error("Error processing purchase:", error);
               alert("Payment successful, but order processing failed.");
             }
-            setLoading(false);
+            
           },
           modal: {
             ondismiss: function () {
@@ -200,7 +200,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
   };
 
   return (
-    <div className={`relative ${loading ? "blur-sm pointer-events-none" : ""}`}>
+    <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
 
       {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay />}
