@@ -21,3 +21,4 @@ async rewrites () {
 };
 
 export default nextConfig;
+
