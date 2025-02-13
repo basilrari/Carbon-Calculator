@@ -1,5 +1,7 @@
 "use client";
+
 import React, { useState } from "react";
+import Link from "next/link";
 
 type CarbonAsset = {
   date: string;
@@ -54,7 +56,13 @@ const BuyAssets: React.FC<BuyAssetsProps> = ({ carbonAssets, onSelectAsset }) =>
           {carbonAssets.length > 0 ? (
             carbonAssets.map((asset, index) => (
               <div key={index} className="flex items-center justify-between px-4 py-3 border-b last:border-b-0">
-                <div className="w-1/3 text-left">{asset.project}</div>
+                {/* Project Name as a Link */}
+                <div className="w-1/3 text-left text-blue-600 underline">
+                  <Link href={`/decarb/project/${encodeURIComponent(asset.project)}`}>
+                    {asset.project}
+                  </Link>
+                </div>
+
                 <div className="w-1/3 text-center">₹{asset.price.toFixed(2)}</div>
                 <div className="w-1/3 text-right relative">
                   <input

@@ -32,7 +32,7 @@ const dummyCarbonAssets = [
   {
     date: "2025-02-08",
     project:
-      "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India",
+      "Panama Wind Energy Private Limited",
     price: 176.7,
     contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81",
   },

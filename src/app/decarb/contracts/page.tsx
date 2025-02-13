@@ -11,8 +11,11 @@ const dummyAssets = [
     price: 16.67,
     status: 'current',
   },
-  { date: '2025-01-01', quantity: 10, project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India', price: 176.7, status: 'current' },
-
+  { date: '2025-01-01', 
+    quantity: 10, 
+    project: 'Panama Wind Energy Private Limited', 
+    price: 176.7, 
+    status: 'current' },
 ];
 
 // Dummy price for CHAR
