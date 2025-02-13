@@ -24,6 +24,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [assets, setAssets] = useState([]);
+  
 
   useEffect(() => {
     const fetchBalances = async () => {

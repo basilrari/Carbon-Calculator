@@ -23,12 +23,16 @@ const Individualasset: React.FC<IndividualassetProps> = ({
   const [selectedQuantity, setSelectedQuantity] = useState();
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), quantity); // Limit the selection to available quantity
+    if (Number(e.target.value)>3){
+      alert("Max qty 3")
+    }
+    const value = Math.min(Number(e.target.value), 3); // Limit the selection to available quantity
     setSelectedQuantity(value);
-
+    
     if (value > 0) {
       onSelectionChange({ id, selectedQuantity: value, price: (price / quantity) * value });
-    } else {
+    } else{
+      alert("Please select at least 1 to sell.")
       onSelectionChange(id); // Deselect if quantity is 0
     }
   };
