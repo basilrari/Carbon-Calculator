@@ -3,6 +3,7 @@ import React from 'react';
 import Carbonasset from './carbonasset';
 import { z } from 'zod';
 import { carbonAssetArray } from '@/types/global.types';
+import Link from 'next/link';
 
 const carbonAssetSchema = z.object({
   date: z.string(),
@@ -71,7 +72,19 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
                 key={index}
                 date={asset.date}
                 quantity={asset.quantity}
-                project={asset.project}
+                project={
+                  <div className="group text-left">
+                    <Link
+                      href={`/decarb/project/${encodeURIComponent(asset.project)}`}
+                      className="text-black hover:underline inline-flex items-center"
+                    >
+                      {asset.project}
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-1">
+                        ↗
+                      </span>
+                    </Link>
+                  </div>
+                }
                 price={asset.price}
                 status={asset.status}
               />
