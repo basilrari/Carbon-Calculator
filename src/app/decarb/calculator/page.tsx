@@ -112,7 +112,7 @@ const CalculatorPage = () => {
       style={{ backgroundImage: "url('/images/background.jpg')" }}
     >
       <h1 className="text-3xl font-bold text-green-700 text-center">
-        🌍 Carbon Footprint Calculator
+         Carbon Footprint Calculator
       </h1>
       <p className="text-center text-gray-700 mt-2">
         Enter detailed information to get a precise estimate of your carbon
@@ -255,7 +255,7 @@ const CalculatorPage = () => {
 
         <div className="mt-8 p-6 bg-green-50 rounded-lg shadow-lg">
   <h2 className="text-xl font-bold text-green-800 text-center mb-4">
-    🌍 Your Estimated Carbon Footprint
+       Your Estimated Carbon Footprint
   </h2>
   <div className="text-center">
     <p className="text-3xl font-bold text-green-700 mb-2">
