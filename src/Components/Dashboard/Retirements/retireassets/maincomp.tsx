@@ -18,11 +18,12 @@ const MainRetireComponent = () => {
         <h1>Retirements</h1>
       </div>
       <div className='w-full mb-6 mt-5'>
-        <RetireAsset 
-          totalQuantity={aggregatedData?.totalQuantity} 
-          totalPrice={aggregatedData?.totalPrice} 
-          selectedCount={aggregatedData?.selectedCount}
-        />
+      <RetireAsset
+  totalQuantity={aggregatedData?.totalQuantity}
+  selectedCount={aggregatedData?.selectedCount}
+  selectedItems={aggregatedData?.selectedItems || []}
+/>
+
       </div>
       <div>
         <MyCarbAssets onAggregatedData={handleAggregatedData} />
