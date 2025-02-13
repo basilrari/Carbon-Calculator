@@ -30,6 +30,7 @@ const Loginform = () => {
       try {
         await web3auth.initModal();
         if (web3auth.connected) {
+          console.log("Web3Auth connected!");
           setLoggedIn(true);
           setProvider(web3auth.provider);
           const accounts = await web3auth.provider?.request({ method: "eth_accounts" });
