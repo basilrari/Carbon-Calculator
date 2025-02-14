@@ -59,7 +59,7 @@ export default function ProjectPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         <div className="md:col-span-2 space-y-6">
           {/* Overview Section */}
-          <div className="bg-green-900 text-white p-6 rounded-2xl shadow-lg">
+          <div className="bg-[#2F4F4F] text-white p-6 rounded-2xl shadow-lg">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="flex flex-col">
                 <small className="text-sm">Total Supply:</small>
