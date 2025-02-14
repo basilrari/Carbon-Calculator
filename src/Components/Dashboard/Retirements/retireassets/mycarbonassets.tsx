@@ -104,7 +104,7 @@ const handleSelectionChange = (updatedItem) => {
         </div>
         <div className="divide-y divide-gray-300 justify-between">
           {assets.map((asset) => (
-            <div key={asset.id} className="grid grid-cols-3 gap-8 py-2">
+            <div key={asset.id} >
               <Individualasset
                 id={asset.id} // Pass id
                 quantity={asset.quantity} // Pass quantity
