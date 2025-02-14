@@ -3,7 +3,7 @@ import MyButton from "../../MyButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const RetireAsset = ({ totalQuantity=0, selectedCount=0}) => {
+const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) => {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -52,13 +52,10 @@ const RetireAsset = ({ totalQuantity=0, selectedCount=0}) => {
 
     console.log("Retiring assets with form data:", {
       ...formData,
-      totalQuantity,
-      
-      selectedCount,
-      encryptedPrivateKey,
-      walletAddress
     });
-    console.log("qty",totalQuantity)
+    console.log("qty",totalQuantity);
+    console.log("encrypted pvt key",encryptedPrivateKey);
+    console.log("contract address",contractAddress);
     router.push("/decarb/retirements");
   };
 
