@@ -39,8 +39,8 @@ const Individualasset: React.FC<IndividualassetProps> = ({
 
   return (
     <div className="flex justify-between items-center border-b border-gray-300 py-2">
-      <div>{date}</div>
-      <div>{quantity}</div>
+      
+      <div>{Number(quantity)}</div>
       <div>{project}</div>
       <div>{price}</div>
       
