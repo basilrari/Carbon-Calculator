@@ -52,7 +52,7 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
               id: token.address,
               date: new Date().toISOString().split("T")[0],
               quantity: parseFloat(ethers.formatUnits(balance, 18)),
-              project: `${token.name} Carbon Credit`,
+              project: `${token.name}`,
               price: 100, // Placeholder price
               status: "current",
             };
