@@ -29,7 +29,7 @@ const RetireAsset: React.FC<{ totalQuantity?: number; totalPrice?: number; selec
         </div>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex space-x-4 justify-end">
         <Link href="/decarb/retirements"><MyButton text="BACK" variant="red" /></Link>
         <MyButton text="RETIRE" onClick={handleRetire} variant="green" />
       </div>
