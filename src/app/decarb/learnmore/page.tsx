@@ -36,7 +36,7 @@ const Discover = () => {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto container mx-auto px-6 lg:px-12 py-6">
+    <div className="h-screen overflow-y-auto container mx-auto p-6">
 
       {/* Header Section */}
       <div className="flex items-center justify-between ">

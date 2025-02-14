@@ -44,7 +44,7 @@ const BuyAssets: React.FC<BuyAssetsProps> = ({
   };
 
   return (
-    <div className="p-4">
+    <div className="pt-4">
       <h1 className="text-lg font-semibold p-2">Buy Carbon Assets (DCO2)</h1>
       <div className="bg-purple-100 rounded-lg p-6">
         {/* Table Header */}
