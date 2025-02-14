@@ -48,7 +48,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
               id: token.address,
               date: new Date().toISOString().split("T")[0],
               quantity: ethers.formatUnits(balance, 18),
-              project: `${token.name} Carbon Credit`,
+              project: `${token.name} `,
               price: 100 // Placeholder price, replace with real data if available
             };
           })
@@ -88,7 +88,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
       <h1 className="text-lg font-semibold p-2">My Carbon Assets (DCO2)</h1>
       <div className="bg-purple-100 rounded-lg p-6 space-y-4">
         <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
-          <div>Date</div>
+          
           <div>Quantity</div>
           <div>Project Name</div>
           <div>Price</div>
