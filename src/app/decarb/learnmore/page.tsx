@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const Discover = () => {
   const cards = [
@@ -37,21 +38,16 @@ const Discover = () => {
   return (
     <div className="h-screen overflow-y-auto container mx-auto px-6 lg:px-12 py-6">
       {/* Header Section */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-semibold text-left">Learn More</h1>
-        {/* Blockchain Info */}
-        <div className="flex items-center">
-          <img
-            alt="celocomposition"
-            className="w-10 h-6 pl-2"
-            src="/images/celocomp.png"
-          />
-          <h1 className="font-semibold text-base pr-2">Celo Alfajores</h1>
-        </div>
+      <div className="flex items-center justify-between ">
+        <h1 className="text-2xl font-semibold text-left">
+          Learn More</h1>
+        <div className="overflow-hidden rounded-full w-12 h-12">
+                <Image src="/images/greenbg.png" alt="image" height={48} width={48} className='object-cover w-full h-full'/>
+            </div> 
       </div>
 
       {/* Card Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 mt-8 gap-6">
         {/* Large Feature Card */}
         <div className="lg:col-span-7 row-span-1">
           <div className="relative w-full pt-[60%]">
