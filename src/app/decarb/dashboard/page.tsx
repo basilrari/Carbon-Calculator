@@ -82,7 +82,7 @@ const page = () => {
       
       <div className='flex items-center justify-between'>
         <h1 className="text-2xl font-semibold pl-3 pt-2">Welcome, Basil </h1>
-        <div className='overflow-hidden rounded-full w-12 h-12'>
+        <div className="overflow-hidden rounded-full w-12 h-12">
           <Image src="/images/greenbg.png" alt="image" height={48} width={48} className='object-cover w-full h-full'/>
           </div> 
       </div>
