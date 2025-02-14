@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import MyButton from "../../MyButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import myServer from "@/utils/Axios/axios";
 
-const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) => {
+const RetireAsset = ({ totalQuantity = 0, selectedCount = 0, contractAddress = "" }) => {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -14,7 +15,6 @@ const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) 
   const [errors, setErrors] = useState({});
 
   const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
-  const walletAddress = window.localStorage.getItem("walletAddress");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,13 +49,21 @@ const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) 
     if (!validateForm()) {
       return;
     }
+    const walletAddress = window.localStorage.getItem("walletAddress");
+    const data = {
+      name: formData.retiredBy,
+      recipientAddress: formData.beneficiaryAddress ? formData.beneficiaryAddress : walletAddress,
+      projectName: formData.beneficiary,
+      amount: totalQuantity,
+      tokenAddress: contractAddress,
+      encryptedPrivateKey: encryptedPrivateKey
+    };
+    console.log("Retirement data:", data);
+    const response = await myServer.post("/retire/retireCarbonCredits", data);
+    console.log("API Response:", response.data);
 
-    console.log("Retiring assets with form data:", {
-      ...formData,
-    });
-    console.log("qty",totalQuantity);
-    console.log("encrypted pvt key",encryptedPrivateKey);
-    console.log("contract address",contractAddress);
+
+    alert("Retirement successful with Txn Hash: " + response.data.transactionHash);
     router.push("/decarb/retirements");
   };
 
@@ -64,12 +72,12 @@ const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) 
       <div className="flex justify-between">
         <h2 className="text-lg font-bold text-gray-700 mb-4">{selectedCount} Carbon Assets Selected</h2>
       </div>
-      
+
       <div className="flex justify-between mb-6">
         <p className="text-md font-medium text-gray-600">Quantity: <span className="text-lg font-bold text-gray-800">{totalQuantity}</span></p>
-        
+
       </div>
-      
+
       {showForm && (
         <div className="grid grid-cols-2 gap-6 mb-6">
           <div>
@@ -125,10 +133,10 @@ const RetireAsset = ({ totalQuantity=0, selectedCount=0, contractAddress = ""}) 
         <Link href="/decarb/retirements">
           <MyButton text="BACK" variant="red" />
         </Link>
-        <MyButton 
-          text={showForm ? "CONFIRM RETIREMENT" : "RETIRE"} 
-          onClick={handleRetire} 
-          variant="green" 
+        <MyButton
+          text={showForm ? "CONFIRM RETIREMENT" : "RETIRE"}
+          onClick={handleRetire}
+          variant="green"
         />
       </div>
     </div>
