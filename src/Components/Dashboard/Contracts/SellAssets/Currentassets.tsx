@@ -17,7 +17,7 @@ const erc20ABI = [
 
 const tokenContracts = [
   { address: "0xB297F730E741a822a426c737eCD0F7877A9a2c22", name: "North Pikounda REDD+" },
-  { address: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", name: "Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India" }
+  { address: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", name: "Panama Wind Energy Private Limited" }
 ];
 
 const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
