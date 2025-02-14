@@ -21,7 +21,7 @@ const MainRetireComponent = () => {
       <RetireAsset
   totalQuantity={aggregatedData?.totalQuantity}
   selectedCount={aggregatedData?.selectedCount}
-  selectedItems={aggregatedData?.selectedItems || []}
+  contractAddress={aggregatedData?.selectedItems?.[0]?.contract || ""}
 />
 
       </div>
