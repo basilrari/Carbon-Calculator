@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 
 // Separate Loading Overlay Component
@@ -105,12 +106,17 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
 
   const handleBuy = async () => {
     if (!quantity) {
-      alert("Please select a quantity before buying.");
+      toast.error("Please select a quantity before buying.",{
+        duration: 4000,
+        style: {
+          maxWidth: "300px",
+          fontSize: "14px",
+        },
+      });
       return;
     }
 
     
-
     try {
       const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
       const script = document.createElement("script");
@@ -166,22 +172,43 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
                 console.log("API Response:", response.data);
                 setLoading(false);
                 setProcessingPayment(false);
-                alert(
+                toast.success(
                   "Token Purchase successful! Txn Hash: " +
-                    response.data.transactionHash
+                    response.data.transactionHash ,{
+                      duration: 4000,
+                      style: {
+                        maxWidth: "300px",
+                        fontSize: "14px",
+                      },
+                    }
                 );
                 
                 
               } else {
-                alert("Payment was successful, but order processing failed.");
+                toast.error("Payment was successful, but order processing failed.",{
+                  duration: 4000,
+                  style: {
+                    maxWidth: "300px",
+                    fontSize: "14px",
+                  },
+                });
               }
             } catch (error) {
               console.error("Error processing purchase:", error);
-              alert("Payment successful, but order processing failed.");
+              toast.error("Payment successful, but order processing failed.",{
+                duration: 4000,
+                style: {
+                  maxWidth: "300px",
+                  fontSize: "14px",
+                },
+              });
             }
-            finally{
-              window.location.reload();
+            finally {
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000); // Reload after 3 seconds
             }
+            
             
           },
           modal: {
@@ -198,6 +225,12 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
       document.body.appendChild(script);
     } catch (error) {
       console.error("Error initiating payment:", error);
+      toast.error("Error initiating payment. Please try again.",{
+        style: {
+          maxWidth: "300px",
+          fontSize: "14px",
+        },
+      });
       setLoading(false);
     }
     
@@ -205,7 +238,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
 
   return (
     <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
-
+      <Toaster />
       {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay />}
 
