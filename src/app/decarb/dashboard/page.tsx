@@ -93,10 +93,11 @@ const page = () => {
         <StatsCard stats={statsData} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto ">
-      <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto h-full">
+      <div className='flex flex-col justify-between'>
          <DiscoverComp/>
          <ImageComponent />
+         
       </div>
       
       <div ><BuyCharComp /></div>
