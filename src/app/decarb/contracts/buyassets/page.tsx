@@ -26,14 +26,14 @@ const dummyCarbonAssets = [
   {
     date: "2025-02-08",
     project: "North Pikounda REDD+",
-    price: 16.67,
+    price: 2500,
     contract: "0xB297F730E741a822a426c737eCD0F7877A9a2c22",
   },
   {
     date: "2025-02-08",
     project:
       "Panama Wind Energy Private Limited",
-    price: 176.7,
+    price: 4000,
     contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81",
   },
 ];

@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react';
+import toast, { Toaster } from "react-hot-toast";
 
 interface IndividualassetProps {
   id: number;
@@ -24,7 +25,13 @@ const Individualasset: React.FC<IndividualassetProps> = ({
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value)>3){
-      alert("Max qty 3")
+      toast.error("Max qty 3",{
+        style: {
+          maxWidth: "300px",
+          fontSize: "14px",
+        },
+      }
+)
     }
     const value = Math.min(Number(e.target.value), 3); // Limit the selection to available quantity
     setSelectedQuantity(value);
@@ -32,14 +39,20 @@ const Individualasset: React.FC<IndividualassetProps> = ({
     if (value > 0) {
       onSelectionChange({ id, selectedQuantity: value, price: (price / quantity) * value });
     } else{
-      alert("Please select at least 1 to sell.")
+      toast.error("Please select at least 1 to sell.",{
+        style: {
+          maxWidth: "300px",
+          fontSize: "14px",
+        },
+      }
+)
       onSelectionChange(id); // Deselect if quantity is 0
     }
   };
 
   return (
     <div className="flex justify-between items-center border-b border-gray-300 py-2">
-      
+      <Toaster />
       <div>{Number(quantity)}</div>
       <div>{project}</div>
       <div>{price}</div>

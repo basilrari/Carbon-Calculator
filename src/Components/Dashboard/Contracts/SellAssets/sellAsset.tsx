@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+
 // Separate Loading Overlay Component
 const LoadingOverlay = () => (
   <div className="fixed inset-0 z-[9999] w-full h-full ">
@@ -115,7 +117,12 @@ const SellAsset: React.FC<{
   
       if (response.status === 200) {
         await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulating processing delay
-        alert("Sell successful! Transaction Hash: " + response.data.transactionHash);
+        toast.success("Sell successful! Transaction Hash: " + response.data.transactionHash,{
+          style: {
+            maxWidth: "300px",
+            fontSize: "14px",
+          },
+        });
         
       } else {
         console.error("Error:", response);
@@ -123,18 +130,19 @@ const SellAsset: React.FC<{
     } catch (error) {
       console.error("Sell transaction failed:", error);
     } finally {
+      setLoading(false);
       setTimeout(() => {
-        setLoading(false);
-      },5000) // Stop loading after success or failure
-      window.location.reload();
+        window.location.reload();
+      }, 3000); // Reload after 5 seconds
     }
+    
   
     router.push("/decarb/contracts/sellassets");
   };
   
   return (
     <div className={`relative ${loading ? " pointer-events-none" : ""}`}>
-
+      <Toaster />
       {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay />}
 

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoadingOverlay = () => (
   <div className="fixed inset-0 z-[9999] w-full h-full ">
@@ -155,19 +156,30 @@ const RetireAsset = ({
     await new Promise((resolve) => setTimeout(resolve, 5000));
     // Stop loading after success or failure
     
-    alert(
-      "Retirement successful with Txn Hash: " + response.data.transactionHash
+    
+    toast.success(
+      "Retirement successful with Txn Hash: " + response.data.transactionHash,
+      {
+        duration: 4000, // Toast lasts 4 seconds
+        style: { maxWidth: "300px", fontSize: "14px" },
+      }
     );
-    router.push("/decarb/retirements");
+    
+    // Stop loading first
+    setLoading(false);
+    
+    // Delay navigation so toast is visible
+    setTimeout(() => {
+      router.push("/decarb/retirements");
+    }, 4500); // Navigate after 4.5 seconds    
  
     // Stop the loading animation regardless of success or failure
     setLoading(false);
-    window.location.reload();
-  
   };
 
   return (
     <div className={`relative ${loading ? " pointer-events-none" : ""}`}>
+      <Toaster />
       {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay />}
       <div className="bg-[#f0dfbe] rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
