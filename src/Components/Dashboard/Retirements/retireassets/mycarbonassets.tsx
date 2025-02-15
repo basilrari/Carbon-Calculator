@@ -39,7 +39,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
             return {
               id: index + 1,
               quantity: Number(ethers.formatUnits(balance, 18)),
-              project: `${token.name} Carbon Credit`,
+              project: `${token.name} `,
               price: 100,
               contract: token.address
             };
@@ -102,7 +102,7 @@ const handleSelectionChange = (updatedItem) => {
           <div className="px-10">Project Name</div>
           <div className="text-center">Select Quantity</div>
         </div>
-        <div className="divide-y divide-gray-300 justify-between">
+        <div>
           {assets.map((asset) => (
             <div key={asset.id} >
               <Individualasset

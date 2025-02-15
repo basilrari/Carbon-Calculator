@@ -91,7 +91,7 @@ const Sidebar = () => {
       setTimeout(() => {
         setLoading(false); // Hide loading screen after 5 seconds
         router.push("/landing");
-      }, 5000);
+      }, 7000);
     } catch (error) {
       console.error("Logout failed", error);
       setLoading(false); // Hide loading screen if there's an error
