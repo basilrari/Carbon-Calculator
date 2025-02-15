@@ -77,7 +77,7 @@ const page = () => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col p-6 w-full">
+    <div className="flex-1 flex flex-col h-screen p-6 w-full">
 
       
       <div className='flex items-center justify-between'>
