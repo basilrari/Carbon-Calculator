@@ -94,7 +94,7 @@ const handleSelectionChange = (updatedItem) => {
     
 
   return (
-    <div className="p-4">
+    <div className="pt-4">
       <h1 className="text-lg font-semibold mb-4">My Carbon Assets (DCO2)</h1>
       <div className="bg-purple-100 rounded-lg p-6">
         <div className="flex flex-rows-3 gap-12 justify-between text-gray-500 font-bold text-sm pb-2 border-b border-gray-300">

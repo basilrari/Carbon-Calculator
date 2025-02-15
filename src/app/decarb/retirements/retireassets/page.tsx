@@ -3,7 +3,7 @@ import MainRetireComponent from '@/Components/Dashboard/Retirements/retireassets
 
 const page = () => {
   return (
-    <div className='flex-1 flex flex-col h-screen overflow-y-auto p-6 w-full'>
+    <div className='flex-1 flex flex-col h-screen overflow-y-auto pt-6 w-full'>
      <MainRetireComponent/>
    </div>
   )

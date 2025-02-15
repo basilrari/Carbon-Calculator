@@ -7,6 +7,7 @@ import LearnCardsContainer from '@/Components/Dashboard/overview/learncontainer'
 import ImageComponent from '@/Components/Dashboard/overview/ImageComponent';
 import BuyCharComp from '@/Components/Dashboard/overview/BuyCharComp';
 import DiscoverComp from '@/Components/Dashboard/overview/DiscoverComp';
+import Image from 'next/image';
 
 
 
@@ -76,16 +77,27 @@ const page = () => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col p-6 w-full">
-      <h1 className="text-2xl font-semibold pl-3 pt-2">Overview</h1>
+    <div className="flex-1 flex flex-col h-screen p-6 w-full">
+
+      
+      <div className='flex items-center justify-between'>
+        <h1 className="text-2xl font-semibold pl-3 pt-2">Welcome, Basil </h1>
+        <div className="overflow-hidden rounded-full w-12 h-12">
+          <Image src="/images/greenbg.png" alt="image" height={48} width={48} className='object-cover w-full h-full'/>
+          </div> 
+      </div>
+
+
+
       <div className="w-full mb-6 mt-5">
         <StatsCard stats={statsData} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto ">
-      <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 w-full mx-auto h-full">
+      <div className='flex flex-col justify-between'>
          <DiscoverComp/>
          <ImageComponent />
+         
       </div>
       
       <div ><BuyCharComp /></div>
