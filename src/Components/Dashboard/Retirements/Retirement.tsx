@@ -5,22 +5,37 @@ import { retirementprops } from '@/types/global.types';
 
 const Retirement: React.FC<retirementprops> = ({ date, quantity, project, price }) => {
   const router = useRouter();
-  const formattedDate = date.toLocaleDateString();
-
+  
   const handleIconClick = () => {
-    router.push('/decarb/certificate');
+    // Create certificate data from the retirement props
+    const certificateData = {
+      date: date.toLocaleDateString(),
+      amount: quantity.toString(),
+      project: project,
+      retiredBy: "Bll", // You might want to get this from user context/props
+      beneficiary: "DeCarb",
+      country: "Congo", // You might want to get these from project details
+      tokenId: "TCO2-VCS-1052-2012",
+      vcsId: "1052",
+      vintage: "2012",
+      methodology: "VM0011",
+      transactionHash: "0xadf4e3f7476af990f5328fdf53a5f20205853ad5f7ce811b22",
+      tokenContract: "0x2b97730e74a1a82a426c73ecdf787a7a2c22"
+    };
+
+    // You can either:
+    // 1. Use router.push with query params
+    router.push(`/decarb/certificate?data=${encodeURIComponent(JSON.stringify(certificateData))}`);
+    
+    // Or 2. Use state management (Redux, Context, etc.) to pass the data
   };
 
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
-      <div className="text-sm font-medium text-gray-800">{formattedDate}</div>
-      
+      <div className="text-sm font-medium text-gray-800">{date.toLocaleDateString()}</div>
       <div className="text-sm font-medium text-gray-800">{quantity.toFixed(3)}</div>
-      
       <div className="text-sm font-medium text-gray-800">{project}</div>
-      
       <div className="text-sm font-medium text-gray-800">{price.toFixed(3)}</div>
-      
       <div className="flex items-center">
         <div 
           className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center cursor-pointer hover:bg-blue-300 transition-colors"
