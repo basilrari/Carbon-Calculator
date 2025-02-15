@@ -23,7 +23,7 @@ const dummyRetirements = [
   {
     date: new Date('2025-01-02'),
     quantity: 10,
-    project: 'Wind based power generation by Panama Wind Energy Private Limited IN, Maharashtra, India',
+    project: 'Panama Wind Energy Private Limited',
     price: 200,
   },
 ];

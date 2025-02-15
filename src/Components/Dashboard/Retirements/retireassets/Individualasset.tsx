@@ -30,7 +30,7 @@ const Individualasset: React.FC<IndividualAssetProps> = ({
  
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), Math.min(quantity, 3)); 
+    const value = Math.min(Number(e.target.value),quantity); 
     setSelectedQuantity(value);
   
     onSelectionChange({
@@ -44,21 +44,20 @@ const Individualasset: React.FC<IndividualAssetProps> = ({
      
 
   return (
-    <div className="flex justify-between items-center border-b border-gray-300 py-2">
-      <div>{quantity}</div>
-      <div>{project}</div>
-      <div>{price}</div>
-      <div>
-        <input
-          type="number"
-          min="0"
-          max={Math.min(quantity, 3)}
-          value={selectedQuantity } // Handle undefined state
-          onChange={handleQuantityChange}
-          className="w-20 border rounded px-2"
-        />
-      </div>
-    </div>
+    <div className="flex justify-between items-center border-b border-gray-300 py-4 px-6">
+  <div className="w-1/4 text-sm font-medium">{quantity}</div>
+  <div className="w-2/4 text-sm font-medium">{project}</div>
+  
+  <div className="w-1/4">
+    <input
+      type="number"
+      min="0"
+      max={quantity}
+      value={selectedQuantity}
+      onChange={handleQuantityChange}
+      className="w-20 border rounded px-2"    />
+  </div>
+</div>
   );
 };
 
