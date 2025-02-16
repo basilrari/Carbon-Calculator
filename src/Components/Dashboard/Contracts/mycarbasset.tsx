@@ -23,7 +23,6 @@ const tokenContracts = [
 ];
 
 
-
 type MyCarbonAssetsProps = {
   carbonAssets: carbonAssetArray;
 };
@@ -32,8 +31,6 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
   const [isCurrent, setIsCurrent] = useState(true);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletAssets, setWalletAssets] = useState<any[]>([]);
-
-  
 
   useEffect(() => {
     const fetchBalances = async () => {
@@ -53,7 +50,6 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
               date: new Date().toISOString().split("T")[0],
               quantity: parseFloat(ethers.formatUnits(balance, 18)),
               project: `${token.name}`,
-              price: 100, // Placeholder price
               status: "current",
             };
           })
@@ -66,8 +62,6 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
 
     fetchBalances();
   }, []);
-
- 
 
   const allAssets = [ ...walletAssets]; // Combine user and wallet assets
 
@@ -82,37 +76,22 @@ const MyCarbonAssets: React.FC<MyCarbonAssetsProps> = ({ carbonAssets }) => {
       </div>
 
       <div className="bg-purple-100 rounded-lg p-6 space-y-6">
-        <div className="flex justify-between text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
-          
+        <div className="grid grid-cols-2 text-gray-500 font-bold text-sm border-b border-gray-300 pb-2">
           <div>Quantity</div>
           <div>Project Name</div>
-          <div>Price</div>
-          
         </div>
 
         <div className="space-y-4">
           {filteredAssets.length > 0 ? (
             filteredAssets.map((asset, index) => (
-              <Carbonasset
-                key={index}
-                date={asset.date}
-                quantity={asset.quantity}
-                project={
-                  <div className="group text-left">
-                    <Link
-                      href={`/decarb/project/${encodeURIComponent(asset.project)}`}
-                      className="text-black hover:underline inline-flex items-center"
-                    >
-                      {asset.project}
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-1">
-                        ↗
-                      </span>
-                    </Link>
-                  </div>
-                }
-                price={asset.price}
-                status={asset.status}
-              />
+              <div key={index} className="grid grid-cols-2">
+                <div>{asset.quantity}</div>
+                <div className="text-left">
+                  <Link href={`/decarb/project/${encodeURIComponent(asset.project)}`} className="text-black hover:underline">
+                    {asset.project}
+                  </Link>
+                </div>
+              </div>
             ))
           ) : (
             <div className="text-gray-500">
