@@ -105,7 +105,7 @@ const handleSelectionChange = (updatedItem) => {
         <div>
           {assets.map((asset) => (
             <div key={asset.id} >
-              <Individualasset
+              <Individualasset 
                 id={asset.id} // Pass id
                 quantity={asset.quantity} // Pass quantity
                 project={asset.project} // Pass project name

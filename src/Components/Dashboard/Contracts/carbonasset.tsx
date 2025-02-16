@@ -9,7 +9,7 @@ const Carbonasset: React.FC<carbonassetprops> = ({ date, quantity, project, pric
     <div className="flex items-center justify-between px-4 py-2 bg-purple-100 rounded-lg shadow-sm">
       
       <div className="text-sm font-medium text-gray-800">{safeQuantity}</div>
-      <div className="text-sm font-medium text-gray-800">{project || 'Unknown'}</div>
+      <div className="text-sm font-medium flex  text-gray-800">{project || 'Unknown'}</div>
       <div className="text-sm font-medium text-gray-800">{safePrice.toFixed(3)}</div>
      
     </div>
