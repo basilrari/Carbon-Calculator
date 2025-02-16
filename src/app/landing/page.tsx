@@ -3,7 +3,7 @@ import Homepage from "@/pages/homepage";
 import Goals from "@/pages/goals";
 import Services from "@/pages/services";
 import About from "@/pages/about";
-
+import Calculator from "@/pages/calc"
 const Home = () => {
   return (
     <div>
@@ -15,6 +15,9 @@ const Home = () => {
       </div>
       <div id="services">
         <Services />
+        <div id="calculator">
+          <Calculator />
+        </div>
       </div>
       <div id="about">
         <About />
