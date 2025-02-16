@@ -1,7 +1,17 @@
+
 import React from "react";
 import Image from "next/image";
+import CircularText from "@/Components/Dashboard/LearnMore/CircularText";
+import RotatingText from "@/Components/Dashboard/LearnMore/RotatingText";
+
 
 const Discover = () => {
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
+
+  
   const cards = [
     {
       title: "Building a Sustainable Future",
@@ -47,94 +57,31 @@ const Discover = () => {
                 <Image src="/images/greenbg.png" alt="image" height={48} width={48} className='object-cover w-full h-full'/>
             </div> 
       </div>
+    
+         
 
-      {/* Card Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 mt-8 gap-6">
-        {/* Large Feature Card */}
-        <div className="lg:col-span-7 row-span-1">
-          <div className="relative w-full pt-[60%]">
-            <a
-              href={cards[0].link}
-              className="absolute inset-0 rounded-xl overflow-hidden group"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={cards[0].imgUrl}
-                alt={cards[0].title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:bg-black/30 transition-all duration-300" />
-              <div className="absolute bottom-0 left-0 p-6 flex items-center justify-between w-full">
-                <h3 className="text-white text-xl font-semibold transition-transform duration-300 group-hover:-translate-y-2">
-                  {cards[0].title}
-                </h3>
-                <span className="text-white text-4xl transition-transform duration-300 group-hover:-translate-y-2 group-hover:translate-x-2">
-                  ↗
-                </span>
-              </div>
-            </a>
-          </div>
-        </div>
+        <div>
+           
+        <RotatingText
+  texts={['React', 'Bits', 'Is', 'Cool!']}
+  mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+  staggerFrom={"last"}
+  initial={{ y: "100%" }}
+  animate={{ y: 0 }}
+  exit={{ y: "-120%" }}
+  staggerDuration={0.025}
+  splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+  transition={{ type: "spring", damping: 30, stiffness: 400 }}
+  rotationInterval={2000}
+/>
 
-        {/* Two Side Cards */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          {cards.slice(1, 3).map((card, index) => (
-            <div key={index} className="relative w-full pt-[40%]">
-              <a
-                href={card.link}
-                className="absolute inset-0 rounded-xl overflow-hidden group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={card.imgUrl}
-                  alt={card.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:bg-black/30 transition-all duration-300" />
-                <div className="absolute bottom-0 left-0 p-6 flex items-center justify-between w-full">
-                  <h3 className="text-white text-xl font-semibold transition-transform duration-300 group-hover:-translate-y-2">
-                    {card.title}
-                  </h3>
-                  <span className="text-white text-4xl transition-transform duration-300 group-hover:-translate-y-2 group-hover:translate-x-2">
-                    ↗
-                  </span>
-                </div>
-              </a>
-            </div>
-          ))}
+           <CircularText
+              text=" Decarb * Decarb * Decarb * Decarb * "
+              onHover="speedUp"
+              spinDuration={20}
+              className="custom-class"
+            />
         </div>
-
-        {/* Bottom Cards */}
-        <div className="col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.slice(3).map((card, index) => (
-            <div key={index} className="relative w-full pt-[50%]">
-              <a
-                href={card.link}
-                className="absolute inset-0 rounded-xl overflow-hidden group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={card.imgUrl}
-                  alt={card.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:bg-black/30 transition-all duration-300" />
-                <div className="absolute bottom-0 left-0 p-6 flex items-center justify-between w-full">
-                  <h3 className="text-white text-xl font-semibold transition-transform duration-300 group-hover:-translate-y-2">
-                    {card.title}
-                  </h3>
-                  <span className="text-white text-4xl transition-transform duration-300 group-hover:-translate-y-2 group-hover:translate-x-2">
-                    ↗
-                  </span>
-                </div>
-              </a>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

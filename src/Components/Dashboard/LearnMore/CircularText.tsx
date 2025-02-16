@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 
@@ -98,7 +99,7 @@ const CircularText: React.FC<CircularTextProps> = ({
   return (
     <motion.div
       initial={{ rotate: 0 }}
-      className={`mx-auto rounded-full w-[200px] h-[200px] text-white font-black text-center cursor-pointer ${className}`}
+      className={`mx-auto rounded-full w-[150px] h-[150px] text-[#2F4F4F]  font-light text-center cursor-pointer ${className}`}
       animate={controls}
       onUpdate={(latest) => setCurrentRotation(Number(latest.rotate))}
       onMouseEnter={handleHoverStart}
