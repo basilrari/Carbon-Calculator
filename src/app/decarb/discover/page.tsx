@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import CircularText from "@/Components/Dashboard/LearnMore/CircularText";
 import RotatingText from "@/Components/Dashboard/LearnMore/RotatingText";
+import Marquee from "react-fast-marquee";
 
 
 const Discover = () => {
@@ -75,8 +76,22 @@ const Discover = () => {
               />
 
 
-       <div className="flex grow h-auto w-full mt-6  bg-slate-800">
+       <div className="flex flex-row grow h-auto w-full mt-6 space-x-6">
+          <div className="flex flex-col space-y-6 w-3/5">
+            <div className ="flex grow h-1/2 bg-yellow-100 rounded-md">
 
+            </div>
+            <div className="flex items-center h-1/2 bg-pink-100 rounded-md">
+              <Marquee>
+                <Image src="/images/decarblogo.png" alt="green" height={150} width={150}/>
+              </Marquee>
+            </div>
+          </div>
+          
+          <div className="h-auto w-2/5 bg-slate-400 rounded-md">
+
+          </div>
+          
        </div>
      
 
