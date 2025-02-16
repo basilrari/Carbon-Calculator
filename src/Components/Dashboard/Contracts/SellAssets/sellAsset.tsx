@@ -9,39 +9,9 @@ import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import TransactionConfirmationModal from '@/Components/confirm/confirmTransaction';
-
+import LoadingOverlay from "@/Components/loading/load";
 // Loading Overlay Component
-const LoadingOverlay = () => (
-  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/50 backdrop-blur-xl">
-    <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-10 shadow-2xl max-w-md w-full border border-white/20">
-      <div className="flex flex-col items-center space-y-8">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-full border-4 border-emerald-800/20 animate-pulse"></div>
-          <div className="relative w-20 h-20">
-            <Loader2 className="w-20 h-20 text-emerald-800 animate-spin" />
-          </div>
-        </div>
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-emerald-900">
-            Processing Your Sale
-          </h2>
-          <p className="text-emerald-700 font-medium">
-            Securing your transaction on the blockchain
-          </p>
-          <p className="text-red-500 font-semibold animate-pulse">
-            Please do not refresh or close this page
-          </p>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-emerald-800 h-2 rounded-full animate-[progress_5s_linear]"
-            style={{ width: "100%" }}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-);
+
 
 const SellAsset: React.FC<{
   totalQuantity: number;
@@ -115,7 +85,7 @@ const SellAsset: React.FC<{
   return (
     <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
       <Toaster />
-      {loading && <LoadingOverlay />}
+      {loading && <LoadingOverlay type="sell" />}
       
 
       <div className="bg-blue-50 rounded-lg p-6 shadow-md font-sans">
