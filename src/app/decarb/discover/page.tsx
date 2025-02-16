@@ -50,7 +50,7 @@ const Discover = () => {
                
         <RotatingText
                 texts={['Advancing sustainability with Decarb to create a cleaner, greener future.', 'Building a carbon-neutral world with Decarb’s innovative solutions.', 'Empowering sustainability efforts through Decarb’s carbon offset initiatives.', 'Reducing emissions and driving eco-friendly change with Decarb.']}
-                mainClassName="px-2 w-3/5 h-12 sm:px-2 md:px-3 bg-gradient-to-r from-[#FFE9C1] to-[#c0d3d8] text-[#2F4F4F] text-xl font-bold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center w-full rounded-lg"
+                mainClassName="px-2 w-3/5 h-12 sm:px-2 md:px-3 bg-gradient-to-r from-[#FFE9C1] to-[#c0d3d8] text-[#2F4F4F] text-xl font-semibold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center w-full rounded-lg"
                 staggerFrom={"last"}
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
@@ -70,13 +70,13 @@ const Discover = () => {
               <Link href={cards[0].link}>
               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
               
-                  <h3 className="text-xl font-semibold text-white p-6 absolute bottom-0 ">{cards[0].title}</h3>
+                  <h3 className="text-xl font-medium text-white p-6 absolute bottom-0 ">{cards[0].title}</h3>
                  </Link>
               </div>
             
 
             <div className="flex flex-col justify-around items-center h-1/2 rounded-md pb-6">
-              <h1 className="text-xl font-bold pb-4">In Association with</h1>
+              <h1 className="text-xl font-semibold pb-4">In Association with</h1>
               <div className="flex items-center">
                 <Marquee >                 
                   <Image src="/images/goldstandard.png" alt="green" height={250} width={250} className="pr-12"/>
@@ -92,7 +92,7 @@ const Discover = () => {
              <Link href={cards[1].link}>
                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
                
-                <h3 className="text-xl font-semibold text-white p-6 ">{cards[1].title}</h3>
+                <h3 className="text-xl font-medium text-white p-6 ">{cards[1].title}</h3>
              </Link>
             </div>
           
@@ -108,7 +108,7 @@ const Discover = () => {
                     <Link href={cards[2].link}>
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
                       
-                      <h3 className="text-xl font-semibold text-white p-6 absolute bottom-0">{cards[2].title}</h3>
+                      <h3 className="text-xl font-medium text-white p-6 absolute bottom-0">{cards[2].title}</h3>
                     </Link>
                   </div>
 
@@ -116,7 +116,7 @@ const Discover = () => {
                     <Link href={cards[3].link}>
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
                       
-                      <h3 className="text-xl font-semibold text-white p-6 absolute bottom-0">{cards[3].title}</h3>
+                      <h3 className="text-xl font-medium text-white p-6 absolute bottom-0">{cards[3].title}</h3>
                     </Link>
                   </div>
 
