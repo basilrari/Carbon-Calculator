@@ -46,10 +46,10 @@ const Discover = () => {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto container mx-auto p-6">
+    <div className="h-screen flex flex-col justify-between overflow-y-auto container mx-auto p-6">
 
       {/* Header Section */}
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between pb-6">
         <h1 className="text-2xl font-semibold text-left">
           Learn More
           </h1>
@@ -59,28 +59,46 @@ const Discover = () => {
       </div>
     
          
-
-        <div>
-           
+      
+        
         <RotatingText
-  texts={['React', 'Bits', 'Is', 'Cool!']}
-  mainClassName="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
-  staggerFrom={"last"}
-  initial={{ y: "100%" }}
-  animate={{ y: 0 }}
-  exit={{ y: "-120%" }}
-  staggerDuration={0.025}
-  splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-  transition={{ type: "spring", damping: 30, stiffness: 400 }}
-  rotationInterval={2000}
-/>
+                texts={['React', 'Bits', 'Is', 'Cool!']}
+                mainClassName="px-2 w-3/5 h-12 sm:px-2 md:px-3 bg-gradient-to-r from-[#FFE9C1] to-[#c0d3d8] text-[#2F4F4F] text-xl font-bold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center w-full rounded-lg"
+                staggerFrom={"last"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                rotationInterval={2000}
+              />
 
-           <CircularText
-              text=" Decarb * Decarb * Decarb * Decarb * "
-              onHover="speedUp"
-              spinDuration={20}
-              className="custom-class"
-            />
+
+       <div className="flex grow h-auto w-full mt-6  bg-slate-800">
+
+       </div>
+     
+
+
+        <div className="flex w-full mt-6 mb-2 justify-between">
+           
+           <div className="flex flex-row justify-between space-x-8 w-4/5">
+             <div className="h-auto w-3/5 bg-slate-400 rounded-md">
+             
+             </div>
+             <div className="h-auto w-2/5 bg-slate-400 rounded-md">
+             
+               </div>
+           </div>
+           <div className="overflow-clip pr-4">
+             <CircularText
+                text=" Decarb * Decarb * Decarb * Decarb * "
+                onHover="speedUp"
+                spinDuration={20}
+                className="custom-class "
+              />
+           </div>
         </div>
     </div>
   );
