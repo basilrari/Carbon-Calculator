@@ -47,9 +47,7 @@ const Discover = () => {
             </div> 
       </div>
     
-         
-      
-        
+               
         <RotatingText
                 texts={['Advancing sustainability with Decarb to create a cleaner, greener future.', 'Building a carbon-neutral world with Decarb’s innovative solutions.', 'Empowering sustainability efforts through Decarb’s carbon offset initiatives.', 'Reducing emissions and driving eco-friendly change with Decarb.']}
                 mainClassName="px-2 w-3/5 h-12 sm:px-2 md:px-3 bg-gradient-to-r from-[#FFE9C1] to-[#c0d3d8] text-[#2F4F4F] text-xl font-bold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center w-full rounded-lg"
