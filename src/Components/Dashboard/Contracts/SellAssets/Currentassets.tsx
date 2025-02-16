@@ -16,8 +16,8 @@ const erc20ABI = [
 ];
 
 const tokenContracts = [
-  { address: "0xB297F730E741a822a426c737eCD0F7877A9a2c22", name: "North Pikounda REDD+" },
-  { address: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", name: "Panama Wind Energy Private Limited" }
+  { address: "0xB297F730E741a822a426c737eCD0F7877A9a2c22", name: "North Pikounda REDD+", price: 2375 },
+  { address: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", name: "Panama Wind Energy Private Limited", price: 3800 }
 ];
 
 const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
@@ -49,7 +49,7 @@ const CurrentAssets: React.FC<any> = ({ onAggregatedData }) => {
               date: new Date().toISOString().split("T")[0],
               quantity: ethers.formatUnits(balance, 18),
               project: `${token.name} `,
-              price: 100 // Placeholder price, replace with real data if available
+              price: '₹$token.price}' 
             };
           })
         );
