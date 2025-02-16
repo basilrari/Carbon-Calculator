@@ -13,29 +13,29 @@ import { Loader2 } from "lucide-react";
 
 const navItems = [
   {
-    label: "Overview",
+    label: "Dashboard",
     href: "/decarb/dashboard",
-    icon: "/images/overview.svg",
+    icon: "/images/dashboard.svg",
   },
   {
-    label: "Contracts",
+    label: "Buy-Sell",
     href: "/decarb/contracts",
-    icon: "/images/contracts.svg",
+    icon: "/images/buy-sellicon.svg",
   },
   {
-    label: "Retirements",
+    label: "Retire",
     href: "/decarb/retirements",
     icon: "/images/retirements.svg",
   },
   {
     label: "Calculator",
     href: "/decarb/calculator",
-    icon: "/images/wallet.svg",
+    icon: "/images/calculator.svg",
   },
   {
     label: "Discover",
-    href: "/decarb/learnmore",
-    icon: "/images/learnmore.svg",
+    href: "/decarb/discover",
+    icon: "/images/discovericon.svg",
   },
   {
     label: "Logout",
