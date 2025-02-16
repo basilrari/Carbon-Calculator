@@ -5,6 +5,7 @@ import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import TransactionConfirmationModal from '@/Components/confirm/confirmTransaction';
 
 const LoadingOverlay = () => (
   <div className="fixed inset-0 z-[9999] w-full h-full ">
@@ -127,55 +128,57 @@ const RetireAsset = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRetire = async () => {
-    if (!showForm) {
-      setShowForm(true);
-      return;
-    }
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-    if (!validateForm()) {
-      return;
-    }
-    setLoading(true);
-    
-    const walletAddress = window.localStorage.getItem("walletAddress");
-    const data = {
-      name: formData.retiredBy,
-      recipientAddress: formData.beneficiaryAddress
-        ? formData.beneficiaryAddress
-        : walletAddress,
-      projectName: formData.beneficiary,
-      amount: totalQuantity,
-      tokenAddress: contractAddress,
-      encryptedPrivateKey: encryptedPrivateKey,
-    };
-    console.log("Retirement data:", data);
+const handleRetire = async () => {
+  if (!showForm) {
+    setShowForm(true);
+    return;
+  }
+
+  if (!validateForm()) {
+    return;
+  }
+
+  setShowConfirmation(true); // Show the confirmation modal
+};
+
+const confirmTransaction = async () => {
+  setShowConfirmation(false); // Close the confirmation modal
+  setLoading(true);
+
+  const walletAddress = window.localStorage.getItem("walletAddress");
+  const data = {
+    name: formData.retiredBy,
+    recipientAddress: formData.beneficiaryAddress || walletAddress,
+    projectName: formData.beneficiary,
+    amount: totalQuantity,
+    tokenAddress: contractAddress,
+    encryptedPrivateKey: encryptedPrivateKey,
+  };
+
+  try {
     const response = await myServer.post("/retire/retireCarbonCredits", data);
     console.log("API Response:", response.data);
-    setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    // Stop loading after success or failure
-    
-    
+
     toast.success(
-      "Retirement successful with Txn Hash: " + response.data.transactionHash,
+      `Retirement successful with Txn Hash: ${response.data.transactionHash}`,
       {
-        duration: 4000, // Toast lasts 4 seconds
+        duration: 4000,
         style: { maxWidth: "300px", fontSize: "14px" },
       }
     );
-    
-    // Stop loading first
-    setLoading(false);
-    
-    // Delay navigation so toast is visible
+
     setTimeout(() => {
       router.push("/decarb/retirements");
-    }, 4500); // Navigate after 4.5 seconds    
- 
-    // Stop the loading animation regardless of success or failure
-    setLoading(false);
-  };
+    }, 4500);
+  } catch (error) {
+    console.error("Retirement failed:", error);
+    toast.error("Retirement failed. Please try again.");
+  }
+
+  setLoading(false);
+};
 
   return (
     <div className={`relative ${loading ? " pointer-events-none" : ""}`}>
@@ -270,10 +273,18 @@ const RetireAsset = ({
             <MyButton text="BACK" variant="red" />
           </Link>
           <MyButton
-            text={showForm ? "CONFIRM RETIREMENT" : "RETIRE"}
+            text={showForm ? "RETIRE" : "RETIRE"}
             onClick={handleRetire}
             variant="green"
           />
+          {showConfirmation && (
+        <TransactionConfirmationModal
+          onConfirm={confirmTransaction}
+          onCancel={() => setShowConfirmation(false)}
+          selectedItems={[{ id: contractAddress, selectedQuantity: totalQuantity }]}
+          type="retire"
+        />
+      )}
         </div>
       </div>
     </div>
