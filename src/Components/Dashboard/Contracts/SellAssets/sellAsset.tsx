@@ -61,7 +61,7 @@ const SellAsset: React.FC<{
       if (response.status === 200) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         toast.success(
-          "Sell successful! Transaction Hash: " + response.data.transactionHash,
+          "Sell successful!",
           {
             style: { maxWidth: "300px", fontSize: "14px" },
           }

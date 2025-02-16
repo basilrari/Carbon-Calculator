@@ -88,7 +88,7 @@ const RetireAsset = ({
       console.log("API Response:", response.data);
 
       toast.success(
-        `Retirement successful with Txn Hash: ${response.data.transactionHash}`,
+        `Retirement successful!`,
         {
           duration: 4000,
           style: { maxWidth: "300px", fontSize: "14px" },

@@ -1,11 +1,29 @@
+"use client";
 import React from "react";
 import Header from "@/Components/landingpage/header";
 import Image from "next/image";
 import backgroundImage from "./../../public/images/background.jpg";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Homepage = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+    // Check if the logout toast flag exists
+    if (localStorage.getItem("showLogoutToast") === "true") {
+      toast.success("Logged out successfully", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+
+      // Remove the flag after showing the toast
+      localStorage.removeItem("showLogoutToast");
+    }
+  }, []);
   return (
     <div className="relative h-screen w-full">
+      <Toaster />
       <div className="absolute inset-0 -z-10">
         <Image
           src={backgroundImage}
