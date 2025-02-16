@@ -44,11 +44,11 @@ const Individualasset: React.FC<IndividualAssetProps> = ({
      
 
   return (
-    <div className="flex justify-between items-center border-b border-gray-300 py-4 px-6">
+    <div className="flex justify-between items-center border-b border-gray-300 py-4 ">
   <div className="w-1/4 text-sm font-medium">{quantity}</div>
-  <div className="w-2/4 text-sm font-medium">{project}</div>
+  <div className="w-2/4 flex justify-center text-sm font-medium">{project}</div>
   
-  <div className="w-1/4">
+  <div className="w-1/4 flex justify-end">
     <input
       type="number"
       min="0"
