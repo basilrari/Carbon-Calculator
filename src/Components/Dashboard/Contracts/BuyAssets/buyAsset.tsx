@@ -79,8 +79,7 @@ const BuyCharComponent: React.FC<BuyCharComponentProps> = ({
                 setLoading(false);
                 setProcessingPayment(false);
                 toast.success(
-                  "Token Purchase successful! Txn Hash: " +
-                    response.data.transactionHash,
+                  "Token Purchase successful!",
                   {
                     duration: 4000,
                     style: { maxWidth: "300px", fontSize: "14px" },
