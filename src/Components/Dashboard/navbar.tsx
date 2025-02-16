@@ -36,7 +36,7 @@ const navItems = [
   },
   {
     label: "Calculator",
-    href: "/decarb/calculator",
+    href: "/calculator",
     icon: "/images/calculator.svg",
   },
   {
