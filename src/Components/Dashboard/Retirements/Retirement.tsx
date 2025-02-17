@@ -1,20 +1,25 @@
 "use client"
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { retirementprops } from '@/types/global.types';
 
-const Retirement: React.FC<retirementprops> = ({ date, quantity, project, price }) => {
+interface RetirementProps {
+  date: Date;
+  quantity: number;
+  project: string;
+  price: number;
+}
+
+const Retirement: React.FC<RetirementProps> = ({ date, quantity, project, price }) => {
   const router = useRouter();
   
   const handleIconClick = () => {
-    // Create certificate data from the retirement props
     const certificateData = {
-      date: date.toLocaleDateString(),
+      date: "21-02-2025",
       amount: quantity.toString(),
       project: project,
-      retiredBy: "Bll", // You might want to get this from user context/props
+      retiredBy: "Bll",
       beneficiary: "DeCarb",
-      country: "Congo", // You might want to get these from project details
+      country: "Congo",
       tokenId: "TCO2-VCS-1052-2012",
       vcsId: "1052",
       vintage: "2012",
@@ -23,11 +28,7 @@ const Retirement: React.FC<retirementprops> = ({ date, quantity, project, price 
       tokenContract: "0x2b97730e74a1a82a426c73ecdf787a7a2c22"
     };
 
-    // You can either:
-    // 1. Use router.push with query params
     router.push(`/decarb/certificate?data=${encodeURIComponent(JSON.stringify(certificateData))}`);
-    
-    // Or 2. Use state management (Redux, Context, etc.) to pass the data
   };
 
   return (
