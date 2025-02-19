@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ItemDisplay from "@/Components/ItemDisplay"; // Adjust the import path as needed
 import { chainConfig } from "@/utils/Config/chainConfig";
-import ActionSelection from "@/Components/ActionSelection";
+import ActionSelection from "@/Components/ActionHeader";
 
 const erc20ABI = [
   {

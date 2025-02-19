@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import { ethers } from "ethers"; // Added for potential future use if needed
 import ItemDisplay from "@/Components/ItemDisplay"; // Adjust the import path as needed
-import BuyCharComponent from "@/Components/Dashboard/Contracts/BuyAssets/buyAsset";
 import { z } from "zod";
+import ActionSelection from "@/Components/ActionSelection"; // Use ActionSelection
+import toast, { Toaster } from "react-hot-toast"; // Ensure toast is imported
+import myServer from "@/utils/Axios/axios";
 
-// Define schemas for validation using zod
+// Define schemas for validation using zod (unchanged)
 const walletSchema = z.object({
   amount: z.number(),
 });
@@ -20,10 +22,10 @@ const carbonAssetSchema = z.object({
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
 
-// Dummy wallet data
+// Dummy wallet data (unchanged)
 const dummyWalletData = { amount: 100.0 };
 
-// Dummy carbon assets data
+// Dummy carbon assets data (unchanged)
 const dummyCarbonAssets = [
   {
     date: "2025-02-08",
@@ -39,7 +41,7 @@ const dummyCarbonAssets = [
   },
 ];
 
-// Validate dummy data
+// Validate dummy data (unchanged)
 const validatedWalletData = walletSchema.safeParse(dummyWalletData);
 const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
 
@@ -56,20 +58,19 @@ type CarbonAsset = {
   price: number;
   contract: string;
   Quantity?: {
-    type: 'input';
+    type: "input";
     value: string; // Changed to string to allow empty input
     onChange: (value: string) => void;
   };
 };
 
 const Page = () => {
-  // Include `contract` in `selectedAsset`
   const [selectedAsset, setSelectedAsset] = useState<{
     project: string;
     price: number;
     contract: string;
   } | null>(null);
-  
+
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Store quantities per asset contract
 
   const handleQuantityChange = (contract: string, value: string) => {
@@ -91,8 +92,8 @@ const Page = () => {
     if (qty > 0) {
       // Set this asset as selected and limit quantity to 1-3
       setSelectedAsset({
-        project: dummyCarbonAssets.find(a => a.contract === contract)?.project || "",
-        price: dummyCarbonAssets.find(a => a.contract === contract)?.price || 0,
+        project: dummyCarbonAssets.find((a) => a.contract === contract)?.project || "",
+        price: dummyCarbonAssets.find((a) => a.contract === contract)?.price || 0,
         contract,
       });
       setQuantities({ [contract]: qty > 3 ? 3 : qty < 1 ? 1 : qty }); // Limit to 1-3
@@ -103,26 +104,127 @@ const Page = () => {
     }
   };
 
-  const assetsForDisplay = validatedCarbonAssets.success ? validatedCarbonAssets.data.map((asset) => ({
-    Project: asset.project,
-    Price: asset.price,
-    Quantity: {
-      type: 'input',
-      value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : '', // Start empty, show number if set
-      onChange: (value: string) => handleQuantityChange(asset.contract, value),
-    },
-  })) : [];
+  const assetsForDisplay = validatedCarbonAssets.success
+    ? validatedCarbonAssets.data.map((asset) => ({
+      Project: asset.project,
+      Price: asset.price,
+      Quantity: {
+        type: "input",
+        value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : "",
+        onChange: (value: string) => handleQuantityChange(asset.contract, value),
+      },
+    }))
+    : [];
 
   const headers = ["Project", "Price", "Quantity"];
 
+  // Handle buy action logic with Razorpay integration from BuyCharComponent
+  const handleBuy = async () => {
+    if (!selectedAsset || !quantities[selectedAsset.contract]) {
+      toast.error("Please select a quantity before buying.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+      return;
+    }
+
+    try {
+      const apiKey = "rzp_test_74fvUBAvMzsdVl"; // Replace with actual key
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+
+      script.onload = async () => {
+        const quantity = quantities[selectedAsset.contract]; // Define quantity here
+        const price = selectedAsset.price * quantity; // Calculate total price
+        const options = {
+          key: apiKey,
+          amount: Math.round(Number(price) * 100),
+          currency: "INR",
+          name: "DeCarb",
+          description: `Purchase ${quantity} units of ${selectedAsset.project}`,
+          image: "/images/decarbtoken.png",
+          theme: { color: "#2F4F4F" },
+          handler: async function (response: any) {
+            console.log("Payment response:", response);
+            try {
+              const backendResponse = await myServer.get("/buy/buyTest", {
+                params: {
+                  amount: price,
+                  quantity,
+                  project: selectedAsset.project,
+                  paymentId: response.razorpay_payment_id,
+                },
+              });
+
+              if (backendResponse.status === 200) {
+                const walletAddress = window.localStorage.getItem("walletAddress");
+                const data = {
+                  quantity,
+                  tokenAddress: selectedAsset.contract,
+                  toAddress: walletAddress,
+                };
+                setLoading(true);
+                await new Promise((resolve) => setTimeout(resolve, 3000));
+                const response = await myServer.post("/buy/buyTokens", data);
+
+                setLoading(false);
+                setProcessingPayment(false);
+                toast.success("Token Purchase successful!", {
+                  duration: 4000,
+                  style: { maxWidth: "300px", fontSize: "14px" },
+                });
+              } else {
+                toast.error("Payment was successful, but order processing failed.", {
+                  duration: 4000,
+                  style: { maxWidth: "300px", fontSize: "14px" },
+                });
+              }
+            } catch (error) {
+              toast.error("Payment successful, but order processing failed.", {
+                duration: 4000,
+                style: { maxWidth: "300px", fontSize: "14px" },
+              });
+            } finally {
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
+            }
+          },
+          modal: { ondismiss: () => setLoading(false) },
+        };
+
+        const razorpayInstance = new (window as any).Razorpay(options);
+        razorpayInstance.open();
+      };
+
+      document.body.appendChild(script);
+    } catch (error) {
+      toast.error("Error initiating payment. Please try again.", {
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+      setLoading(false);
+    }
+  };
+
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div>
+      <Toaster /> {/* Add Toaster for toast notifications */}
       <div className="w-full mb-6 mt-5">
-        <BuyCharComponent
-          project={selectedAsset?.project ?? ""}
-          price={selectedAsset ? selectedAsset.price * (quantities[selectedAsset.contract] || 0) : 0}
+        <ActionSelection
+          actionType="buy"
+          project={selectedAsset?.project || ""}
           quantity={quantities[selectedAsset?.contract] || 0}
-          contract={selectedAsset?.contract ?? ""}
+          price={selectedAsset ? selectedAsset.price * (quantities[selectedAsset.contract] || 0) : 0}
+          contract={selectedAsset?.contract || ""}
+          onAction={handleBuy}
+          backLink="/decarb/contracts" // Ensure this is a string
+          primaryButtonText="BUY CHAR"
+          showModal={showModal}
+          setShowModal={setShowModal}
         />
       </div>
       <div>
@@ -132,9 +234,9 @@ const Page = () => {
         <ItemDisplay
           items={assetsForDisplay}
           headers={headers}
-          quantityMode="input" // Set to 'input' to render the quantity as a number input
-          bgColor="#C293FF" // Light purple background for the table container (10% opacity will be applied)
-          itemBgColor="#ECDDFF" // Light lavender background for item boxes (full opacity)
+          quantityMode="input"
+          bgColor="#C293FF"
+          itemBgColor="#ECDDFF"
         />
       </div>
     </div>

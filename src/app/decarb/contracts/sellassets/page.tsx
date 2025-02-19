@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { ethers } from "ethers";
+import React, { useState } from "react";
+import { ethers } from "ethers"; // Added for potential future use if needed
 import ItemDisplay from "@/Components/ItemDisplay"; // Adjust the import path as needed
-import SellAsset from "@/Components/Dashboard/Contracts/SellAssets/sellAsset";
 import { z } from "zod";
-import { AggregateDataProps } from "@/types/global.types";
+import ActionSelection from "@/Components/ActionSelection"; // Use ActionSelection
+import toast, { Toaster } from "react-hot-toast"; // Ensure toast is imported
+import myServer from "@/utils/Axios/axios";
+import { useRouter } from "next/navigation"; // Updated for Next.js 13+
 
-// Define schemas for validation using zod
+// Define schemas for validation using zod (unchanged)
 const walletSchema = z.object({
   amount: z.number(),
 });
@@ -21,40 +23,44 @@ const carbonAssetSchema = z.object({
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
 
-// Dummy wallet data
+// Dummy wallet data (unchanged)
 const dummyWalletData = { amount: 100.0 };
 
-// Token contracts with addresses (matching CurrentAssets)
-const tokenContracts = [
-  { address: "0xB297F730E741a822a426c737eCD0F7877A9a2c22", name: "North Pikounda REDD+", price: 2375 },
-  { address: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81", name: "Panama Wind Energy Private Limited", price: 3800 },
-];
-
-const erc20ABI = [
+// Dummy carbon assets data (unchanged)
+const dummyCarbonAssets = [
   {
-    "constant": true,
-    "inputs": [{ "name": "_owner", "type": "address" }],
-    "name": "balanceOf",
-    "outputs": [{ "name": "balance", "type": "uint256" }],
-    "type": "function"
-  }
+    date: "2025-02-08",
+    project: "North Pikounda REDD+",
+    price: 2500,
+    contract: "0xB297F730E741a822a426c737eCD0F7877A9a2c22",
+  },
+  {
+    date: "2025-02-08",
+    project: "Panama Wind Energy Private Limited",
+    price: 4000,
+    contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81",
+  },
 ];
 
-// Validate dummy data
+// Validate dummy data (unchanged)
 const validatedWalletData = walletSchema.safeParse(dummyWalletData);
+const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
 
-if (!validatedWalletData.success) {
-  console.error("Invalid wallet data:", validatedWalletData.error?.errors);
+if (!validatedWalletData.success || !validatedCarbonAssets.success) {
+  console.error("Invalid data:", {
+    walletErrors: validatedWalletData.error?.errors,
+    assetErrors: validatedCarbonAssets.error?.errors,
+  });
 }
 
 type CarbonAsset = {
   date: string;
   project: string;
-  price: number;
+  price: z.number;
   contract: string;
   Quantity?: {
-    type: 'input';
-    value: string;
+    type: "input";
+    value: string; // Changed to string to allow empty input
     onChange: (value: string) => void;
   };
 };
@@ -65,48 +71,14 @@ const Page = () => {
     price: number;
     contract: string;
   } | null>(null);
-  
+
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Store quantities per asset contract
-  const [assets, setAssets] = useState<CarbonAsset[]>([]); // Store actual asset balances
-
-  useEffect(() => {
-    const fetchBalances = async () => {
-      const storedWallet = window.localStorage.getItem("walletAddress");
-      if (!storedWallet) return;
-
-      try {
-        const provider = new ethers.JsonRpcProvider("https://alfajores-forno.celo-testnet.org"); // Use Mumbai testnet RPC or adjust for your chain
-        console.log("Connected to provider:", provider);
-
-        const balances = await Promise.all(
-          tokenContracts.map(async (token) => {
-            const contract = new ethers.Contract(token.address, erc20ABI, provider);
-            const balance = await contract.balanceOf(storedWallet);
-            const balanceInUnits = parseFloat(ethers.formatUnits(balance, 18)); // Convert to human-readable units (assuming 18 decimals)
-
-            return {
-              date: new Date().toISOString().split("T")[0],
-              project: token.name,
-              price: token.price,
-              contract: token.address,
-              balance: balanceInUnits, // Store the actual balance for quantity limiting
-            };
-          })
-        );
-        console.log("Fetched balances:", balances);
-        setAssets(balances);
-      } catch (error) {
-        console.error("Error fetching balances:", error);
-      }
-    };
-
-    fetchBalances();
-  }, []);
+  const router = useRouter();
 
   const handleQuantityChange = (contract: string, value: string) => {
     const qty = parseInt(value) || 0; // Default to 0 if invalid or empty
-    const asset = assets.find(a => a.contract === contract);
-    if (!asset) return;
+
+    console.log("handleQuantityChange - contract:", contract, "value:", value, "qty:", qty);
 
     // Check if another asset already has a quantity > 0
     const hasOtherSelection = Object.entries(quantities).some(
@@ -114,28 +86,24 @@ const Page = () => {
     );
 
     if (hasOtherSelection) {
-      alert("You can select only 1 item. Both items' quantities have been reset to 0.");
+      alert("You can select only 1 item ");
       // Reset all quantities to 0
       setQuantities({});
       setSelectedAsset(null);
       return; // Prevent changes after reset
     }
 
-    // Limit quantity to the asset's balance (rounded down to nearest integer)
-    const maxQuantity = Math.floor(asset.balance);
-    if (qty > maxQuantity) {
-      alert(`You can only sell up to ${maxQuantity} units of ${asset.project}.`);
-      return; // Prevent exceeding balance
-    }
-
     if (qty > 0) {
-      // Set this asset as selected
-      setSelectedAsset({
-        project: asset.project,
-        price: asset.price,
-        contract: asset.contract,
-      });
-      setQuantities({ [contract]: qty > maxQuantity ? maxQuantity : qty }); // Limit to balance
+      // Set this asset as selected and limit quantity to 1-3
+      const asset = dummyCarbonAssets.find((a) => a.contract === contract);
+      if (asset) {
+        setSelectedAsset({
+          project: asset.project,
+          price: asset.price,
+          contract: contract,
+        });
+        setQuantities({ [contract]: qty > 3 ? 3 : qty < 1 ? 1 : qty }); // Limit to 1-3
+      }
     } else {
       // If quantity is 0 or empty, deselect this asset
       setSelectedAsset(null);
@@ -143,48 +111,103 @@ const Page = () => {
     }
   };
 
-  const assetsForDisplay = assets.map((asset) => ({
-    Project: asset.project,
-    Price: `₹${asset.price}`,
-    Quantity: {
-      type: 'input',
-      value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : '', // Start empty, show number if set
-      onChange: (value: string) => handleQuantityChange(asset.contract, value),
-    },
-  }));
+  const assetsForDisplay = validatedCarbonAssets.success
+    ? validatedCarbonAssets.data.map((asset) => ({
+      Project: asset.project,
+      Price: asset.price,
+      Quantity: {
+        type: "input",
+        value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : "",
+        onChange: (value: string) => handleQuantityChange(asset.contract, value),
+      },
+    }))
+    : [];
 
   const headers = ["Project", "Price", "Quantity"];
 
-  // Memoize the callback to avoid re-creating it on every render
-  const handleAggregatedData = useCallback((data: AggregateDataProps) => {
-    // No need to set state here since we’re directly using quantities and selectedAsset
-  }, []);
+  // Handle sell action logic with debugging
+  const handleSell = async () => {
+    console.log("handleSell triggered - selectedAsset:", selectedAsset);
+    console.log("handleSell triggered - quantities:", quantities);
+    if (!selectedAsset || !quantities[selectedAsset.contract] || quantities[selectedAsset.contract] <= 0) {
+      console.log("Validation failed - no valid selection or quantity");
+      toast.error("Please select a valid quantity before selling.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+      return;
+    }
+
+    try {
+      console.log("Starting sell transaction...");
+      setLoading(true); // Set loading state at the start
+      const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
+      const data = {
+        quantity: quantities[selectedAsset.contract],
+        contractAddress: selectedAsset.contract,
+        encryptedPrivateKey: encryptedPrivateKey,
+      };
+
+      console.log("Sending data to backend:", data);
+      const response = await myServer.post("/sell/sellTransfer", data);
+      console.log("Backend response:", response);
+
+      if (response.status === 200) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        alert("Sell successful!");
+        toast.success("Sell successful!", {
+          style: { maxWidth: "300px", fontSize: "14px" },
+        });
+        setTimeout(() => {
+          router.push("/decarb/contracts/sellassets");
+        }, 3000);
+      } else {
+        console.error("Error from backend:", response);
+        toast.error("Transaction failed. Please try again.", {
+          duration: 4000,
+          style: { maxWidth: "300px", fontSize: "14px" },
+        });
+      }
+    } catch (error) {
+      console.error("Sell transaction failed:", error);
+      toast.error("Transaction failed. Please try again.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+    } 
+  };
+
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div>
+      <Toaster /> {/* Add Toaster for toast notifications */}
       <div className="w-full mb-6 mt-5">
-        <SellAsset
-          totalQuantity={selectedAsset ? quantities[selectedAsset.contract] || 0 : 0}
-          totalPrice={selectedAsset ? (quantities[selectedAsset.contract] || 0) * (selectedAsset.price || 0) : 0}
-          selectedCount={selectedAsset ? 1 : 0}
-          selectedItems={selectedAsset ? [{
-            id: selectedAsset.contract,
-            project: selectedAsset.project,
-            price: selectedAsset.price,
-            selectedQuantity: quantities[selectedAsset.contract] || 0,
-          }] : []}
+        <ActionSelection
+          actionType="sell"
+          project={selectedAsset?.project || ""}
+          quantity={quantities[selectedAsset?.contract] || 0}
+          price={selectedAsset ? selectedAsset.price * (quantities[selectedAsset.contract] || 0) : 0}
+          contract={selectedAsset?.contract || ""}
+          selectedItems={selectedAsset ? [{ id: selectedAsset.contract, selectedQuantity: quantities[selectedAsset.contract] || 0 }] : []}
+          onAction={handleSell}
+          backLink="/decarb/contracts" // Ensure this is a string
+          primaryButtonText="SELL CHAR"
+          showModal={showModal}
+          setShowModal={setShowModal}
         />
       </div>
       <div>
         <div className="flex items-center justify-between p-2">
-          <h1 className="text-lg font-bold text-gray-800">Available Carbon Assets</h1>
+          <h1 className="text-lg font-bold text-gray-800">Available Carbon Assets for Sale</h1>
         </div>
         <ItemDisplay
           items={assetsForDisplay}
           headers={headers}
-          quantityMode="input" // Set to 'input' to render the quantity as a number input
-          bgColor="#C293FF" // Light purple background for the table container (10% opacity will be applied)
-          itemBgColor="#ECDDFF" // Light lavender background for item boxes (full opacity)
+          quantityMode="input"
+          bgColor="#C293FF"
+          itemBgColor="#ECDDFF"
         />
       </div>
     </div>

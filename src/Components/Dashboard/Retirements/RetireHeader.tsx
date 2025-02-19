@@ -8,10 +8,11 @@ import toast, { Toaster } from "react-hot-toast";
 import TransactionConfirmationModal from "@/Components/confirm/confirmTransaction";
 import LoadingOverlay from "@/Components/loading/load";
 
-const RetireAsset = ({
+const RetireHeader = ({
   totalQuantity = 0,
   selectedCount = 0,
   contractAddress = "",
+  project = "N/A", // Added project prop to display project name
 }) => {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
@@ -23,9 +24,7 @@ const RetireAsset = ({
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const encryptedPrivateKey = window.localStorage.getItem(
-    "encryptedPrivateKey"
-  );
+  const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +32,6 @@ const RetireAsset = ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -44,12 +42,8 @@ const RetireAsset = ({
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.retiredBy.trim()) {
-      newErrors.retiredBy = "This field is required";
-    }
-    if (!formData.beneficiary.trim()) {
-      newErrors.beneficiary = "This field is required"; // Add validation for beneficiary
-    }
+    if (!formData.retiredBy.trim()) newErrors.retiredBy = "This field is required";
+    if (!formData.beneficiary.trim()) newErrors.beneficiary = "This field is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -62,15 +56,13 @@ const RetireAsset = ({
       return;
     }
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
-    setShowConfirmation(true); // Show the confirmation modal
+    setShowConfirmation(true);
   };
 
   const confirmTransaction = async () => {
-    setShowConfirmation(false); // Close the confirmation modal
+    setShowConfirmation(false);
     setLoading(true);
 
     const walletAddress = window.localStorage.getItem("walletAddress");
@@ -85,19 +77,8 @@ const RetireAsset = ({
 
     try {
       const response = await myServer.post("/retire/retireCarbonCredits", data);
-      console.log("API Response:", response.data);
-
-      toast.success(
-        `Retirement successful!`,
-        {
-          duration: 4000,
-          style: { maxWidth: "300px", fontSize: "14px" },
-        }
-      );
-
-      setTimeout(() => {
-        router.push("/decarb/retirements");
-      }, 4500);
+      toast.success("Retirement successful!", { duration: 4000, style: { maxWidth: "300px", fontSize: "14px" } });
+      setTimeout(() => router.push("/decarb/retirements"), 4500);
     } catch (error) {
       console.error("Retirement failed:", error);
       toast.error("Retirement failed. Please try again.");
@@ -107,33 +88,25 @@ const RetireAsset = ({
   };
 
   return (
-    <div className={`relative ${loading ? " pointer-events-none" : ""}`}>
+    <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
       <Toaster />
-      {/* ✅ Loading Overlay */}
       {loading && <LoadingOverlay type="retire" />}
       <div className="bg-[#f0dfbe] rounded-lg p-6 w-auto mx-auto shadow-md font-sans">
-        <div className="flex justify-between">
-          <h2 className="text-lg font-bold text-gray-700 mb-4">
-            {selectedCount} Carbon Assets Selected
-          </h2>
-        </div>
+        <h2 className="text-lg font-semibold mb-4">DeCarb BioChar Carbon Pool (CHAR)</h2>
 
-        <div className="flex justify-between mb-6">
-          <p className="text-md font-medium text-gray-600">
-            Quantity:{" "}
-            <span className="text-lg font-bold text-gray-800">
-              {totalQuantity}
-            </span>
+        <div className="mb-4">
+          <p className="text-sm text-gray-600">
+            Project: <span className="font-semibold">{project}</span>
+          </p>
+          <p className="text-sm text-gray-600">
+            Quantity: <span className="font-semibold">{totalQuantity}</span>
           </p>
         </div>
 
         {showForm && (
           <div className="grid grid-cols-2 gap-6 mb-6">
             <div>
-              <label
-                htmlFor="retiredBy"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="retiredBy" className="block text-sm font-medium text-gray-700 mb-1">
                 RETIRED BY <span className="text-red-500">*</span>
               </label>
               <input
@@ -144,20 +117,13 @@ const RetireAsset = ({
                 onChange={handleInputChange}
                 required
                 placeholder="Enter name"
-                className={`w-full p-2 border ${
-                  errors.retiredBy ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500`}
+                className={`w-full p-2 border ${errors.retiredBy ? "border-red-500" : "border-gray-300"} rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500`}
               />
-              {errors.retiredBy && (
-                <p className="mt-1 text-sm text-red-500">{errors.retiredBy}</p>
-              )}
+              {errors.retiredBy && <p className="mt-1 text-sm text-red-500">{errors.retiredBy}</p>}
             </div>
 
             <div>
-              <label
-                htmlFor="beneficiary"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="beneficiary" className="block text-sm font-medium text-gray-700 mb-1">
                 BENEFICIARY <span className="text-red-500">*</span>
               </label>
               <input
@@ -166,22 +132,13 @@ const RetireAsset = ({
                 name="beneficiary"
                 value={formData.beneficiary}
                 onChange={handleInputChange}
-                className={`w-full p-2 border ${
-                  errors.beneficiary ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500`}
+                className={`w-full p-2 border ${errors.beneficiary ? "border-red-500" : "border-gray-300"} rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500`}
               />
-              {errors.beneficiary && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.beneficiary}
-                </p>
-              )}
+              {errors.beneficiary && <p className="mt-1 text-sm text-red-500">{errors.beneficiary}</p>}
             </div>
 
             <div className="col-span-2">
-              <label
-                htmlFor="beneficiaryAddress"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="beneficiaryAddress" className="block text-sm font-medium text-gray-700 mb-1">
                 BENEFICIARY ADDRESS
               </label>
               <input
@@ -201,7 +158,7 @@ const RetireAsset = ({
             <MyButton text="BACK" variant="red" />
           </Link>
           <MyButton
-            text={showForm ? "RETIRE" : "RETIRE"}
+            text={showForm ? "RETIRE" : "ADD DETAILS"}
             onClick={handleRetire}
             variant="green"
           />
@@ -209,9 +166,7 @@ const RetireAsset = ({
             <TransactionConfirmationModal
               onConfirm={confirmTransaction}
               onCancel={() => setShowConfirmation(false)}
-              selectedItems={[
-                { id: contractAddress, selectedQuantity: totalQuantity },
-              ]}
+              selectedItems={[{ id: contractAddress, selectedQuantity: totalQuantity }]}
               type="retire"
             />
           )}
@@ -221,4 +176,4 @@ const RetireAsset = ({
   );
 };
 
-export default RetireAsset;
+export default RetireHeader;
