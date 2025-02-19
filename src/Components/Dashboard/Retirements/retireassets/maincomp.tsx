@@ -15,13 +15,13 @@ const MainRetireComponent = () => {
 
   return (
     <div>
-      
+
       <div className='w-full mb-6'>
-      <RetireAsset
-  totalQuantity={aggregatedData?.totalQuantity}
-  selectedCount={aggregatedData?.selectedCount}
-  contractAddress={aggregatedData?.selectedItems?.[0]?.contract || ""}
-/>
+        <RetireAsset
+          totalQuantity={aggregatedData?.totalQuantity}
+          selectedCount={aggregatedData?.selectedCount}
+          contractAddress={aggregatedData?.selectedItems?.[0]?.contract || ""}
+        />
 
       </div>
       <div>
