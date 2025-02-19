@@ -35,7 +35,7 @@ const Individualasset: React.FC<IndividualAssetProps> = ({
   
     onSelectionChange({
       id,
-      selectedQuantity: value, // Make sure this updates correctly
+      selectedQuantity: value,
       price: value * pricePerUnit,
       contract,
       project,

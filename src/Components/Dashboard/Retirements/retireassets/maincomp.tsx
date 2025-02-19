@@ -10,6 +10,7 @@ const MainRetireComponent = () => {
   // Memoize the callback to avoid re-creating it on every render
   const handleAggregatedData = useCallback((data: AggregateDataProps) => {
     setAggregatedData(data);
+    console.log(data);
   }, []);
 
   return (
