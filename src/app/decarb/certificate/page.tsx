@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams } from 'next/navigation';
-import Certificate from '@/Components/certificate/certi';
+import Certificate from '@/Components/Certificate';
 
 interface CertificateData {
   date: string;

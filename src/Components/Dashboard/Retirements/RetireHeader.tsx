@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import MyButton from "../MyButton";
+import MyButton from "../../MyButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";
 import { Loader2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import TransactionConfirmationModal from "@/Components/confirm/confirmTransaction";
-import LoadingOverlay from "@/Components/loading/load";
+import TransactionConfirmationModal from "@/Components/TransactionConfirmationModal";
+import LoadingOverlay from "@/Components/LoadingAnimation";
 
 const RetireHeader = ({
   totalQuantity = 0,
