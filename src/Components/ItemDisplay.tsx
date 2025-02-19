@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image"; // Import Image from next/image for optimized images
 
 type ItemValue = string | number | { type: 'button'; label: string; onClick: () => void } | { type: 'input'; value: number | string; onChange: (value: string) => void };
 
@@ -18,6 +19,20 @@ const ItemDisplay: React.FC<ItemDisplayProps> = ({ items, headers, quantityMode 
   const renderValue = (value: ItemValue, header: string, index: number) => {
     if (typeof value === 'object') {
       if (value?.type === 'button') {
+        if (value.label === 'View') {
+          // Render a centered image for the "View" button
+          return (
+            <button onClick={value.onClick} className="flex justify-center items-center h-full ml-2">
+              <Image
+                src="/images/view.svg" // Correct path to the image in the public folder
+                alt="View"
+                width={24} // Adjust width as needed
+                height={24} // Adjust height as needed
+                className="hover:opacity-80" // Maintain hover effect
+              />
+            </button>
+          );
+        }
         return <button onClick={value.onClick} className="ml-2 text-blue-500 hover:underline">{value.label}</button>;
       } else if (value?.type === 'input' && quantityMode === 'input' && header === 'Quantity') {
         return (
@@ -66,9 +81,9 @@ const ItemDisplay: React.FC<ItemDisplayProps> = ({ items, headers, quantityMode 
       </div>
       <div className="space-y-4">
         {items.length > 0 ? items.map((item, index) => (
-          <div key={index} style={itemStyle} className="flex justify-between p-4 rounded-lg shadow-md">
+          <div key={index} style={itemStyle} className="flex justify-between p-4 rounded-lg shadow-md items-center">
             {headers.map((header) => (
-              <div key={header} className="flex-1 text-center">
+              <div key={header} className="flex-1 text-center flex items-center justify-center">
                 {renderValue(item[header], header, index)}
               </div>
             ))}

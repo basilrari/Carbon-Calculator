@@ -23,7 +23,7 @@ const page = () => {
             date: "21-02-2025",
             amount: '100', // Convert quantity to string as per your example
             project: 'Panama Wind Energy Project',
-            retiredBy: "Bill",
+            retiredBy: "Basil",
             beneficiary: "DeCarb",
             country: "Congo",
             tokenId: "TCO2-VCS-1052-2012",
