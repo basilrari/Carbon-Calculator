@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Header from "@/Components/landingpage/header";
+import Header from "@/Components/Header";
 import Image from "next/image";
 import backgroundImage from "./../../public/images/background.jpg";
 import { useEffect, useState } from "react";

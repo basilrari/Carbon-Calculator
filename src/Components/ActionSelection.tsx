@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import MyButton from "./Dashboard/MyButton";
+import MyButton from "./MyButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import LoadingOverlay from "@/Components/loading/load";
-import TransactionConfirmationModal from "./confirm/confirmTransaction";
+import LoadingOverlay from "@/Components/LoadingAnimation";
+import TransactionConfirmationModal from "./TransactionConfirmationModal";
 
 type ActionSelectionProps = {
   actionType: "buy" | "sell"; // Only buy and sell actions

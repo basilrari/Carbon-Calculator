@@ -1,5 +1,5 @@
 import React from 'react';
-import MyButton from './Dashboard/MyButton';
+import MyButton from './MyButton';
 import Link from 'next/link';
 import Image from 'next/image';
 
