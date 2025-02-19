@@ -1,9 +1,8 @@
 "use client";
 import React from 'react';
 import ItemDisplay from '@/Components/ItemDisplay'; // Import ItemDisplay
-import RetirementComp from '@/Components/Dashboard/Retirements/RetireComp';
 import { useRouter } from 'next/navigation'; // Import useRouter for navigation
-import ActionSelection from '@/Components/ActionSelection';
+import ActionHeader from '@/Components/ActionHeader';
 
 const page = () => {
   const router = useRouter(); // Initialize router for navigation
@@ -73,7 +72,7 @@ const page = () => {
   return (
     <div>
       <div className='mt-8'>
-        <ActionSelection
+        <ActionHeader
           quantity={100} // e.g., 100
           price={0} // Not used, but required for type safety
           primaryAction={{ text: "RETIRE", href: "/decarb/retirements/retireassets" }}
