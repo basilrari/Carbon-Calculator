@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MyButton from "../../MyButton";
+import MyButton from "../MyButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import myServer from "@/utils/Axios/axios";

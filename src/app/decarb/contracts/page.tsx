@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ItemDisplay from "@/Components/ItemDisplay"; // Adjust the import path as needed
-import BuyorSell from "@/Components/Dashboard/Contracts/BuyorSellComp";
 import { chainConfig } from "@/utils/Config/chainConfig";
+import ActionSelection from "@/Components/ActionSelection";
 
 const erc20ABI = [
   {
@@ -68,7 +68,11 @@ const Page = () => {
   return (
     <div>
       <div className="w-full mb-6 mt-5">
-        <BuyorSell price={charPrice} />
+        <ActionSelection
+          price={2375} // e.g., 2375
+          primaryAction={{ text: "BUY CHAR", href: "/decarb/contracts/buyassets" }}
+          secondaryAction={{ text: "SELL CHAR", href: "/decarb/contracts/sellassets" }}
+        />
       </div>
       <div>
         <div className="flex items-center justify-between p-2">

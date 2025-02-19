@@ -3,6 +3,7 @@ import React from 'react';
 import ItemDisplay from '@/Components/ItemDisplay'; // Import ItemDisplay
 import RetirementComp from '@/Components/Dashboard/Retirements/RetireComp';
 import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import ActionSelection from '@/Components/ActionSelection';
 
 const page = () => {
   const router = useRouter(); // Initialize router for navigation
@@ -15,9 +16,9 @@ const page = () => {
       Quantity: 100,
       Project: 'Panama Wind Energy Project',
       Price: 16.67,
-      View: { 
-        type: 'button', 
-        label: 'View', 
+      View: {
+        type: 'button',
+        label: 'View',
         onClick: () => {
           const certificateData = {
             date: "21-02-2025",
@@ -42,9 +43,9 @@ const page = () => {
       Quantity: 10,
       Project: 'North Pikounda REDD+',
       Price: 176.7,
-      View: { 
-        type: 'button', 
-        label: 'View', 
+      View: {
+        type: 'button',
+        label: 'View',
         onClick: () => {
           const certificateData = {
             date: "21-02-2025",
@@ -71,11 +72,16 @@ const page = () => {
 
   return (
     <div>
-      <div className="w-full mb-6 mt-5">
-        <RetirementComp {...retirementSummary} />
+      <div className='mt-8'>
+        <ActionSelection
+          quantity={100} // e.g., 100
+          price={0} // Not used, but required for type safety
+          primaryAction={{ text: "RETIRE", href: "/decarb/retirements/retireassets" }}
+          secondaryAction={undefined} // No secondary action
+        />
       </div>
 
-      <div>
+      <div className='mt-12'>
         <ItemDisplay
           items={dummyRetirements}
           headers={headers}
