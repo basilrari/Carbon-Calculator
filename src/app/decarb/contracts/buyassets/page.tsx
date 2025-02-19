@@ -7,6 +7,7 @@ import { z } from "zod";
 import ActionSelection from "@/Components/ActionSelection"; // Use ActionSelection
 import toast, { Toaster } from "react-hot-toast"; // Ensure toast is imported
 import myServer from "@/utils/Axios/axios";
+import LoadingOverlay from "@/Components/LoadingAnimation";
 
 // Define schemas for validation using zod (unchanged)
 const walletSchema = z.object({
@@ -211,8 +212,9 @@ const Page = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div>
+    <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
       <Toaster /> {/* Add Toaster for toast notifications */}
+      {loading && <LoadingOverlay type="buy" />}
       <div className="w-full mb-6 mt-5">
         <ActionSelection
           actionType="buy"

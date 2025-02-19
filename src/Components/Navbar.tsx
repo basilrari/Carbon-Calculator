@@ -37,7 +37,7 @@ const navItems = [
   {
     label: "Transactions",
     href: "/decarb/transaction",
-    icon: "/images/retirements.svg",
+    icon: "/images/transaction.png",
   },
   {
     label: "Calculator",

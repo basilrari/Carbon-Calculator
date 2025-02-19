@@ -8,6 +8,7 @@ import ActionSelection from "@/Components/ActionSelection"; // Use ActionSelecti
 import toast, { Toaster } from "react-hot-toast"; // Ensure toast is imported
 import myServer from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation"; // Updated for Next.js 13+
+import LoadingOverlay from "@/Components/LoadingAnimation";
 
 // Define schemas for validation using zod (unchanged)
 const walletSchema = z.object({
@@ -175,14 +176,21 @@ const Page = () => {
         style: { maxWidth: "300px", fontSize: "14px" },
       });
     } 
+    finally{
+      setLoading(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
   };
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div>
-      <Toaster /> {/* Add Toaster for toast notifications */}
+    <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
+    <Toaster /> {/* Add Toaster for toast notifications */}
+    {loading && <LoadingOverlay type="sell" />}
       <div className="w-full mb-6 mt-5">
         <ActionSelection
           actionType="sell"
