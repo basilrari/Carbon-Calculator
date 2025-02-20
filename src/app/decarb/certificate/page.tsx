@@ -4,6 +4,7 @@ import Image from "next/image";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface CertificateData {
   date: string;
@@ -24,7 +25,8 @@ interface CertificateData {
 const CertificatePage = () => {
   const router = useRouter();
   const certificateRef = useRef<HTMLDivElement>(null);
-  const [certificateData, setCertificateData] = useState<CertificateData | null>(null);
+  const [certificateData, setCertificateData] =
+    useState<CertificateData | null>(null);
 
   useEffect(() => {
     const data = window.localStorage.getItem("certificateData");
@@ -78,16 +80,24 @@ const CertificatePage = () => {
               <div className="mb-4 md:mb-0">
                 <div className="relative pl-6 mb-4">
                   <div className="absolute left-0 top-0 w-1 h-full bg-green-700" />
-                  <h1 className="text-2xl font-normal leading-tight">Carbon Retirement Certificate</h1>
+                  <h1 className="text-2xl font-normal leading-tight">
+                    Carbon Retirement Certificate
+                  </h1>
                 </div>
-                <p className="text-xs text-gray-600">RETIRED ON {certificateData.date}</p>
+                <p className="text-xs text-gray-600">
+                  RETIRED ON {certificateData.date}
+                </p>
               </div>
               <div className="text-right">
                 <div className="relative">
-                  <span className="text-6xl font-bold text-green-700">{certificateData.amount}</span>
+                  <span className="text-6xl font-bold text-green-700">
+                    {certificateData.amount}
+                  </span>
                   <div className="absolute -top-4 -right-4 w-32 h-32 bg-green-50 rounded-full -z-10" />
                 </div>
-                <p className="text-xs text-gray-600 mt-2">TONNE OF CO2 EMISSIONS</p>
+                <p className="text-xs text-gray-600 mt-2">
+                  TONNE OF CO2 EMISSIONS
+                </p>
               </div>
             </div>
 
@@ -97,13 +107,19 @@ const CertificatePage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="relative pl-6">
                   <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                  <p className="text-xs font-medium text-gray-600 mb-2">RETIRED BY</p>
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    RETIRED BY
+                  </p>
                   <p className="text-green-700">{certificateData.retiredBy}</p>
                 </div>
                 <div className="relative pl-6">
                   <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                  <p className="text-xs font-medium text-gray-600 mb-2">BENEFICIARY</p>
-                  <p className="text-green-700">{certificateData.beneficiary}</p>
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    BENEFICIARY
+                  </p>
+                  <p className="text-green-700">
+                    {certificateData.beneficiary}
+                  </p>
                 </div>
               </div>
 
@@ -111,23 +127,43 @@ const CertificatePage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="relative pl-6">
                   <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                  <p className="text-xs font-medium text-gray-600 mb-2">BENEFICIARY ADDRESS</p>
-                  <p className="text-green-700 break-all">{certificateData.benefAddress || "-"}</p>
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    BENEFICIARY ADDRESS
+                  </p>
+                  <p className="text-green-700 break-all">
+                    {certificateData.benefAddress || "-"}
+                  </p>
                 </div>
                 <div className="relative pl-6">
                   <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                  <p className="text-xs font-medium text-gray-600 mb-2">RETIREMENT TRANSACTION</p>
-                  <p className="text-green-700 break-all">{certificateData.transactionHash}</p>
-                  <p className="text-green-700 mt-1 cursor-pointer hover:underline">Celo Explorer →</p>
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    RETIREMENT TRANSACTION
+                  </p>
+                  <p className="text-green-700 break-all">
+                    {certificateData.transactionHash}
+                  </p>
+                  <p className="text-green-700 mt-1 cursor-pointer hover:underline">
+                    <Link
+                      href={`https://alfajores.celoscan.io/tx/${certificateData.transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Celo Explorer →
+                    </Link>
+                  </p>{" "}
                 </div>
               </div>
 
               {/* Project Details */}
               <div className="relative pl-6 py-6 border-y border-gray-200">
                 <div className="absolute left-0 top-0 w-1 h-full bg-green-700" />
-                <p className="text-xs font-medium text-gray-600 mb-2">PROJECT</p>
+                <p className="text-xs font-medium text-gray-600 mb-2">
+                  PROJECT
+                </p>
                 <p className="text-green-700 mb-4">{certificateData.project}</p>
-                <p className="text-xs font-medium text-gray-600 mb-1">HOST COUNTRY</p>
+                <p className="text-xs font-medium text-gray-600 mb-1">
+                  HOST COUNTRY
+                </p>
                 <p className="text-green-700">{certificateData.country}</p>
               </div>
 
@@ -136,14 +172,22 @@ const CertificatePage = () => {
                 <div className="space-y-12">
                   <div className="relative pl-6">
                     <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                    <p className="text-xs font-medium pt-4 text-gray-600 mb-2">PROJECT-SPECIFIC TOKEN</p>
+                    <p className="text-xs font-medium pt-4 text-gray-600 mb-2">
+                      PROJECT-SPECIFIC TOKEN
+                    </p>
                     <p>{certificateData.tokenId}</p>
                   </div>
                   <div className="relative pl-6">
                     <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                    <p className="text-xs font-medium text-gray-600 mb-2">TCO2 TOKEN CONTRACT</p>
-                    <p className="text-green-700 break-all">{certificateData.tokenContract}</p>
-                    <p className="text-green-700 mt-1 cursor-pointer hover:underline">Celo Explorer →</p>
+                    <p className="text-xs font-medium text-gray-600 mb-2">
+                      TCO2 TOKEN CONTRACT
+                    </p>
+                    <p className="text-green-700 break-all">
+                      {certificateData.tokenContract}
+                    </p>
+                    <p className="text-green-700 mt-1 cursor-pointer hover:underline">
+                      Celo Explorer →
+                    </p>
                   </div>
                 </div>
 
@@ -164,23 +208,33 @@ const CertificatePage = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative pl-6">
                       <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                      <p className="text-xs font-medium text-gray-600 mb-2">VCS ID</p>
+                      <p className="text-xs font-medium text-gray-600 mb-2">
+                        VCS ID
+                      </p>
                       <p>{certificateData.vcsId}</p>
                     </div>
                     <div className="relative pl-6">
                       <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                      <p className="text-xs font-medium text-gray-600 mb-2">VINTAGE</p>
+                      <p className="text-xs font-medium text-gray-600 mb-2">
+                        VINTAGE
+                      </p>
                       <p>{certificateData.vintage}</p>
                     </div>
                     <div className="relative pl-6">
                       <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                      <p className="text-xs font-medium text-gray-600 mb-2">VCS METHODOLOGY</p>
+                      <p className="text-xs font-medium text-gray-600 mb-2">
+                        VCS METHODOLOGY
+                      </p>
                       <p>{certificateData.methodology}</p>
                     </div>
                     <div className="relative pl-6">
                       <div className="absolute left-0 top-0 w-1 h-full bg-gray-200" />
-                      <p className="text-xs font-medium text-gray-600 mb-2">VCS ISSUANCE RECORD</p>
-                      <p className="text-green-700 cursor-pointer hover:underline">Verra →</p>
+                      <p className="text-xs font-medium text-gray-600 mb-2">
+                        VCS ISSUANCE RECORD
+                      </p>
+                      <p className="text-green-700 cursor-pointer hover:underline">
+                        Verra →
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -199,7 +253,8 @@ const CertificatePage = () => {
                 />
               </div>
               <p className="text-xs text-gray-500 text-center">
-                This on-chain carbon retirement was made possible with DeCarb in association with Toucan Protocol.
+                This on-chain carbon retirement was made possible with DeCarb in
+                association with Toucan Protocol.
               </p>
             </div>
           </div>
