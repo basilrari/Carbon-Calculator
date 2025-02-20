@@ -8,6 +8,7 @@ import ActionSelection from "@/Components/ActionSelection"; // Use ActionSelecti
 import toast, { Toaster } from "react-hot-toast"; // Ensure toast is imported
 import myServer from "@/utils/Axios/axios";
 import LoadingOverlay from "@/Components/LoadingAnimation";
+import { useRouter } from 'next/navigation'; // Correct import for App Router
 
 // Define schemas for validation using zod (unchanged)
 const walletSchema = z.object({
@@ -73,6 +74,7 @@ const Page = () => {
   } | null>(null);
 
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Store quantities per asset contract
+  const router = useRouter();
 
   const handleQuantityChange = (contract: string, value: string) => {
     const qty = parseInt(value) || 0; // Default to 0 if invalid or empty
@@ -119,8 +121,8 @@ const Page = () => {
 
   const headers = ["Project", "Price", "Quantity"];
 
-  // Handle buy action logic with Razorpay integration from BuyCharComponent
   const handleBuy = async () => {
+    
     if (!selectedAsset || !quantities[selectedAsset.contract]) {
       toast.error("Please select a quantity before buying.", {
         duration: 4000,
@@ -136,8 +138,8 @@ const Page = () => {
       script.async = true;
 
       script.onload = async () => {
-        const quantity = quantities[selectedAsset.contract]; // Define quantity here
-        const price = selectedAsset.price * quantity; // Calculate total price
+        const quantity = quantities[selectedAsset.contract];
+        const price = selectedAsset.price * quantity;
         const options = {
           key: apiKey,
           amount: Math.round(Number(price) * 100),
@@ -166,15 +168,16 @@ const Page = () => {
                   toAddress: walletAddress,
                 };
                 setLoading(true);
-                await new Promise((resolve) => setTimeout(resolve, 3000));
-                const response = await myServer.post("/buy/buyTokens", data);
 
-                setLoading(false);
-                setProcessingPayment(false);
+                const response = await myServer.post("/buy/buyTokens", data);
+                console.log("Token purchase response:", response);
+
                 toast.success("Token Purchase successful!", {
                   duration: 4000,
                   style: { maxWidth: "300px", fontSize: "14px" },
                 });
+                router.push('/decarb/contracts');
+
               } else {
                 toast.error("Payment was successful, but order processing failed.", {
                   duration: 4000,
@@ -186,10 +189,6 @@ const Page = () => {
                 duration: 4000,
                 style: { maxWidth: "300px", fontSize: "14px" },
               });
-            } finally {
-              setTimeout(() => {
-                window.location.reload();
-              }, 3000);
             }
           },
           modal: { ondismiss: () => setLoading(false) },
