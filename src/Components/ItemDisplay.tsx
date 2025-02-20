@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image"; // Import Image from next/image for optimized images
 
-type ItemValue = string | number | { type: 'button'; label: string; onClick: () => void } | { type: 'input'; value: number | string; onChange: (value: string) => void };
+type ItemValue = string | number | { type: 'button'; label: string; onClick: () => void } | { type: 'input'; value: number | string; onChange: (value: string) => void } | React.ReactNode;
 
 type ItemDisplayProps = {
   items: Array<{ [key: string]: ItemValue }>;
@@ -17,6 +17,10 @@ type ItemDisplayProps = {
 // Ensure ItemDisplay is explicitly a React.FC
 const ItemDisplay: React.FC<ItemDisplayProps> = ({ items, headers, quantityMode = 'display', onQuantityChange, bgColor, itemBgColor }) => {
   const renderValue = (value: ItemValue, header: string, index: number) => {
+    if (React.isValidElement(value)) {
+      return value; // Render JSX elements like <Link>
+    }
+
     if (typeof value === 'object') {
       if (value?.type === 'button') {
         if (value.label === 'View') {
