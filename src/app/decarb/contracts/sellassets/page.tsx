@@ -154,13 +154,12 @@ const Page = () => {
       console.log("Backend response:", response);
 
       if (response.status === 200) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        alert("Sell successful!");
+        console.log("Sell successful!");
         toast.success("Sell successful!", {
           style: { maxWidth: "300px", fontSize: "14px" },
         });
         setTimeout(() => {
-          router.push("/decarb/contracts/sellassets");
+          router.push("/decarb/contracts");
         }, 3000);
       } else {
         console.error("Error from backend:", response);
@@ -176,12 +175,6 @@ const Page = () => {
         style: { maxWidth: "300px", fontSize: "14px" },
       });
     } 
-    finally{
-      setLoading(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    }
   };
 
   const [loading, setLoading] = useState(false);
