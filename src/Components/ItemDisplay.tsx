@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image"; // Import Image from next/image for optimized images
+import Link from "next/link"; // Import Link
+
 
 type ItemValue = string | number | { type: 'button'; label: string; onClick: () => void } | { type: 'input'; value: number | string; onChange: (value: string) => void } | React.ReactNode;
 
@@ -18,42 +20,52 @@ type ItemDisplayProps = {
 const ItemDisplay: React.FC<ItemDisplayProps> = ({ items, headers, quantityMode = 'display', onQuantityChange, bgColor, itemBgColor }) => {
   const renderValue = (value: ItemValue, header: string, index: number) => {
     if (React.isValidElement(value)) {
-      return value; // Render JSX elements like <Link>
+      return value;
     }
-
-    if (typeof value === 'object') {
-      if (value?.type === 'button') {
-        if (value.label === 'View') {
-          // Render a centered image for the "View" button
+  
+    if (typeof value === "string" && header === "Project") {
+      // Convert project name into a dynamic link
+      const projectSlug = encodeURIComponent(value);
+  
+      return (
+        <Link href={`/decarb/project/${projectSlug}`} className="group inline-flex items-center">
+          <span className="text-black hover:underline relative cursor-pointer transition-all">
+            {value}
+          </span>
+          <span className="ml-1 text-black opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-200">
+            ↗
+          </span>
+        </Link>
+      );
+    }
+  
+    if (typeof value === "object") {
+      if (value?.type === "button") {
+        if (value.label === "View") {
           return (
             <button onClick={value.onClick} className="flex justify-center items-center h-full ml-2">
-              <Image
-                src="/images/view.svg" // Correct path to the image in the public folder
-                alt="View"
-                width={24} // Adjust width as needed
-                height={24} // Adjust height as needed
-                className="hover:opacity-80" // Maintain hover effect
-              />
+              <Image src="/images/view.svg" alt="View" width={24} height={24} className="hover:opacity-80" />
             </button>
           );
         }
         return <button onClick={value.onClick} className="ml-2 text-blue-500 hover:underline">{value.label}</button>;
-      } else if (value?.type === 'input' && quantityMode === 'input' && header === 'Quantity') {
+      } else if (value?.type === "input" && quantityMode === "input" && header === "Quantity") {
         return (
           <input
             type="number"
             min="1"
             max="3"
-            value={value.value?.toString() || '0'}
+            value={value.value?.toString() || "0"}
             onChange={(e) => value.onChange?.(e.target.value)}
             className="w-16 border border-gray-300 rounded px-2 py-1 text-center"
           />
         );
       }
     }
-    // Handle undefined or null values
-    return value?.toString() || '-';
+  
+    return value?.toString() || "-";
   };
+  
 
   // Convert hex colors to RGBA with specified opacity
   const parseColorWithOpacity = (hex: string | undefined, opacity: number = 1) => {
