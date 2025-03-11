@@ -114,7 +114,8 @@ const ActionSelection: React.FC<ActionSelectionProps> = ({
             variant={actionType === "sell" ? "yellow" : "green"}
             disabled={
               (actionType === "sell" && (!selectedItems || selectedItems.length === 0 || !selectedItems[0]?.selectedQuantity)) ||
-              (actionType === "sell" && selectedItems[0]?.selectedQuantity <= 0)
+              (actionType === "sell" && selectedItems[0]?.selectedQuantity <= 0) ||
+              (actionType === "buy" && (!quantity || quantity <= 0))
             }
           />
           {secondaryButtonText && secondaryButtonLink && ( // Ensure secondaryButtonLink exists
