@@ -8,18 +8,27 @@ import Image from "next/image";
 
 const Page = () => {
   const router = useRouter();
-  const [retirementSummary, setRetirementSummary] = useState({ quantity: 0, poolName: "" });
+  const [retirementSummary, setRetirementSummary] = useState({
+    quantity: 0,
+    poolName: "",
+  });
   const [retirements, setRetirements] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRetirements = async () => {
       try {
-        const walletAddress = window.localStorage.getItem("walletAddress") || "";
-        const response = await myServer.post("retire/getNFTdata", { walletAddress });
+        const walletAddress =
+          window.localStorage.getItem("walletAddress") || "";
+        const response = await myServer.post("retire/getNFTdata", {
+          walletAddress,
+        });
         const data = response.data;
 
-        const totalQuantity = data.nfts.reduce((sum, item) => sum + parseFloat(item.Quantity), 0);
+        const totalQuantity = data.nfts.reduce(
+          (sum, item) => sum + parseFloat(item.Quantity),
+          0
+        );
         setRetirementSummary({
           quantity: totalQuantity,
           poolName: "DeCarb BioChar Carbon Pool (CHAR)",
@@ -48,11 +57,18 @@ const Page = () => {
                   vcsId: cert.VCSID || "Unknown",
                   vintage: cert.Vintage || "Unknown",
                   methodology: cert.VCSMethodology || "Unknown",
-                  transactionHash: cert.TxHash || "0x0000000000000000000000000000000000000000000000000000000000000000",
-                  tokenContract: cert.TCO2TokenAddress || "0x0000000000000000000000000000000000000000",
+                  transactionHash:
+                    cert.TxHash ||
+                    "0x0000000000000000000000000000000000000000000000000000000000000000",
+                  tokenContract:
+                    cert.TCO2TokenAddress ||
+                    "0x0000000000000000000000000000000000000000",
                 };
                 console.log("certificateData", certificateData);
-                window.localStorage.setItem("certificateData", JSON.stringify(certificateData));
+                window.localStorage.setItem(
+                  "certificateData",
+                  JSON.stringify(certificateData)
+                );
                 router.push("/decarb/certificate");
               },
             },
@@ -72,17 +88,27 @@ const Page = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold pl-3 pt-2">Retirements</h1>
-        <div className="overflow-hidden rounded-full w-12 h-12">
-          <Image src="/images/greenbg.png" alt="image" height={48} width={48} className="object-cover w-full h-full" />
+      <div className="flex items-center justify-center relative">
+        <h1 className="text-2xl font-semibold">Retirements</h1>
+        <div className="absolute right-0 overflow-hidden rounded-full w-12 h-12">
+          <Image
+            src="/images/greenbg.png"
+            alt="image"
+            height={48}
+            width={48}
+            className="object-cover w-full h-full"
+          />
         </div>
       </div>
+
       <div className="mt-8">
         <ActionHeader
           quantity={retirementSummary.quantity * 1000}
           price={0}
-          primaryAction={{ text: "RETIRE", href: "/decarb/retirements/retireassets" }}
+          primaryAction={{
+            text: "RETIRE",
+            href: "/decarb/retirements/retireassets",
+          }}
           secondaryAction={undefined}
         />
       </div>
