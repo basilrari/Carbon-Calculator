@@ -42,8 +42,9 @@ export default function TransactionsPage() {
   const [filter, setFilter] = useState("all");
   const [summary, setSummary] = useState({
     total: 0,
-    incoming: 0,
-    outgoing: 0,
+    buy: 0,
+    sell: 0,
+    retire: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -63,7 +64,12 @@ export default function TransactionsPage() {
         setWalletAddress(storedWallet);
         const data = await fetchTransactions(storedWallet);
         setTransactions(data.grouped[filter] || data.transactions || []);
-        setSummary(data.summary || { total: 0, incoming: 0, outgoing: 0 });
+        setSummary(data.summary || { 
+          total: 0, 
+          buy: 0,
+          sell: 0,
+          retire: 0 
+        });
       } catch (error) {
         console.error("Error fetching transactions:", error);
         setError("Failed to fetch transactions. Please try again later.");
@@ -74,6 +80,19 @@ export default function TransactionsPage() {
 
     fetchTransactionData();
   }, [filter]);
+
+  const getTransactionTypeColor = (txType) => {
+    switch (txType) {
+      case 'buy':
+        return 'bg-green-100 text-green-800';
+      case 'sell':
+        return 'bg-blue-100 text-blue-800';
+      case 'retire':
+        return 'bg-purple-100 text-purple-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -109,39 +128,47 @@ export default function TransactionsPage() {
         </div>
 
         {/* Filters and Summary */}
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-4">
-            <button
-              onClick={() => setFilter("all")}
-              className={`px-4 py-2 rounded-lg ${
-                filter === "all"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 text-gray-700"
-              }`}
-            >
-              All ({summary.total})
-            </button>
-            <button
-              onClick={() => setFilter("incoming")}
-              className={`px-4 py-2 rounded-lg ${
-                filter === "incoming"
-                  ? "bg-green-500 text-white"
-                  : "bg-gray-100 text-gray-700"
-              }`}
-            >
-              Incoming ({summary.incoming})
-            </button>
-            <button
-              onClick={() => setFilter("outgoing")}
-              className={`px-4 py-2 rounded-lg ${
-                filter === "outgoing"
-                  ? "bg-orange-500 text-white"
-                  : "bg-gray-100 text-gray-700"
-              }`}
-            >
-              Outgoing ({summary.outgoing})
-            </button>
-          </div>
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={() => setFilter("all")}
+            className={`px-4 py-2 rounded-lg ${
+              filter === "all"
+                ? "bg-gray-700 text-white"
+                : "bg-gray-100 text-gray-700"
+            }`}
+          >
+            All ({summary.total})
+          </button>
+          <button
+            onClick={() => setFilter("buy")}
+            className={`px-4 py-2 rounded-lg ${
+              filter === "buy"
+                ? "bg-green-600 text-white"
+                : "bg-gray-100 text-gray-700"
+            }`}
+          >
+            Buy ({summary.buy || 0})
+          </button>
+          <button
+            onClick={() => setFilter("sell")}
+            className={`px-4 py-2 rounded-lg ${
+              filter === "sell"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 text-gray-700"
+            }`}
+          >
+            Sell ({summary.sell || 0})
+          </button>
+          <button
+            onClick={() => setFilter("retire")}
+            className={`px-4 py-2 rounded-lg ${
+              filter === "retire"
+                ? "bg-purple-600 text-white"
+                : "bg-gray-100 text-gray-700"
+            }`}
+          >
+            Retire ({summary.retire || 0})
+          </button>
         </div>
 
         {/* Transactions List */}
@@ -151,13 +178,7 @@ export default function TransactionsPage() {
               transactions.map((tx, index) => (
                 <div
                   key={index}
-                  className={`p-6 hover:bg-gray-50 transition-colors ${
-                    tx.direction === "incoming"
-                      ? "border-l-4 border-green-500"
-                      : tx.direction === "outgoing"
-                      ? "border-l-4 border-orange-500"
-                      : ""
-                  }`}
+                  className="p-6 hover:bg-gray-50 transition-colors"
                 >
                   {/* Main Transaction Info Grid */}
                   <div className="grid grid-cols-2 gap-x-12 gap-y-4">
@@ -187,6 +208,14 @@ export default function TransactionsPage() {
                         {formatAddress(tx.to)}
                       </div>
                     </div>
+                    
+                    {/* Transaction Type Badge */}
+                    <div>
+                      <div className="text-sm text-gray-500 mb-1">Type</div>
+                      <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${getTransactionTypeColor(tx.transactionType)}`}>
+                        {tx.transactionType.charAt(0).toUpperCase() + tx.transactionType.slice(1)}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Token Transfers */}
@@ -202,7 +231,7 @@ export default function TransactionsPage() {
                         >
                           <div>
                             <span className="text-gray-500">Token: </span>
-                            {formatAddress(transfer.tokenAddress)}
+                            {transfer.tokenSymbol || formatAddress(transfer.tokenAddress)}
                           </div>
                           <div>
                             <span className="text-gray-500">Amount: </span>
