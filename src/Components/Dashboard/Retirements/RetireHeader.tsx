@@ -51,6 +51,13 @@ const RetireHeader = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleRetire = async () => {
+    if (totalQuantity <= 0) {
+      toast.error("Please select a valid quantity before retiring.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+      return;
+    }
     if (!showForm) {
       setShowForm(true);
       return;
