@@ -7,7 +7,7 @@ const CalculatorPage = () => {
     PETROL: 2.31, // kg CO2/L
     DIESEL: 2.68, // kg CO2/L
     ELECTRIC: 0.82, // kg CO2/kWh
-    HYBRID: 1.5, // kg CO2/L (estimated for hybrid vehicles)
+    HYBRID: 1.5, // kg CO2/L 
     LPG: 2.983, // kg CO2/kg
     WASTE: 2.86, // kg CO2/kg
     SHOPPING: 0.0083,
@@ -15,15 +15,15 @@ const CalculatorPage = () => {
   };
 
   const [transports, setTransports] = useState([
-    { type: "car", fuel: "petrol", distance: 0, efficiency: 15 },
+    { type: "car", fuel: "petrol", distance: "", efficiency: 15 },
   ]);
 
   const [inputs, setInputs] = useState({
-    electricityUsage: 0, // in kWh
-    lpgUsage: 0, // in kg
-    wasteGenerated: 0, // in kg
-    shoppingAmount: 0, // in INR
-    publicTransportDistance: 0, // in km
+    electricityUsage: "", // in kWh
+    lpgUsage: "", // in kg
+    wasteGenerated: "", // in kg
+    shoppingAmount: "", // in INR
+    publicTransportDistance: "", // in km
   });
 
   const [footprint, setFootprint] = useState({
@@ -36,17 +36,24 @@ const CalculatorPage = () => {
 
   const handleTransportChange = (index, field, value) => {
     const updatedTransports = [...transports];
-    updatedTransports[index][field] =
-      field === "distance" || field === "efficiency"
-        ? parseFloat(value) || 0
-        : value;
+    
+    // For numeric fields, ensure values are not negative
+    if (field === "distance") {
+      // Allow empty string or non-negative number
+      value = value === "" ? "" : Math.max(0, parseFloat(value) || 0).toString();
+    } else if (field === "efficiency") {
+      // Efficiency should be at least 0.1
+      value = value === "" ? "" : Math.max(0.1, parseFloat(value) || 0.1).toString();
+    }
+    
+    updatedTransports[index][field] = value;
     setTransports(updatedTransports);
   };
 
   const addTransport = () => {
     setTransports([
       ...transports,
-      { type: "car", fuel: "petrol", distance: 0, efficiency: 15 },
+      { type: "car", fuel: "petrol", distance: "", efficiency: 15 },
     ]);
   };
 
@@ -58,8 +65,17 @@ const CalculatorPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setInputs((prev) => ({ ...prev, [name]: parseFloat(value) || value }));
+    const { name, value, type } = e.target;
+    
+    // For number inputs, ensure values are not negative
+    if (type === "number" && value !== "") {
+      const numValue = parseFloat(value);
+      if (numValue < 0) {
+        return; // Ignore negative values
+      }
+    }
+    
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
   const calculateCarbonFootprint = () => {
@@ -73,22 +89,24 @@ const CalculatorPage = () => {
           ? EMISSION_FACTORS.ELECTRIC
           : EMISSION_FACTORS.HYBRID;
 
-      const emissions =
-        (transport.distance / transport.efficiency) * emissionFactor;
+      const distance = parseFloat(transport.distance) || 0;
+      const efficiency = parseFloat(transport.efficiency) || 1;
+
+      const emissions = (distance / efficiency) * emissionFactor;
 
       return total + emissions;
     }, 0);
 
     const publicTransportEmissions =
-      inputs.publicTransportDistance * EMISSION_FACTORS.PUBLIC_TRANSPORT;
+      (parseFloat(inputs.publicTransportDistance) || 0) * EMISSION_FACTORS.PUBLIC_TRANSPORT;
 
     const energyEmissions =
-      inputs.electricityUsage * EMISSION_FACTORS.ELECTRIC +
-      inputs.lpgUsage * EMISSION_FACTORS.LPG;
+      (parseFloat(inputs.electricityUsage) || 0) * EMISSION_FACTORS.ELECTRIC +
+      (parseFloat(inputs.lpgUsage) || 0) * EMISSION_FACTORS.LPG;
 
-    const wasteEmissions = inputs.wasteGenerated * EMISSION_FACTORS.WASTE;
+    const wasteEmissions = (parseFloat(inputs.wasteGenerated) || 0) * EMISSION_FACTORS.WASTE;
 
-    const shoppingEmissions = inputs.shoppingAmount * EMISSION_FACTORS.SHOPPING;
+    const shoppingEmissions = (parseFloat(inputs.shoppingAmount) || 0) * EMISSION_FACTORS.SHOPPING;
 
     const totalEmissions =
       transportEmissions +
@@ -165,11 +183,13 @@ const CalculatorPage = () => {
                 </label>
                 <input
                   type="number"
+                  min="0"
                   value={transport.distance}
                   onChange={(e) =>
                     handleTransportChange(index, "distance", e.target.value)
                   }
                   className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-600"
+                  placeholder="0"
                 />
               </div>
 
@@ -179,11 +199,13 @@ const CalculatorPage = () => {
                 </label>
                 <input
                   type="number"
+                  min="0.1"
                   value={transport.efficiency}
                   onChange={(e) =>
                     handleTransportChange(index, "efficiency", e.target.value)
                   }
                   className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-600"
+                  placeholder="15"
                 />
               </div>
             </div>
@@ -211,10 +233,12 @@ const CalculatorPage = () => {
           </label>
           <input
             type="number"
+            min="0"
             name="publicTransportDistance"
             value={inputs.publicTransportDistance}
             onChange={handleChange}
             className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-600"
+            placeholder="0"
           />
         </div>
 
@@ -233,12 +257,14 @@ const CalculatorPage = () => {
               <label className="block text-gray-700 font-medium mb-2">
                 {label}:
               </label>
-              <input
+                              <input
                 type="number"
+                min="0"
                 name={name}
-                value={inputs[name as keyof typeof inputs] || ""}
+                value={inputs[name as keyof typeof inputs]}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-600"
+                placeholder="0"
               />
             </div>
           ))}
