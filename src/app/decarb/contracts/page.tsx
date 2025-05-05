@@ -76,7 +76,7 @@ const Page = () => {
       </div>
       <div>
         <div className="flex items-center justify-between p-2">
-          <h1 className="text-lg font-bold text-gray-800">My Carbon Assets (DCO2)</h1>
+          <h1 className="text-lg font-bold text-gray-800">My Carbon Assets (TCO2)</h1>
         </div>
         <ItemDisplay
           items={walletAssets}
