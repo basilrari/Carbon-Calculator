@@ -1,59 +1,68 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ItemDisplay from "@/Components/ItemDisplay";
 import { z } from "zod";
-import RetireHeader from "@/Components/Dashboard/Retirements/RetireHeader"; // Use RetireHeader instead of ActionSelection
+import RetireHeader from "@/Components/Dashboard/Retirements/RetireHeader";
 import toast, { Toaster } from "react-hot-toast";
 import myServer from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
+import { chainConfig } from "@/utils/Config/chainConfig";
 
-const walletSchema = z.object({
-  amount: z.number(),
-});
+// ERC20 ABI for balanceOf function
+const erc20ABI = [
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+];
 
+// Define schemas for validation using zod
 const carbonAssetSchema = z.object({
   date: z.string(),
   project: z.string(),
   price: z.number(),
   contract: z.string(),
+  balance: z.number(), // Added balance field
 });
 
 const carbonAssetArraySchema = z.array(carbonAssetSchema);
 
-const dummyWalletData = { amount: 100.0 };
-
-const dummyCarbonAssets = [
+// Carbon assets data (initially with balance 0, updated by fetchBalances)
+const carbonAssetsData = [
   {
     date: "2025-02-08",
     project: "North Pikounda REDD+",
     price: 2500,
     contract: "0xB297F730E741a822a426c737eCD0F7877A9a2c22",
+    balance: 0,
   },
   {
     date: "2025-02-08",
     project: "Panama Wind Energy Private Limited",
     price: 4000,
     contract: "0xF0a5bF1336372FdBc2C877bCcb03310D85e0BF81",
+    balance: 0,
   },
 ];
 
-const validatedWalletData = walletSchema.safeParse(dummyWalletData);
-const validatedCarbonAssets = carbonAssetArraySchema.safeParse(dummyCarbonAssets);
+// Validate carbon assets data
+const validatedCarbonAssets = carbonAssetArraySchema.safeParse(carbonAssetsData);
 
-if (!validatedWalletData.success || !validatedCarbonAssets.success) {
-  console.error("Invalid data:", {
-    walletErrors: validatedWalletData.error?.errors,
-    assetErrors: validatedCarbonAssets.error?.errors,
-  });
+if (!validatedCarbonAssets.success) {
+  console.error("Invalid carbon assets data:", validatedCarbonAssets.error?.errors);
 }
 
 type CarbonAsset = {
   date: string;
   project: string;
-  price: z.number;
+  price: number;
   contract: string;
+  balance: number;
   Quantity?: {
     type: "input";
     value: string;
@@ -66,56 +75,121 @@ const Page = () => {
     project: string;
     price: number;
     contract: string;
+    balance: number;
   } | null>(null);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [carbonAssets, setCarbonAssets] = useState<CarbonAsset[]>(carbonAssetsData);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  // Fetch token balances
+  useEffect(() => {
+    const fetchBalances = async () => {
+      const storedWallet = window.localStorage.getItem("walletAddress");
+      if (!storedWallet) {
+        toast.error("No wallet address found. Please connect your wallet.", {
+          duration: 4000,
+          style: { maxWidth: "300px", fontSize: "14px" },
+        });
+        return;
+      }
+      setWalletAddress(storedWallet);
+
+      try {
+        const provider = new ethers.JsonRpcProvider(chainConfig.rpcTarget);
+        const updatedAssets = await Promise.all(
+          carbonAssets.map(async (asset) => {
+            const contract = new ethers.Contract(asset.contract, erc20ABI, provider);
+            const balance = await contract.balanceOf(storedWallet);
+            return {
+              ...asset,
+              balance: parseFloat(ethers.formatUnits(balance, 18)),
+            };
+          })
+        );
+        setCarbonAssets(updatedAssets);
+        console.log("Token balances fetched:", updatedAssets);
+      } catch (error) {
+        console.error("Error fetching token balances:", error);
+        toast.error("Failed to fetch token balances. Please try again.", {
+          duration: 4000,
+          style: { maxWidth: "300px", fontSize: "14px" },
+        });
+      }
+    };
+
+    fetchBalances();
+  }, []);
 
   const handleQuantityChange = (contract: string, value: string) => {
     const qty = parseInt(value) || 0;
+    const asset = carbonAssets.find((a) => a.contract === contract);
 
+    if (!asset) return; // Exit if asset not found
+
+    console.log("handleQuantityChange - contract:", contract, "value:", value, "qty:", qty);
+
+    // Check if another asset already has a quantity > 0
     const hasOtherSelection = Object.entries(quantities).some(
       ([otherContract, otherQty]) => otherContract !== contract && otherQty > 0
     );
 
     if (hasOtherSelection) {
-      alert("You can select only 1 item");
+      toast.error("You can select only 1 item.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
       setQuantities({});
       setSelectedAsset(null);
       return;
     }
 
+    // Validate quantity against token balance
+    if (qty > asset.balance) {
+      toast.error(`Selected quantity (${qty}) exceeds your balance (${asset.balance}) for ${asset.project}.`, {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
+      return;
+    }
+
     if (qty > 0) {
-      const asset = dummyCarbonAssets.find((a) => a.contract === contract);
-      if (asset) {
-        setSelectedAsset({
-          project: asset.project,
-          price: asset.price,
-          contract: contract,
-        });
-        setQuantities({ [contract]: qty > 3 ? 3 : qty < 1 ? 1 : qty });
-      }
+      // Set this asset as selected and limit quantity to 1-3
+      setSelectedAsset({
+        project: asset.project,
+        price: asset.price,
+        contract: contract,
+        balance: asset.balance,
+      });
+      setQuantities({ [contract]: qty > 3 ? 3 : qty < 1 ? 1 : qty });
     } else {
+      // If quantity is 0 or empty, deselect this asset
       setSelectedAsset(null);
       setQuantities((prev) => ({ ...prev, [contract]: 0 }));
     }
   };
 
   const assetsForDisplay = validatedCarbonAssets.success
-    ? validatedCarbonAssets.data.map((asset) => ({
-      Project: asset.project,
-      Price: asset.price,
-      Quantity: {
-        type: "input",
-        value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : "",
-        onChange: (value: string) => handleQuantityChange(asset.contract, value),
-      },
-    }))
+    ? carbonAssets.map((asset) => ({
+        Project: asset.project,
+        Price: asset.price,
+        Quantity: {
+          type: "input",
+          value: quantities[asset.contract] !== undefined ? quantities[asset.contract].toString() : "",
+          onChange: (value: string) => handleQuantityChange(asset.contract, value),
+        },
+      }))
     : [];
 
   const headers = ["Project", "Price", "Quantity"];
 
   const handleRetire = async () => {
+    console.log("handleRetire triggered - selectedAsset:", selectedAsset);
+    console.log("handleRetire triggered - quantities:", quantities);
+
     if (!selectedAsset || !quantities[selectedAsset.contract] || quantities[selectedAsset.contract] <= 0) {
+      console.log("Validation failed - no valid selection or quantity");
       toast.error("Please select a valid quantity before retiring.", {
         duration: 4000,
         style: { maxWidth: "300px", fontSize: "14px" },
@@ -123,7 +197,21 @@ const Page = () => {
       return;
     }
 
+    // Validate quantity against token balance
+    if (quantities[selectedAsset.contract] > selectedAsset.balance) {
+      console.log("Validation failed - selected quantity exceeds balance");
+      toast.error(
+        `Selected quantity (${quantities[selectedAsset.contract]}) exceeds your balance (${selectedAsset.balance}) for ${selectedAsset.project}.`,
+        {
+          duration: 4000,
+          style: { maxWidth: "300px", fontSize: "14px" },
+        }
+      );
+      return;
+    }
+
     try {
+      console.log("Starting retirement transaction...");
       setLoading(true);
       const encryptedPrivateKey = window.localStorage.getItem("encryptedPrivateKey");
       const data = {
@@ -135,34 +223,45 @@ const Page = () => {
         encryptedPrivateKey: encryptedPrivateKey,
       };
 
+      console.log("Sending data to backend:", data);
       const response = await myServer.post("/retire/retireCarbonCredits", data);
+      console.log("Backend response:", response);
+
       if (response.status === 200) {
+        console.log("Retirement successful!");
         toast.success("Retirement successful!", {
           style: { maxWidth: "300px", fontSize: "14px" },
         });
         setTimeout(() => router.push("/decarb/retirements"), 3000);
       } else {
-        toast.error("Retirement failed. Please try again.");
+        console.error("Error from backend:", response);
+        toast.error("Retirement failed. Please try again.", {
+          duration: 4000,
+          style: { maxWidth: "300px", fontSize: "14px" },
+        });
       }
     } catch (error) {
       console.error("Retirement failed:", error);
-      toast.error("Retirement failed. Please try again.");
+      toast.error("Retirement failed. Please try again.", {
+        duration: 4000,
+        style: { maxWidth: "300px", fontSize: "14px" },
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const [loading, setLoading] = useState(false);
-
   return (
-    <div>
+    <div className={`relative ${loading ? "pointer-events-none" : ""}`}>
       <Toaster />
+      {loading && <LoadingOverlay type="retire" />}
       <div className="w-full mb-6 mt-5">
         <RetireHeader
           totalQuantity={quantities[selectedAsset?.contract] || 0}
-          selectedCount={selectedAsset ? 1 : 0} // Assuming only one asset can be selected
+          selectedCount={selectedAsset ? 1 : 0}
           contractAddress={selectedAsset?.contract || ""}
-          project={selectedAsset?.project || "N/A"} // Pass the project name dynamically
+          project={selectedAsset?.project || "N/A"}
+          onRetire={handleRetire} // Added onRetire prop to trigger handleRetire
         />
       </div>
       <div>

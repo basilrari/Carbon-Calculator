@@ -34,46 +34,58 @@ const Page = () => {
           poolName: "DeCarb BioChar Carbon Pool (CHAR)",
         });
 
-        setRetirements(
-          data.nfts.map((item) => ({
-            Date: item.Date,
-            Quantity: item.Quantity,
-            Project: item.ProjectName,
-            Price: item.Price || 0,
-            View: {
-              type: "button",
-              label: "View",
-              onClick: () => {
-                const cert = item.Certificate;
-                const certificateData = {
-                  date: cert.Date || "21-02-2025",
-                  amount: cert.Quantity,
-                  project: cert.ProjectName,
-                  retiredBy: cert.RetiredBy || "Unknown",
-                  beneficiary: cert.Beneficiary || "DeCarb",
-                  benefAddress: cert.BenefAddress || "Unknown",
-                  country: cert.HostCountry || "Unknown",
-                  tokenId: cert.ProjectSpecificToken || "Unknown",
-                  vcsId: cert.VCSID || "Unknown",
-                  vintage: cert.Vintage || "Unknown",
-                  methodology: cert.VCSMethodology || "Unknown",
-                  transactionHash:
-                    cert.TxHash ||
-                    "0x0000000000000000000000000000000000000000000000000000000000000000",
-                  tokenContract:
-                    cert.TCO2TokenAddress ||
-                    "0x0000000000000000000000000000000000000000",
-                };
-                console.log("certificateData", certificateData);
-                window.localStorage.setItem(
-                  "certificateData",
-                  JSON.stringify(certificateData)
-                );
-                router.push("/decarb/certificate");
-              },
+        const mappedRetirements = data.nfts.map((item) => ({
+          Date: item.Date,
+          Quantity: item.Quantity,
+          Project: item.ProjectName,
+          Price: item.Price || 0,
+          View: {
+            type: "button",
+            label: "View",
+            onClick: () => {
+              const cert = item.Certificate;
+              const certificateData = {
+                date: cert.Date || "21-02-2025",
+                amount: cert.Quantity,
+                project: cert.ProjectName,
+                retiredBy: cert.RetiredBy || "Unknown",
+                beneficiary: cert.Beneficiary || "DeCarb",
+                benefAddress: cert.BenefAddress || "Unknown",
+                country: cert.HostCountry || "Unknown",
+                tokenId: cert.ProjectSpecificToken || "Unknown",
+                vcsId: cert.VCSID || "Unknown",
+                vintage: cert.Vintage || "Unknown",
+                methodology: cert.VCSMethodology || "Unknown",
+                transactionHash:
+                  cert.TxHash ||
+                  "0x0000000000000000000000000000000000000000000000000000000000000000",
+                tokenContract:
+                  cert.TCO2TokenAddress ||
+                  "0x0000000000000000000000000000000000000000",
+              };
+              console.log("certificateData", certificateData);
+              window.localStorage.setItem(
+                "certificateData",
+                JSON.stringify(certificateData)
+              );
+              router.push("/decarb/certificate");
             },
-          }))
-        );
+          },
+        }));
+
+        // Sort retirements by Date (DDMMYYYY) in descending order (latest first)
+        const sortedRetirements = mappedRetirements.sort((a, b) => {
+          const dateA = a.Date; // e.g., "31032025"
+          const dateB = b.Date; // e.g., "15022025"
+          
+          // Convert DDMMYYYY to YYYYMMDD for easy comparison
+          const comparableDateA = `${dateA.slice(4)}${dateA.slice(2, 4)}${dateA.slice(0, 2)}`;
+          const comparableDateB = `${dateB.slice(4)}${dateB.slice(2, 4)}${dateB.slice(0, 2)}`;
+          
+          return comparableDateB.localeCompare(comparableDateA); // Descending order
+        });
+
+        setRetirements(sortedRetirements);
       } catch (error) {
         console.error("Error fetching retirements:", error);
       } finally {
