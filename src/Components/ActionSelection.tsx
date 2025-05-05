@@ -50,6 +50,7 @@ const ActionSelection: React.FC<ActionSelectionProps> = ({
 
   const handleConfirm = (event: React.MouseEvent) => {
     console.log("handleConfirm clicked - event:", event.type, "showModal before:", showModal, "actionType:", actionType, "primaryButtonText:", primaryButtonText, "selectedItems:", selectedItems);
+    
     if (setShowModal) {
       setShowModal(true);
       console.log("showModal set to true");
