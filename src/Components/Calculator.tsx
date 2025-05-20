@@ -2,31 +2,55 @@
 
 import React, { useState } from "react";
 
+// Define interfaces for state types
+interface Transport {
+  type: string;
+  fuel: string;
+  distance: string;
+  efficiency: string; // Changed to string to match input handling
+}
+
+interface Inputs {
+  electricityUsage: string;
+  lpgUsage: string;
+  wasteGenerated: string;
+  shoppingAmount: string;
+  publicTransportDistance: string;
+}
+
+interface Footprint {
+  transport: number;
+  energy: number;
+  waste: number;
+  shopping: number;
+  total: number;
+}
+
 const CalculatorPage = () => {
   const EMISSION_FACTORS = {
     PETROL: 2.31, // kg CO2/L
     DIESEL: 2.68, // kg CO2/L
     ELECTRIC: 0.82, // kg CO2/kWh
-    HYBRID: 1.5, // kg CO2/L 
+    HYBRID: 1.5, // kg CO2/L
     LPG: 2.983, // kg CO2/kg
     WASTE: 2.86, // kg CO2/kg
     SHOPPING: 0.0083,
     PUBLIC_TRANSPORT: 0.1516, // kg CO2 per INR spent
   };
 
-  const [transports, setTransports] = useState([
-    { type: "car", fuel: "petrol", distance: "", efficiency: 15 },
+  const [transports, setTransports] = useState<Transport[]>([
+    { type: "car", fuel: "petrol", distance: "", efficiency: "15" },
   ]);
 
-  const [inputs, setInputs] = useState({
-    electricityUsage: "", // in kWh
+  const [inputs, setInputs] = useState<Inputs>({
+    electricityUsage: "", //珊kWh
     lpgUsage: "", // in kg
     wasteGenerated: "", // in kg
     shoppingAmount: "", // in INR
     publicTransportDistance: "", // in km
   });
 
-  const [footprint, setFootprint] = useState({
+  const [footprint, setFootprint] = useState<Footprint>({
     transport: 0,
     energy: 0,
     waste: 0,
@@ -34,18 +58,20 @@ const CalculatorPage = () => {
     total: 0,
   });
 
-  const handleTransportChange = (index, field, value) => {
+  const handleTransportChange = (
+    index: number,
+    field: keyof Transport,
+    value: string
+  ) => {
     const updatedTransports = [...transports];
-    
+
     // For numeric fields, ensure values are not negative
     if (field === "distance") {
-      // Allow empty string or non-negative number
       value = value === "" ? "" : Math.max(0, parseFloat(value) || 0).toString();
     } else if (field === "efficiency") {
-      // Efficiency should be at least 0.1
       value = value === "" ? "" : Math.max(0.1, parseFloat(value) || 0.1).toString();
     }
-    
+
     updatedTransports[index][field] = value;
     setTransports(updatedTransports);
   };
@@ -53,11 +79,11 @@ const CalculatorPage = () => {
   const addTransport = () => {
     setTransports([
       ...transports,
-      { type: "car", fuel: "petrol", distance: "", efficiency: 15 },
+      { type: "car", fuel: "petrol", distance: "", efficiency: "15" },
     ]);
   };
 
-  const removeTransport = (index) => {
+  const removeTransport = (index: number) => {
     const updatedTransports = transports.filter((_, i) => i !== index);
     setTransports(updatedTransports);
   };
@@ -66,7 +92,7 @@ const CalculatorPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    
+
     // For number inputs, ensure values are not negative
     if (type === "number" && value !== "") {
       const numValue = parseFloat(value);
@@ -74,7 +100,7 @@ const CalculatorPage = () => {
         return; // Ignore negative values
       }
     }
-    
+
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -98,15 +124,18 @@ const CalculatorPage = () => {
     }, 0);
 
     const publicTransportEmissions =
-      (parseFloat(inputs.publicTransportDistance) || 0) * EMISSION_FACTORS.PUBLIC_TRANSPORT;
+      (parseFloat(inputs.publicTransportDistance) || 0) *
+      EMISSION_FACTORS.PUBLIC_TRANSPORT;
 
     const energyEmissions =
       (parseFloat(inputs.electricityUsage) || 0) * EMISSION_FACTORS.ELECTRIC +
       (parseFloat(inputs.lpgUsage) || 0) * EMISSION_FACTORS.LPG;
 
-    const wasteEmissions = (parseFloat(inputs.wasteGenerated) || 0) * EMISSION_FACTORS.WASTE;
+    const wasteEmissions =
+      (parseFloat(inputs.wasteGenerated) || 0) * EMISSION_FACTORS.WASTE;
 
-    const shoppingEmissions = (parseFloat(inputs.shoppingAmount) || 0) * EMISSION_FACTORS.SHOPPING;
+    const shoppingEmissions =
+      (parseFloat(inputs.shoppingAmount) || 0) * EMISSION_FACTORS.SHOPPING;
 
     const totalEmissions =
       transportEmissions +
@@ -130,7 +159,7 @@ const CalculatorPage = () => {
       style={{ backgroundImage: "url('/images/background.jpg')" }}
     >
       <h1 className="text-3xl font-bold text-green-700 text-center">
-         Carbon Footprint Calculator
+        Carbon Footprint Calculator
       </h1>
       <p className="text-center text-gray-700 mt-2">
         Enter detailed information to get a precise estimate of your carbon
@@ -257,11 +286,11 @@ const CalculatorPage = () => {
               <label className="block text-gray-700 font-medium mb-2">
                 {label}:
               </label>
-                              <input
+              <input
                 type="number"
                 min="0"
                 name={name}
-                value={inputs[name as keyof typeof inputs]}
+                value={inputs[name as keyof Inputs]}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-600"
                 placeholder="0"
@@ -280,47 +309,54 @@ const CalculatorPage = () => {
         </div>
 
         <div className="mt-8 p-6 bg-green-50 rounded-lg shadow-lg">
-  <h2 className="text-xl font-bold text-green-800 text-center mb-4">
-       Your Estimated Carbon Footprint
-  </h2>
-  <div className="text-center">
-    <p className="text-3xl font-bold text-green-700 mb-2">
-      {footprint.total.toFixed(2)} kg CO2<span className="text-xs align-super text-green-700">*</span>
-    </p>
-    <p className="text-md text-gray-600 font-medium mb-6">
-      Total Carbon Emissions
-    </p>
-  </div>
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
-      <h3 className="text-lg font-semibold text-green-800">Transport</h3>
-      <p className="text-2xl font-bold text-green-600 mt-2">
-        {footprint.transport.toFixed(2)} kg CO2<span className="text-xs align-super text-green-600">*</span>
-      </p>
-    </div>
-    <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
-      <h3 className="text-lg font-semibold text-green-800">Energy</h3>
-      <p className="text-2xl font-bold text-green-600 mt-2">
-        {footprint.energy.toFixed(2)} kg CO2<span className="text-xs align-super text-green-600">*</span>
-      </p>
-    </div>
-    <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
-      <h3 className="text-lg font-semibold text-green-800">Waste</h3>
-      <p className="text-2xl font-bold text-green-600 mt-2">
-        {footprint.waste.toFixed(2)} kg CO2<span className="text-xs align-super text-green-600">*</span>
-      </p>
-    </div>
-    <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
-      <h3 className="text-lg font-semibold text-green-800">Shopping</h3>
-      <p className="text-2xl font-bold text-green-600 mt-2">
-        {footprint.shopping.toFixed(2)} kg CO2<span className="text-xs align-super text-green-600">*</span>
-      </p>
-    </div>
-  </div>
-  <p className="text-xs text-gray-500 mt-4 ">
-    * This is an estimated value based on input data and standard emission factors. Actual values may vary depending on additional factors not considered     in this calculator.
-  </p>
-</div>
+          <h2 className="text-xl font-bold text-green-800 text-center mb-4">
+            Your Estimated Carbon Footprint
+          </h2>
+          <div className="text-center">
+            <p className="text-3xl font-bold text-green-700 mb-2">
+              {footprint.total.toFixed(2)} kg CO2
+              <span className="text-xs align-super text-green-700">*</span>
+            </p>
+            <p className="text-md text-gray-600 font-medium mb-6">
+              Total Carbon Emissions
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-green-800">Transport</h3>
+              <p className="text-2xl font-bold text-green-600 mt-2">
+                {footprint.transport.toFixed(2)} kg CO2
+                <span className="text-xs align-super text-green-600">*</span>
+              </p>
+            </div>
+            <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-green-800">Energy</h3>
+              <p className="text-2xl font-bold text-green-600 mt-2">
+                {footprint.energy.toFixed(2)} kg CO2
+                <span className="text-xs align-super text-green-600">*</span>
+              </p>
+            </div>
+            <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-green-800">Waste</h3>
+              <p className="text-2xl font-bold text-green-600 mt-2">
+                {footprint.waste.toFixed(2)} kg CO2
+                <span className="text-xs align-super text-green-600">*</span>
+              </p>
+            </div>
+            <div className="bg-green-100 rounded-md p-4 shadow-sm flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-green-800">Shopping</h3>
+              <p className="text-2xl font-bold text-green-600 mt-2">
+                {footprint.shopping.toFixed(2)} kg CO2
+                <span className="text-xs align-super text-green-600">*</span>
+              </p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            * This is an estimated value based on input data and standard emission
+            factors. Actual values may vary depending on additional factors not
+            considered in this calculator.
+          </p>
+        </div>
       </div>
     </div>
   );

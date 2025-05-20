@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Wallet and BuyCharComponentState interfaces
 export interface WalletResponse {
   amount: number;
